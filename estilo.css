@@ -11,14 +11,16 @@ h3 {
     font-size: 20px;
 }
 
-.logoWR {
-    width: 50px;
-    height: auto;
-
-    align-content:center;
+.logoRW {
+    text-align: center;
 }
 
 .logo {
     width: 420px;
+    height: auto;
+}
+
+.xlogo {
+    width: 270px;
     height: auto;
 }
