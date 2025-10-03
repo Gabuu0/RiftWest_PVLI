@@ -3,7 +3,7 @@ h1 {
 }
 
 h2 {
-  color: white;
+  color: rgb(62, 3, 71);
   text-align: center;
   font-size: 40px;
 }
@@ -14,8 +14,17 @@ h3 {
     text-align: center;
 }
 
+body {
+background-color: #deaadb;
+
+}
+
 .logoRW {
     text-align: center;
+}
+
+.links {
+    text-align: right;
 }
 
 .logo {
@@ -24,13 +33,19 @@ h3 {
 }
 
 .xlogo {
-    width: 125px;
+    width: 60px;
+    height: auto;
+    text-align: center;
+}
+
+.logo67{
+    width: 70px;
     height: auto;
     text-align: center;
 }
 
 .glogo {
-    width: 250px;
+    width: 125px;
     height: auto;
     text-align: center;
 }
