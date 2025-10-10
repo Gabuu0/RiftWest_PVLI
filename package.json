@@ -1,0 +1,23 @@
+{
+  "name": "riftwest_pvli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gabuu0/RiftWest_PVLI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gabuu0/RiftWest_PVLI/issues"
+  },
+  "homepage": "https://github.com/Gabuu0/RiftWest_PVLI#readme",
+  "dependencies": {
+    "phaser": "^3.90.0"
+  }
+}
