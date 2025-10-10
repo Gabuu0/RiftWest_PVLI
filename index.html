@@ -6,7 +6,8 @@
     <link rel= "icon" type= "image/png" href= "sprites/logos/LogoEstudio.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="estilo.css"> <!-- Esto cargaria un archivo de estilo, pero no es necesario en Fiddle porque lo hace automáticamente -->
-  <script src="script.js"></script> <!--Aquí podriamos cargar los scripts, también se puede en el <body>, y pasa lo mismo que con el css de antes, en verdad aquí no estamos cargando nada-->
+  <script src="lib/phaser.js"></script><!--Aquí podriamos cargar los scripts, también se puede en el <body>, y pasa lo mismo que con el css de antes, en verdad aquí no estamos cargando nada-->
+  <script src="src/script.js"></script> 
 </head>
 
 <body>
@@ -15,7 +16,19 @@
         <img src="sprites/logos/LogoJuego.png" alt="RiftWestLogo" class="logo">
     </div>
     <div id="Juego">
-        
+        <canvas  id="juego"></canvas>
+        <script>
+        new Phaser.Game({
+        type: Phaser.CANVAS,
+        canvas: document.getElementById('juego'),
+        width: 1080,
+        height: 480,
+        scale: {
+            autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
+        }
+
+})
+        </script>
     </div>
     <div id="Texto y fuentes">
         <h2>Descripción</h2>
