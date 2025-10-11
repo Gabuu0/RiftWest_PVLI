@@ -13,7 +13,41 @@ h3 {
     font-size: 20px;
     text-align: center;
 }
-
+h4 {
+    color: rgb(62, 3, 71);
+    font-size: 40px;
+    text-align: center;
+}
+.h5 {
+    color: #9c277f;
+    font-size: 30px;
+    font-weight: bold;
+    position: relative;
+    margin-left: 25%;
+}
+.h6 {
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+    position: relative;
+    margin-left: 25%;
+}
+.h7 {
+    color: #c29311;
+    font-size: 30px;
+    font-weight: bold;
+    position: relative;
+    top: -200px;
+    margin-left: 60%;
+}
+.h8 {
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+    position: relative;
+    top: -200px;
+    margin-left: 60%;
+}
 body {
 background-color: #deaadb;
 
@@ -48,4 +82,11 @@ background-color: #deaadb;
     width: 125px;
     height: auto;
     text-align: center;
+}
+
+.keyboard {
+    width: 600px;
+    height: auto;
+    display: block;
+    margin:0 auto 0;
 }

@@ -11,22 +11,22 @@
 </head>
 
 <body>
-    
+
     <div class="logoRW">
         <img src="sprites/logos/LogoJuego.png" alt="RiftWestLogo" class="logo">
     </div>
     <div id="Juego">
-        <canvas  id="juego"></canvas>
+        <canvas id="juego"></canvas>
         <script>
-        new Phaser.Game({
-        type: Phaser.CANVAS,
-        canvas: document.getElementById('juego'),
-        width: 1080,
-        height: 480,
-        scale: {
-            autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
-            }
-        })
+            new Phaser.Game({
+                type: Phaser.CANVAS,
+                canvas: document.getElementById('juego'),
+                width: 1080,
+                height: 480,
+                scale: {
+                    autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
+                }
+            })
         </script>
     </div>
     <div id="Texto y fuentes">
@@ -49,8 +49,27 @@
                 <a href="https://x.com/67studio__" target="_blank">
                     <img src="sprites/logos/XLogo.png" alt="X" class="xlogo"<a>
                     </a>
+
         </div>
-       
+
+    </div>
+    <div id="Controles">
+        <h4>Controles:</h4>
+
+        <div class="keyboard">
+            <img src="sprites/logos/Teclado.png" alt="Teclado" class="keyboard">
+        </div>
+        <div id= "Textos controles">
+            <p class="h5">Daphne:</p>
+            <p class="h6">Moverse: W A S D</p>
+            <p class="h6">Interactuar: E</p>
+            <p class="h6">Payaso: TAB</p>
+
+            <p class="h7">Percival:</p>
+            <p class="h8">Moverse: Flechas</p>
+            <p class="h8">Interactuar: SHIFT</p>
+            <p class="h8">Moverse: ENTER</p>
+        </div>
     </div>
 
 
