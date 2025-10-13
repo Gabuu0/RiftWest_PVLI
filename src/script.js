@@ -9,11 +9,15 @@
 
 class Magwarts extends Phaser.Scene {
 	constructor(){super('Magwarts');}
-
+	preload()
+	{
+		this.load.image('Daphne', 'sprites/images/Daphne.png');
+	}
 	create ()
     {
+		this.add.image(270, 450, 'Daphne');
 		this.cameras.main.setViewport(540, 0, 540, 540);
-        this.add.text(200, 100, "Daphne");
+        this.add.text(240, 100, "Daphne");
     }
 	
 }
@@ -23,7 +27,7 @@ class Dustwarts extends Phaser.Scene {
 	create ()
     {
 		this.cameras.main.setViewport(0, 0, 540, 540);
-        this.add.text(200, 100, "Percival");
+        this.add.text(240, 100, "Percival");
     }
 }
 
