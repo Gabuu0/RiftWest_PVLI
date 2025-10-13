@@ -50,43 +50,47 @@ h4 {
 }
 body {
 background-color: #deaadb;
-
+text-align: center;
+margin: 20px  ;
 }
 
-.logoRW {
-    text-align: center;
+.logoRW {margin-top: 20px;}
+.logo {width: 500px; height: auto;}
+
+#juego {
+    display: block;
+    margin: 20px auto;
+    border: 3px solid rgb(148, 0, 111);
+    width: 1080px;
+    height: 540px;
 }
 
-.links {
-    text-align: right;
+#textoFuentes {
+      margin-top: 20px;
+      padding: 10px;
+      max-width: 1080px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: justify;
 }
 
-.logo {
-    width: 800px;
-    height: auto;
+#controles {
+      margin-top: 20px;
+      padding: 10px;
+      max-width: 1080px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: justify;
 }
 
-.xlogo {
-    width: 60px;
-    height: auto;
-    text-align: center;
-}
-
-.logo67{
-    width: 70px;
-    height: auto;
-    text-align: center;
-}
-
-.glogo {
-    width: 125px;
-    height: auto;
-    text-align: center;
-}
+.xlogo {width: 60px; height: auto;}
+.logo67 {width: 70px; height: auto;}
+.glogo {width: 125px; height: auto;}
+.links {margin: 20px auto; text-align: right;}
 
 .keyboard {
     width: 600px;
     height: auto;
     display: block;
-    margin:0 auto 0;
+    margin:5px auto 0;
 }

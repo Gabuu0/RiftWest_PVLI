@@ -6,8 +6,7 @@
     <link rel= "icon" type= "image/png" href= "sprites/logos/LogoEstudio.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="estilo.css"> <!-- Esto cargaria un archivo de estilo, pero no es necesario en Fiddle porque lo hace automáticamente -->
-  <script src="lib/phaser.js"></script><!--Aquí podriamos cargar los scripts, también se puede en el <body>, y pasa lo mismo que con el css de antes, en verdad aquí no estamos cargando nada-->
-  <script src="src/script.js"></script> 
+  
 </head>
 
 <body>
@@ -15,21 +14,10 @@
     <div class="logoRW">
         <img src="sprites/logos/LogoJuego.png" alt="RiftWestLogo" class="logo">
     </div>
-    <div id="Juego">
-        <canvas id="juego"></canvas>
-        <script>
-            new Phaser.Game({
-                type: Phaser.CANVAS,
-                canvas: document.getElementById('juego'),
-                width: 1080,
-                height: 480,
-                scale: {
-                    autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
-                }
-            })
-        </script>
-    </div>
-    <div id="Texto y fuentes">
+
+    <canvas id="juego"></canvas>
+
+    <div id="textoFuentes">
         <h2>Descripción</h2>
         <h3>
             En RiftWest jugaras como Daphne o Percival, que un día inesperado tras la clase de encantamientos con el profesor Filius Flitwick
@@ -41,19 +29,8 @@
 
         <h2>Créditos:</h2>
 
-        <div class="links">
-            <img src="sprites/logos/LogoEstudio.png" alt="67Logo" class="logo67">
-            <a href="https://github.com/Gabuu0/RiftWest_PVLI" target="_blank">
-                <img src="sprites/logos/GitHubLogo.png" alt="GitHub =^_^=" class="glogo"<a>
-                </a>
-                <a href="https://x.com/67studio__" target="_blank">
-                    <img src="sprites/logos/XLogo.png" alt="X" class="xlogo"<a>
-                    </a>
-
-        </div>
-
     </div>
-    <div id="Controles">
+    <div id="controles">
         <h4>Controles:</h4>
 
         <div class="keyboard">
@@ -72,6 +49,18 @@
         </div>
     </div>
 
+    <div class="links">
+            <img src="sprites/logos/LogoEstudio.png" alt="67Logo" class="logo67">
+            <a href="https://github.com/Gabuu0/RiftWest_PVLI" target="_blank">
+                <img src="sprites/logos/GitHubLogo.png" alt="GitHub =^_^=" class="glogo"<a>
+                </a>
+                <a href="https://x.com/67studio__" target="_blank">
+                    <img src="sprites/logos/XLogo.png" alt="X" class="xlogo"<a>
+                    </a>
+
+    </div>
+    <script src="lib/phaser.js"></script><!--Aquí podriamos cargar los scripts, también se puede en el <body>, y pasa lo mismo que con el css de antes, en verdad aquí no estamos cargando nada-->
+    <script src="src/script.js"></script> 
 
     <!--<div>
         <p class=clase id="magico"> Esto es un párrafo. Y abajo aparece una imagen con un link a la UCM</p>
