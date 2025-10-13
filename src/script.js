@@ -9,26 +9,51 @@
 
 class Magwarts extends Phaser.Scene {
 	constructor(){super('Magwarts');}
-	preload()
-	{
-		this.load.image('Daphne', 'sprites/images/Daphne.png');
-	}
-	create ()
-    {
-		this.add.image(270, 450, 'Daphne');
-		this.cameras.main.setViewport(540, 0, 540, 540);
-        this.add.text(240, 100, "Daphne");
-    }
 	
+	preload() 
+	{
+		this.load.spritesheet('DaphneSpriteSheet', 'sprites/images/daphne/DaphneIdle(x5).png', { frameWidth: 160, frameHeight: 160});
+	}
+
+ 	create() 
+	{
+		this.cameras.main.setViewport(540, 0, 540, 540);
+		this.add.text(240, 100, "Daphne");
+		let Daphne = this.add.sprite(270, 450, 'DaphneSpriteSheet');
+
+		this.anims.create({
+		key: 'daphneIdle',
+		frames: this.anims.generateFrameNumbers('DaphneSpriteSheet', { start: 0, end: 4 }),
+		frameRate: 5,
+		repeat: -1
+		});
+		Daphne.play('daphneIdle');
+	}
+
+
 }
 
 class Dustwarts extends Phaser.Scene {
 	constructor(){super('Dustwarts');}
-	create ()
-    {
+	preload() 
+	{
+		this.load.spritesheet('PercivalSpriteSheet', 'sprites/images/percival/PercivalIdle(x5).png', { frameWidth: 160, frameHeight: 160});
+	}
+
+ 	create() 
+	{
 		this.cameras.main.setViewport(0, 0, 540, 540);
-        this.add.text(240, 100, "Percival");
-    }
+		this.add.text(240, 100, "Percival");
+		let Percival = this.add.sprite(270, 450, 'PercivalSpriteSheet');
+
+		this.anims.create({
+		key: 'percivalIdle',
+		frames: this.anims.generateFrameNumbers('PercivalSpriteSheet', { start: 0, end: 4 }),
+		frameRate: 5,
+		repeat: -1
+		});
+		Percival.play('percivalIdle');
+	}
 }
 
 const config = {
