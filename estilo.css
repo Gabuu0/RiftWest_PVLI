@@ -94,3 +94,70 @@ margin: 20px  ;
     display: block;
     margin:5px auto 0;
 }
+
+:root {
+    --primary-color: hsl(0, 0%, 100%);
+    --secondary-color: hsl(0, 0%, 10%);
+    --accent-color: hsl(313, 70%, 45%); /* tono violeta-magenta acorde a RiftWest */
+    --header-padding: 1rem 3rem;
+    --button-padding: 0.5rem 2rem;
+    --round-edges: 10px;
+    --primary-font: 'Work Sans', sans-serif;
+    --secondary-font: 'Rubik Mono One', sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #deaadb;
+    font-family: var(--primary-font);
+}
+
+header {
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--header-padding);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.logo p {
+    font-family: var(--secondary-font);
+    font-size: 2rem;
+    letter-spacing: 2px;
+    margin: 0;
+}
+
+.enlaces {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.enlaces button {
+    padding: var(--button-padding);
+    border: 2px solid var(--primary-color);
+    border-radius: var(--round-edges);
+    background: transparent;
+    color: var(--primary-color);
+    font-weight: bold;
+    transition: 0.25s;
+}
+
+.enlaces button:hover {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    cursor: pointer;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+[id] {
+    scroll-margin-top: 80px;
+}
