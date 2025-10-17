@@ -23,6 +23,7 @@ h4 {
     font-size: 30px;
     font-weight: bold;
     position: relative;
+    top: -30px;
     margin-left: 25%;
 }
 .h6 {
@@ -30,6 +31,7 @@ h4 {
     font-size: 20px;
     font-weight: bold;
     position: relative;
+    top: -30px;
     margin-left: 25%;
 }
 .h7 {
@@ -37,7 +39,7 @@ h4 {
     font-size: 30px;
     font-weight: bold;
     position: relative;
-    top: -200px;
+    top: -230px;
     margin-left: 60%;
 }
 .h8 {
@@ -45,7 +47,7 @@ h4 {
     font-size: 20px;
     font-weight: bold;
     position: relative;
-    top: -200px;
+    top: -230px;
     margin-left: 60%;
 }
 body {
@@ -95,7 +97,7 @@ margin: 20px  ;
     width: 600px;
     height: auto;
     display: block;
-    margin:5px auto 0;
+    margin: 20px auto 0;
 }
 
 :root {
@@ -151,6 +153,7 @@ header {
     color: var(--primary-color);
     font-weight: bold;
     transition: 0.25s;
+    width: 120px;
 }
 
 .enlaces button:hover {
@@ -164,5 +167,5 @@ html {
 }
 
 [id] {
-    scroll-margin-top: 80px;
+    scroll-margin-top: 150px;
 }
