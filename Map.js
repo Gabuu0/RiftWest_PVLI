@@ -1,5 +1,5 @@
-class Dustwarts extends Phaser.Scene {
-	constructor(){super('Dustwarts');}
+class Map extends Phaser.Scene {
+	constructor(){super('Map');}
 	preload() 
 	{
 		this.load.spritesheet('PercivalSpriteSheet', 'sprites/images/percival/PercivalIdle(x5).png', { frameWidth: 160, frameHeight: 160});
