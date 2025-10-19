@@ -8,7 +8,8 @@ const config = {
 	scale: {
 	autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
 	},
-	scene: [Level1]
+	scene: [Level1],
+	pixelArt: true
 };
 
  new Phaser.Game(config);
