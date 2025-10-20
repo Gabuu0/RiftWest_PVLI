@@ -13,8 +13,8 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
         this.play(type === "percival" ? "PercivalIdle" : "DaphneIdle", true);
     }
 
-    preUpdate(t,dt){
-        //this.play(this.animations.idle, true);
+    preUpdate(time, delta){
+    super.preUpdate(time, delta); // <- muy importante
     }
 
     getAnimationsByType(){
@@ -23,6 +23,7 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
             daphne:{ idle: "DaphneIdle"},
         }
         return animations[this.type];
+        console.log("Animación actual:", this.anims.currentAnim?.key);
     }
 
 }

@@ -62,12 +62,10 @@ export default class Level1 extends Phaser.Scene{
     }
 
     preload(){
-		this.load.spritesheet("D",
-             "sprites/images/daphne/DaphneIdle(x5).png",
+		this.load.spritesheet("D","sprites/images/daphne/DaphneIdle(x5).png",
               { frameWidth: 160, frameHeight: 160});
 
-        this.load.spritesheet("P",
-             "sprites/images/percival/PercivalIdle(x5).png",
+        this.load.spritesheet("P","sprites/images/percival/PercivalIdle(x5).png",
               { frameWidth: 160, frameHeight: 160});
         
         this.load.spritesheet("TileSet",
@@ -91,6 +89,7 @@ export default class Level1 extends Phaser.Scene{
             frameRate: 5,
             repeat: -1,}
         );
+        //Daphne.play('daphneIdle');
     }
 
     
