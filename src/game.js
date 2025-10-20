@@ -9,6 +9,13 @@ const config = {
 	autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
 	},
 	scene: [Level1],
+	physics: {
+        default: "arcade",
+        arcade: {
+            debug: false,
+            gravity: { y: 0 },
+        },
+    },
 	pixelArt: true
 };
 

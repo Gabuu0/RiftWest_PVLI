@@ -1,4 +1,4 @@
-export default class Players extends Phaser.GameObjects.Sprite{
+export default class Players extends Phaser.Physics.Arcade.Sprite{
     constructor(scene,x=0,y=0,texture = "percival",frame=0,type = "percival"){
         super(scene,x,y,texture,frame);
 

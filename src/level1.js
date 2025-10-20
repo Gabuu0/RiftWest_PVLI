@@ -1,4 +1,6 @@
 import Players from "./players.js";
+import movement from "./movement.js";   
+
 export default class Level1 extends Phaser.Scene{
     constructor(){
         super({key: "level1"});
@@ -38,6 +40,14 @@ export default class Level1 extends Phaser.Scene{
 
         let percival = new Players(this,280,300,"Percival",0,"percival");
         let daphne = new Players(this,800,300,"Daphne",0,"daphne");
+
+        this.movementController = new Movement(this, this.percival, this.daphne);
+    }
+
+    update(){
+        if (this.movementController) {
+            this.movementController.update();
+        }
     }
 
     preload(){
