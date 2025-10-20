@@ -1,5 +1,5 @@
 import Players from "./players.js";
-import movement from "./movement.js";   
+import Movement from "./movement.js";   
 
 export default class Level1 extends Phaser.Scene{
     constructor(){
@@ -38,10 +38,21 @@ export default class Level1 extends Phaser.Scene{
 		this.add.text(240, 100, "Percival");
 		this.add.text(780, 100, "Daphne");
 
-        let percival = new Players(this,280,300,"Percival",0,"percival");
-        let daphne = new Players(this,800,300,"Daphne",0,"daphne");
+        this.percival = new Players(this,280,300,"P",0,"percival");
+        this.daphne = new Players(this,800,300,"D",0,"daphne");
+
+        console.log("Movement:", Movement);
+        console.log("Percival:", this.percival);
+        console.log("Daphne:", this.daphne);
 
         this.movementController = new Movement(this, this.percival, this.daphne);
+
+        this.input.keyboard.enabled = true;
+
+        this.input.keyboard.on('keydown', (event) => {
+        // Evita que el navegador use las teclas (por ejemplo, mover scroll o cursor)
+        event.preventDefault();
+});
     }
 
     update(){
