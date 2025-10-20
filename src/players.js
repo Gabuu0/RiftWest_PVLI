@@ -5,12 +5,12 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
         this.scene.add.existing(this);
         scene.physics.add.existing(this);
         this.setCollideWorldBounds(true);
+        this.body.setSize(60,80);
         console.log("Body añadido:", this.body);
         this.type = type;
         this.animations = this.getAnimationsByType();
 
         this.play(type === "percival" ? "PercivalIdle" : "DaphneIdle", true);
-
     }
 
     preUpdate(t,dt){
