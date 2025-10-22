@@ -20,14 +20,14 @@ export default class PauseMenu extends Phaser.Scene {
         // Panel con esquinas redondeadas
         const panel = this.add.graphics();
         panel.fillStyle(0xffffff, 0.2);
-        panel.fillRoundedRect(0, 0, panelWidth, panelHeight, radius);
+        panel.fillRoundedRect(-panelWidth/2,-panelHeight/2, panelWidth, panelHeight, radius);
 
         // Contenedor del panel y sus hijos
-        const container = this.add.container(240, 100, [panel]);
+        const container = this.add.container(540, 270, [panel]);
         container.setScale(0);
         container.setAlpha(0);
         // Título
-        const texto = this.add.text(panelWidth / 2, 60, 'PAUSA', {
+        const texto = this.add.text(0, -90, 'PAUSA', {
             fontSize: '32px',
             fill: 'rgb(255,0,0)',
             fontFamily: 'Merriweather'
@@ -35,7 +35,7 @@ export default class PauseMenu extends Phaser.Scene {
         container.add(texto);
 
         // Botón Reanudar
-        const continueButton = this.add.text(panelWidth / 2, 150, 'Reanudar', {
+        const continueButton = this.add.text(0, -20, 'Reanudar', {
             fontSize: '24px',
             fill: 'rgb(255, 255, 255)',
             fontFamily: 'Merriweather'
@@ -43,7 +43,7 @@ export default class PauseMenu extends Phaser.Scene {
         container.add(continueButton);
 
         // Botón Inicio
-        const menuButton = this.add.text(panelWidth / 2, 200, 'Inicio', {
+        const menuButton = this.add.text(0, 40, 'Inicio', {
             fontSize: '24px',
             fill: 'rgb(255, 255, 255)',
             fontFamily: 'Merriweather'
