@@ -41,7 +41,7 @@ export default class Level1 extends Phaser.Scene{
             [TI.PI1, -1, -1, -1, -1, TI.PD1, -1],
             [TI.PI2, -1, -1, -1, -1, TI.PD2, -1],
             [TI.PI1, -1, -1, -1, -1, TI.PD2, -1],
-            [-1, -1, -1, -1, -1, -1, -1]
+            [TI.EIAB, TI.AB1, TI.AB2, TI.AB3, TI.AB4, TI.EDAB, -1]
         ];
         collisionLayer.putTilesAt(collisionData, 0, 0);
         collisionLayer.setScale(5);
@@ -61,21 +61,6 @@ export default class Level1 extends Phaser.Scene{
         florlayer.putTilesAt(florData, 0, 0);
         florlayer.setScale(5);
         florlayer.setDepth(0);
-
-        // Crea el layer de colisione por detras
-        const overPlayerlayer = map.createBlankLayer("overplayerlayer", tileset, 0, 0);
-
-        const oPLData = [
-            [-1, -1, -1, -1, -1, -1, -1],
-            [-1, -1, -1, -1, -1, -1, -1],
-            [-1, -1, -1, -1, -1, -1, -1],
-            [-1, -1, -1, -1, -1, -1, -1],
-            [TI.EIAB, TI.AB1, TI.AB2, TI.AB3, TI.AB4, TI.EDAB, -1]
-        ];
-        overPlayerlayer.putTilesAt(oPLData, 0, 0);
-        overPlayerlayer.setScale(5);
-        overPlayerlayer.setDepth(10);
-
 
 		this.add.text(240, 100, "Percival");
 		this.add.text(780, 100, "Daphne");
