@@ -34,34 +34,47 @@ export default class Level1 extends Phaser.Scene{
         //Le declara el Tileset que se utilizara
         const tileset = map.addTilesetImage("TileSet");
 
-        //Creamos el layer vacio
-        const layer1 = map.createBlankLayer("layer1", tileset, 0, 0);
-
-        //Crea el primer layer
-        const layer1Data = [
-            [TI.EIAR, TI.AR1, TI.AR2, TI.AR2, TI.AR1, TI.EDAR, TI.FF],
-            [TI.PI1, TI.S1, TI.S2, TI.S3, TI.S4, TI.PD1, TI.FF],
-            [TI.PI2, TI.S5, TI.S6, TI.S7, TI.S8, TI.PD2, TI.FF],
-            [TI.PI1, TI.S9, TI.S10, TI.S11, TI.S12, TI.PD2, TI.FF],
+        //Crea el player de colisiones
+        const collisionLayer = map.createBlankLayer("collisionLayer", tileset, 0, 0);
+        const collisionData = [
+            [TI.EIAR, TI.AR1, TI.AR2, TI.AR2, TI.AR1, TI.EDAR, -1],
+            [TI.PI1, -1, -1, -1, -1, TI.PD1, -1],
+            [TI.PI2, -1, -1, -1, -1, TI.PD2, -1],
+            [TI.PI1, -1, -1, -1, -1, TI.PD2, -1],
+            [-1, -1, -1, -1, -1, -1, -1]
+        ];
+        collisionLayer.putTilesAt(collisionData, 0, 0);
+        collisionLayer.setScale(5);
+        collisionLayer.setDepth(0);
+        //creamos colisiones
+        collisionLayer.setCollisionByExclusion([-1]);
+        
+        // Crea el layer del suelo
+        const florlayer = map.createBlankLayer("florlayer", tileset, 0, 0);
+        const florData = [
+            [-1, -1, -1, -1, -1, -1, TI.FF],
+            [-1, TI.S1, TI.S2, TI.S3, TI.S4, -1, TI.FF],
+            [-1, TI.S5, TI.S6, TI.S7, TI.S8, -1, TI.FF],
+            [-1, TI.S9, TI.S10, TI.S11, TI.S12, -1, TI.FF],
             [-1, -1, -1, -1, -1, -1, TI.FF]
         ];
-        layer1.putTilesAt(layer1Data, 0, 0);
-        layer1.setScale(5);
-        layer1.setDepth(0);
-        
-        // Crea el segundo layer vacio
-        const layer2 = map.createBlankLayer("layer2", tileset, 0, 0);
+        florlayer.putTilesAt(florData, 0, 0);
+        florlayer.setScale(5);
+        florlayer.setDepth(0);
 
-        const layer2Data = [
+        // Crea el layer de colisione por detras
+        const overPlayerlayer = map.createBlankLayer("overplayerlayer", tileset, 0, 0);
+
+        const oPLData = [
             [-1, -1, -1, -1, -1, -1, -1],
             [-1, -1, -1, -1, -1, -1, -1],
             [-1, -1, -1, -1, -1, -1, -1],
             [-1, -1, -1, -1, -1, -1, -1],
             [TI.EIAB, TI.AB1, TI.AB2, TI.AB3, TI.AB4, TI.EDAB, -1]
         ];
-        layer2.putTilesAt(layer2Data, 0, 0);
-        layer2.setScale(5);
-        layer2.setDepth(10);
+        overPlayerlayer.putTilesAt(oPLData, 0, 0);
+        overPlayerlayer.setScale(5);
+        overPlayerlayer.setDepth(10);
 
 
 		this.add.text(240, 100, "Percival");
@@ -81,6 +94,10 @@ export default class Level1 extends Phaser.Scene{
         this.input.keyboard.on('keydown', (event) => {
         // Evita que el navegador use las teclas (por ejemplo, mover scroll o cursor)
         event.preventDefault();
+
+        //Para que los personajes colsionen con el mapa
+        this.physics.add.collider(this.percival, collisionLayer);
+        this.physics.add.collider(this.daphne, collisionLayer);
 });
     }
 
