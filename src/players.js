@@ -4,7 +4,7 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
 
         this.scene.add.existing(this);
         scene.physics.add.existing(this);
-        this.setCollideWorldBounds(true);
+        this.setCollideWorldBounds(false);
         this.body.setSize(50,20);
         this.body.setOffset(55,100);
         console.log("Body añadido:", this.body);

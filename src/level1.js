@@ -78,8 +78,9 @@ export default class Level1 extends Phaser.Scene{
         overPlayerlayer.setDepth(10);
 
 
-		this.add.text(240, 100, "Percival");
-		this.add.text(780, 100, "Daphne");
+		this.pText = this.add.text(240, 100, "Percival").setScrollFactor(0);
+		this.dText = this.add.text(240, 100, "Daphne").setScrollFactor(0);
+        
 
         this.percival = new Players(this,280,300,"P",0,"percival");
         this.daphne = new Players(this,800,300,"D",0,"daphne");
@@ -102,12 +103,20 @@ export default class Level1 extends Phaser.Scene{
         // Evita que el navegador use las teclas (por ejemplo, mover scroll o cursor)
         event.preventDefault();
 
+         });
         //Para que los personajes colsionen con el mapa
         this.physics.add.collider(this.percival, collisionLayer);
         this.physics.add.collider(this.daphne, collisionLayer);
 
-        
-});
+        this.percivalCam = this.cameras.main;
+        this.percivalCam.setViewport(0,0,540,540);
+        this.percivalCam.startFollow(this.percival);
+        this.percivalCam.ignore(this.dText);
+        this.daphneCam = this.cameras.add(540,0,540,540,'DaphneCam');
+        this.daphneCam.setViewport(540,0,540,540);
+        this.daphneCam.startFollow(this.daphne);
+        this.daphneCam.ignore(this.pText);
+
     }
 
     update(){
