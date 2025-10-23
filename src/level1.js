@@ -6,6 +6,7 @@ export default class Level1 extends Phaser.Scene{
     constructor(){
         super({key: "level1"});
     }
+
     init(){
         
     }
@@ -28,57 +29,44 @@ export default class Level1 extends Phaser.Scene{
             //Se declara las medidas de los sprites
             tileWidth: 16,
             tileHeight: 16,
-            width: 7,
-            height: 5
+            width: 15,
+            height: 6
             }
         );
         //Le declara el Tileset que se utilizara
         const tileset = map.addTilesetImage("TileSet");
 
-        //Crea el player de colisiones
+        // Crea el layer del suelo
+        const florLayer = map.createBlankLayer("florlayer", tileset, 0, 0);
+        const florData = [
+            [-1, -1, -1, -1, -1, -1, TI.FF, TI.FF, TI.FF, -1, -1, -1, -1, -1, -1],
+            [-1, TI.S1, TI.S2, TI.S3, TI.S4, -1, TI.FF, TI.FF, TI.FF, -1, TI.S1, TI.S2, TI.S3, TI.S4, -1],
+            [-1, TI.S5, TI.S6, TI.S7, TI.S8, -1, TI.FF, TI.FF, TI.FF, -1, TI.S5, TI.S6, TI.S7, TI.S8, -1],
+            [-1, TI.S9, TI.S10, TI.S11, TI.S12, -1, TI.FF, TI.FF, TI.FF, -1, TI.S9, TI.S10, TI.S11, TI.S12, -1],
+            [-1, -1, -1, -1, -1, -1, TI.FF, TI.FF, TI.FF, -1, -1, -1, -1, -1, -1],
+            [TI.FF, TI.FF, TI.FF, TI.FF, TI.FF, TI.FF, TI.FF, TI.FF, TI.FF, TI.FF, TI.FF, TI.FF, TI.FF, TI.FF, TI.FF]
+        ];
+        florLayer.putTilesAt(florData, 0, 0);
+        florLayer.setScale(5);
+
+        //Crea el layer de colisiones
         const collisionLayer = map.createBlankLayer("collisionLayer", tileset, 0, 0);
         const collisionData = [
-            [TI.EIAR, TI.AR1, TI.AR2, TI.AR2, TI.AR1, TI.EDAR, -1],
-            [TI.PI1, -1, -1, -1, -1, TI.PD1, -1],
-            [TI.PI2, -1, -1, -1, -1, TI.PD2, -1],
-            [TI.PI1, -1, -1, -1, -1, TI.PD2, -1],
-            [-1, -1, -1, -1, -1, -1, -1]
+            [TI.EIAR, TI.AR1, TI.AR2, TI.AR2, TI.AR1, TI.EDAR, -1, -1, -1, TI.EIAR, TI.AR1, TI.AR2, TI.AR2, TI.AR1, TI.EDAR],
+            [TI.PI1, -1, -1, -1, -1, TI.PD1, -1, -1, -1, TI.PI2, -1, -1, -1, -1, TI.PD1],
+            [TI.PI2, -1, -1, -1, -1, TI.PD2, -1, -1, -1, TI.PI1, -1, -1, -1, -1, TI.PD2],
+            [TI.PI1, -1, -1, -1, -1, TI.PD2, -1, -1, -1, TI.PI1, -1, -1, -1, -1, TI.PD2],
+            [TI.EIAB, TI.AB1, TI.AB2, TI.AB3, TI.AB4, TI.EDAB, -1, -1, -1, TI.EIAB, TI.AB1, TI.AB2, TI.AB3, TI.AB4, TI.EDAB],
+            [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
         ];
+        console.log("KLK");
         collisionLayer.putTilesAt(collisionData, 0, 0);
         collisionLayer.setScale(5);
-        collisionLayer.setDepth(0);
         //creamos colisiones
         collisionLayer.setCollisionByExclusion([-1]);
         
-        // Crea el layer del suelo
-        const florlayer = map.createBlankLayer("florlayer", tileset, 0, 0);
-        const florData = [
-            [-1, -1, -1, -1, -1, -1, TI.FF],
-            [-1, TI.S1, TI.S2, TI.S3, TI.S4, -1, TI.FF],
-            [-1, TI.S5, TI.S6, TI.S7, TI.S8, -1, TI.FF],
-            [-1, TI.S9, TI.S10, TI.S11, TI.S12, -1, TI.FF],
-            [-1, -1, -1, -1, -1, -1, TI.FF]
-        ];
-        florlayer.putTilesAt(florData, 0, 0);
-        florlayer.setScale(5);
-        florlayer.setDepth(0);
 
-        // Crea el layer de colisione por detras
-        const overPlayerlayer = map.createBlankLayer("overplayerlayer", tileset, 0, 0);
-
-        const oPLData = [
-            [-1, -1, -1, -1, -1, -1, -1],
-            [-1, -1, -1, -1, -1, -1, -1],
-            [-1, -1, -1, -1, -1, -1, -1],
-            [-1, -1, -1, -1, -1, -1, -1],
-            [TI.EIAB, TI.AB1, TI.AB2, TI.AB3, TI.AB4, TI.EDAB, -1]
-        ];
-        overPlayerlayer.putTilesAt(oPLData, 0, 0);
-        overPlayerlayer.setScale(5);
-        overPlayerlayer.setDepth(10);
-
-
-		this.pText = this.add.text(240, 100, "Percival").setScrollFactor(0);
+        this.pText = this.add.text(240, 100, "Percival").setScrollFactor(0);
 		this.dText = this.add.text(240, 100, "Daphne").setScrollFactor(0);
         
 
