@@ -42,7 +42,7 @@ export default class PauseMenu extends Phaser.Scene {
         }).setOrigin(0.5).setInteractive();
         container.add(continueButton);
 
-        // Botón Inicio
+        // Botoon Inicio
         const menuButton = this.add.text(0, 40, 'Inicio', {
             fontSize: '24px',
             fill: 'rgb(255, 255, 255)',
@@ -50,17 +50,18 @@ export default class PauseMenu extends Phaser.Scene {
         }).setOrigin(0.5).setInteractive();
         container.add(menuButton);
 
-        // Entrar con animación (panel y fondo)
+        // Entrar con animacion (panel y fondo)
         this.tweens.add({ targets: container, scale: 1, alpha: 1, duration: 500, ease: 'Power2' });
         this.tweens.add({ targets: background, alpha: 0.5, duration: 500, ease: 'Power2' });
 
-        // Hover para botones
-        [continueButton, menuButton].forEach(btn => {
-            btn.on('pointerover', () => btn.setStyle({ fill: 'rgb(255, 255, 143)' }));
-            btn.on('pointerout',  () => btn.setStyle({ fill: 'rgb(255, 255, 255)' }));
-        });
+        // Interaccion con boton de continue y menu
+        continueButton.on('pointerover', () => continueButton.setStyle({ fill: 'rgb(255, 255, 143)' }));
+        menuButton.on('pointerover', () => menuButton.setStyle({ fill: 'rgb(255, 255, 143)' }));
 
-        // Función reutilizable para cerrar el menú con animación
+        continueButton.on('pointerout',  () => continueButton.setStyle({ fill: 'rgb(255, 255, 255)' }));
+        menuButton.on('pointerout',  () => menuButton.setStyle({ fill: 'rgb(255, 255, 255)' }));
+
+
         const cerrarMenu = (callback) => {
             this.tweens.add({
                 targets: container,
@@ -78,7 +79,7 @@ export default class PauseMenu extends Phaser.Scene {
             });
         };
 
-        // Botón Reanudar
+        // Interaccion con boton de reanudar
         continueButton.on('pointerdown', () => {
             cerrarMenu(() => {
                 this.scene.stop();
@@ -86,7 +87,7 @@ export default class PauseMenu extends Phaser.Scene {
             });
         });
 
-        // Botón Inicio
+        // Interaccion con boton de inicio
         menuButton.on('pointerdown', () => {
             cerrarMenu(() => {
                 this.scene.stop('level1');
@@ -95,7 +96,7 @@ export default class PauseMenu extends Phaser.Scene {
             });
         });
 
-        // Tecla ESC también cierra el menú
+        // Tecla ESC para cerrar menu
         this.input.keyboard.on('keydown-ESC', () => {
             cerrarMenu(() => {
                 this.scene.stop();
