@@ -13,6 +13,8 @@ export default class Level1 extends Phaser.Scene{
 
     create(){
         this.createAnims();
+
+        //#region Creacion Mapa
         //Index de los sprites del mapa
         const TI = {
             EIAR: 0, AR1: 1, AR2: 2, EDAR: 5,
@@ -64,14 +66,14 @@ export default class Level1 extends Phaser.Scene{
         collisionLayer.setScale(5);
         //creamos colisiones
         collisionLayer.setCollisionByExclusion([-1]);
-        
+        //#endregion
 
         this.pText = this.add.text(240, 100, "Percival").setScrollFactor(0);
 		this.dText = this.add.text(240, 100, "Daphne").setScrollFactor(0);
         
 
-        this.percival = new Players(this,280,300,"P",0,"percival");
-        this.daphne = new Players(this,800,300,"D",0,"daphne");
+        this.percival = new Players(this,280,250,"P",0,"percival");
+        this.daphne = new Players(this,900,250,"D",0,"daphne");
 
         console.log("Movement:", Movement);
         console.log("Percival:", this.percival);
