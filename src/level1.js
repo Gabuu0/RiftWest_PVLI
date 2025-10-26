@@ -14,66 +14,14 @@ export default class Level1 extends Phaser.Scene{
     create(){
         this.createAnims();
 
-        //#region Creacion Mapa
-        //Index de los sprites del mapa
-        const TI = {
-            EIAR: 0, AR1: 1, AR2: 2, EDAR: 5,
-            PI1: 10, PI2: 20, PD1: 15, PD2: 25,
-            EIAB: 40, AB1: 41, AB2: 42, AB3: 51, AB4: 52, EDAB: 45,
-            S1: 11, S2: 12, S3: 13, S4: 14,
-            S5: 21, S6: 22, S7: 23, S8: 24,
-            S9: 31, S10: 32, S11: 33, S12: 34,
-            FF: 78,
-        };
-
-        //Crea el mapa
-        const map = this.make.tilemap({
-            //Se declara las medidas de los sprites
-            tileWidth: 16,
-            tileHeight: 16,
-            width: 15,
-            height: 6
-            }
-        );
-        //Le declara el Tileset que se utilizara
-        const tileset = map.addTilesetImage("TileSet");
-
-        // Crea el layer del suelo
-        const florLayer = map.createBlankLayer("florlayer", tileset, 0, 0);
-        const florData = [
-            [-1, -1, -1, -1, -1, -1, TI.FF, TI.FF, TI.FF, -1, -1, -1, -1, -1, -1],
-            [-1, TI.S1, TI.S2, TI.S3, TI.S4, -1, TI.FF, TI.FF, TI.FF, -1, TI.S1, TI.S2, TI.S3, TI.S4, -1],
-            [-1, TI.S5, TI.S6, TI.S7, TI.S8, -1, TI.FF, TI.FF, TI.FF, -1, TI.S5, TI.S6, TI.S7, TI.S8, -1],
-            [-1, TI.S9, TI.S10, TI.S11, TI.S12, -1, TI.FF, TI.FF, TI.FF, -1, TI.S9, TI.S10, TI.S11, TI.S12, -1],
-            [-1, -1, -1, -1, -1, -1, TI.FF, TI.FF, TI.FF, -1, -1, -1, -1, -1, -1],
-            [TI.FF, TI.FF, TI.FF, TI.FF, TI.FF, TI.FF, TI.FF, TI.FF, TI.FF, TI.FF, TI.FF, TI.FF, TI.FF, TI.FF, TI.FF]
-        ];
-        florLayer.putTilesAt(florData, 0, 0);
-        florLayer.setScale(5);
-
-        //Crea el layer de colisiones
-        const collisionLayer = map.createBlankLayer("collisionLayer", tileset, 0, 0);
-        const collisionData = [
-            [TI.EIAR, TI.AR1, TI.AR2, TI.AR2, TI.AR1, TI.EDAR, -1, -1, -1, TI.EIAR, TI.AR1, TI.AR2, TI.AR2, TI.AR1, TI.EDAR],
-            [TI.PI1, -1, -1, -1, -1, TI.PD1, -1, -1, -1, TI.PI2, -1, -1, -1, -1, TI.PD1],
-            [TI.PI2, -1, -1, -1, -1, TI.PD2, -1, -1, -1, TI.PI1, -1, -1, -1, -1, TI.PD2],
-            [TI.PI1, -1, -1, -1, -1, TI.PD2, -1, -1, -1, TI.PI1, -1, -1, -1, -1, TI.PD2],
-            [TI.EIAB, TI.AB1, TI.AB2, TI.AB3, TI.AB4, TI.EDAB, -1, -1, -1, TI.EIAB, TI.AB1, TI.AB2, TI.AB3, TI.AB4, TI.EDAB],
-            [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
-        ];
-        console.log("KLK");
-        collisionLayer.putTilesAt(collisionData, 0, 0);
-        collisionLayer.setScale(5);
-        //creamos colisiones
-        collisionLayer.setCollisionByExclusion([-1]);
-        //#endregion
-
         this.pText = this.add.text(240, 100, "Percival").setScrollFactor(0);
 		this.dText = this.add.text(240, 100, "Daphne").setScrollFactor(0);
-        
 
         this.percival = new Players(this,280,250,"P",0,"percival");
         this.daphne = new Players(this,900,250,"D",0,"daphne");
+
+        this.percival.setDepth(1);
+        this.daphne.setDepth(1);
 
         console.log("Movement:", Movement);
         console.log("Percival:", this.percival);
@@ -94,9 +42,6 @@ export default class Level1 extends Phaser.Scene{
         event.preventDefault();
 
          });
-        //Para que los personajes colsionen con el mapa
-        this.physics.add.collider(this.percival, collisionLayer);
-        this.physics.add.collider(this.daphne, collisionLayer);
 
         this.percivalCam = this.cameras.main;
         this.percivalCam.setViewport(0,0,540,540);
@@ -107,6 +52,21 @@ export default class Level1 extends Phaser.Scene{
         this.daphneCam.startFollow(this.daphne);
         this.daphneCam.ignore(this.pText);
 
+        //#region Creacion Mapa
+        const map = this.make.tilemap({ key: 'mapa' });
+        const tileset = map.addTilesetImage('tileSet1', 'tiles');
+
+        const Suelo = map.createLayer('Suelo', tileset, -500, -500);
+        Suelo.setScale(5);
+
+        const Paredes = map.createLayer('Paredes', tileset, -500, -500);
+        Paredes.setCollisionByExclusion([-1]);
+        Paredes.setScale(5);
+
+        this.physics.add.collider(this.daphne, Paredes);
+        this.physics.add.collider(this.percival, Paredes);
+
+        //#endregion
     }
 
     update(){
@@ -122,10 +82,8 @@ export default class Level1 extends Phaser.Scene{
         this.load.spritesheet("P","sprites/images/percival/PercivalIdle(x5).png",
               { frameWidth: 160, frameHeight: 160});
         
-        this.load.spritesheet("TileSet",
-            "Sprites/TileSet/TileSetPJ.png",
-            {frameWidth:16, frameHeight:16});
-
+        this.load.image('tiles', 'Sprites/TileSet/TileSetPJ.png');
+        this.load.tilemapTiledJSON('mapa', 'Sprites/TileSet/Mapa.json');
     }
 
     createAnims(){
