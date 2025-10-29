@@ -62,9 +62,6 @@ export default class Level1 extends Phaser.Scene{
 
         const Suelo = map.createLayer('Suelo', tilesets, -500, -500);
         Suelo.setScale(5);
-        
-        const Paredes2 = map.createLayer('Paredes(SinColision)', tilesets, -500, -500);
-        Paredes2.setScale(5);
 
         const Paredes = map.createLayer('Paredes', tilesets, -500, -500);
         Paredes.setCollisionByExclusion([-1]);
@@ -77,7 +74,9 @@ export default class Level1 extends Phaser.Scene{
         const PlacasDePresion = map.createLayer('PlacasDePresion', tilesets, -500, -500);
         PlacasDePresion.setCollisionByExclusion([-1]);
         PlacasDePresion.setScale(5);
-
+        
+        const Paredes2 = map.createLayer('Paredes(SinColision)', tilesets, -500, -500);
+        Paredes2.setScale(5);
         this.physics.add.collider(this.daphne, Paredes);
         this.physics.add.collider(this.daphne, this.Puertas);
         this.physics.add.overlap(this.daphne, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
