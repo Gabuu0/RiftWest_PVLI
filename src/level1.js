@@ -1,6 +1,7 @@
 import Players from "./players.js";
 import Movement from "./movement.js";   
 import PauseMenu from "./pauseMenu.js";
+import InteractableObjects from './interactableObjects.js';
 
 export default class Level1 extends Phaser.Scene{
     constructor(){
@@ -17,8 +18,8 @@ export default class Level1 extends Phaser.Scene{
         this.pText = this.add.text(240, 100, "Percival").setScrollFactor(0);
 		this.dText = this.add.text(240, 100, "Daphne").setScrollFactor(0);
 
-        this.percival = new Players(this,280,250,"P",0,"percival");
-        this.daphne = new Players(this,900,250,"D",0,"daphne");
+        this.percival = new Players(this,200,500,"P",0,"percival");
+        this.daphne = new Players(this,900,500,"D",0,"daphne");
 
         this.percival.setDepth(1);
         this.daphne.setDepth(1);
@@ -63,8 +64,21 @@ export default class Level1 extends Phaser.Scene{
         Paredes.setCollisionByExclusion([-1]);
         Paredes.setScale(5);
 
+        this.Puertas = map.createLayer('Puertas', tileset, -500, -500);
+        this.Puertas.setCollisionByExclusion([-1]);
+        this.Puertas.setScale(5);
+
+        const PlacasDePresion = map.createLayer('PlacasDePresion', tileset, -500, -500);
+        PlacasDePresion.setCollisionByExclusion([-1]);
+        PlacasDePresion.setScale(5);
+
         this.physics.add.collider(this.daphne, Paredes);
+        this.physics.add.collider(this.daphne, this.Puertas);
+        this.physics.add.overlap(this.daphne, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
+
         this.physics.add.collider(this.percival, Paredes);
+        this.physics.add.collider(this.percival, this.Puertas);
+        this.physics.add.overlap(this.percival, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
 
         //#endregion
     }
