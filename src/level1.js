@@ -55,20 +55,26 @@ export default class Level1 extends Phaser.Scene{
 
         //#region Creacion Mapa
         const map = this.make.tilemap({ key: 'mapa' });
-        const tileset = map.addTilesetImage('tileSet1', 'tiles');
+        const tileset1 = map.addTilesetImage('tileSet1', 'tilesPJ');
+        const tilesetD = map.addTilesetImage('dustwarts', 'tilesD');
+        const tilesetM = map.addTilesetImage('magwarts', 'tilesM');
+        const tilesets = [tileset1, tilesetD, tilesetM];
 
-        const Suelo = map.createLayer('Suelo', tileset, -500, -500);
+        const Suelo = map.createLayer('Suelo', tilesets, -500, -500);
         Suelo.setScale(5);
+        
+        const Paredes2 = map.createLayer('Paredes(SinColision)', tilesets, -500, -500);
+        Paredes2.setScale(5);
 
-        const Paredes = map.createLayer('Paredes', tileset, -500, -500);
+        const Paredes = map.createLayer('Paredes', tilesets, -500, -500);
         Paredes.setCollisionByExclusion([-1]);
         Paredes.setScale(5);
 
-        this.Puertas = map.createLayer('Puertas', tileset, -500, -500);
+        this.Puertas = map.createLayer('Puertas', tilesets, -500, -500);
         this.Puertas.setCollisionByExclusion([-1]);
         this.Puertas.setScale(5);
 
-        const PlacasDePresion = map.createLayer('PlacasDePresion', tileset, -500, -500);
+        const PlacasDePresion = map.createLayer('PlacasDePresion', tilesets, -500, -500);
         PlacasDePresion.setCollisionByExclusion([-1]);
         PlacasDePresion.setScale(5);
 
@@ -96,7 +102,9 @@ export default class Level1 extends Phaser.Scene{
         this.load.spritesheet("P","sprites/images/percival/PercivalIdle(x5).png",
               { frameWidth: 160, frameHeight: 160});
         
-        this.load.image('tiles', 'Sprites/TileSet/TileSetPJ.png');
+        this.load.image('tilesPJ', 'Sprites/TileSet/TileSetPJ.png');
+        this.load.image('tilesD', 'Sprites/TileSet/Dustwarts.png');
+        this.load.image('tilesM', 'Sprites/TileSet/Magwarts.png');
         this.load.tilemapTiledJSON('mapa', 'Sprites/TileSet/Mapa.json');
     }
 
