@@ -77,6 +77,7 @@ export default class Level1 extends Phaser.Scene{
         
         const Paredes2 = map.createLayer('Paredes(SinColision)', tilesets, -500, -500);
         Paredes2.setScale(5);
+        
         this.physics.add.collider(this.daphne, Paredes);
         this.physics.add.collider(this.daphne, this.Puertas);
         this.physics.add.overlap(this.daphne, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
