@@ -1,9 +1,8 @@
 export default class InteractableObjects {
 
     static mapaPuertas = {
-        "13,9": [{ x: 14, y: 10 }, { x: 15, y: 10 }],
-        "16,18": [{ x: 14, y: 19 }, { x: 15, y: 19 }],
-        "18,15": [{ x: 20, y: 15 }, { x: 20, y: 14 }],
+        "9,24": [{ x: 24, y: 24 }, { x: 24, y: 25 }],
+        "27,24": [{ x: 7, y: 24 }, { x: 7, y: 25 }],
     };
 
     static placasActivadas = new Set();
@@ -37,7 +36,7 @@ export default class InteractableObjects {
             this.abrirPuerta(scene.Puertas, pos.x, pos.y);
         });
 
-        scene.time.delayedCall(5000, () => {
+        scene.time.delayedCall(200, () => {
             puertas.forEach(pos => {
                 this.cerrarPuerta(scene.Puertas, pos.x, pos.y);
             });

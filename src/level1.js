@@ -18,8 +18,8 @@ export default class Level1 extends Phaser.Scene{
         this.pText = this.add.text(240, 100, "Percival").setScrollFactor(0);
 		this.dText = this.add.text(240, 100, "Daphne").setScrollFactor(0);
 
-        this.percival = new Players(this,200,500,"P",0,"percival");
-        this.daphne = new Players(this,900,500,"D",0,"daphne");
+        this.percival = new Players(this,10,1500,"P",0,"percival");
+        this.daphne = new Players(this,1540,1500,"D",0,"daphne");
 
         this.percival.setDepth(1);
         this.daphne.setDepth(1);
@@ -56,8 +56,8 @@ export default class Level1 extends Phaser.Scene{
         //#region Creacion Mapa
         const map = this.make.tilemap({ key: 'mapa' });
         const tileset1 = map.addTilesetImage('tileSet1', 'tilesPJ');
-        const tilesetD = map.addTilesetImage('dustwarts', 'tilesD');
-        const tilesetM = map.addTilesetImage('magwarts', 'tilesM');
+        const tilesetD = map.addTilesetImage('dustwartsTileset', 'tilesD');
+        const tilesetM = map.addTilesetImage('magwartsTileset', 'tilesM');
         const tilesets = [tileset1, tilesetD, tilesetM];
 
         const Suelo = map.createLayer('Suelo', tilesets, -500, -500);
@@ -103,8 +103,8 @@ export default class Level1 extends Phaser.Scene{
               { frameWidth: 160, frameHeight: 160});
         
         this.load.image('tilesPJ', 'Sprites/TileSet/TileSetPJ.png');
-        this.load.image('tilesD', 'Sprites/TileSet/Dustwarts.png');
-        this.load.image('tilesM', 'Sprites/TileSet/Magwarts.png');
+        this.load.image('tilesD', 'Sprites/TileSet/DustwartsTileset.png');
+        this.load.image('tilesM', 'Sprites/TileSet/MagwartsTileset.png');
         this.load.tilemapTiledJSON('mapa', 'Sprites/TileSet/Mapa.json');
     }
 
