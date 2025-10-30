@@ -1,3 +1,5 @@
+import InventoryDaphne from "./inventoryDaphne.js";
+import InventoryPercival from "./inventoryPercival.js";
 import Level1 from "./level1.js";
 import Menu from "./main.js";
 import PauseMenu from "./pauseMenu.js";
@@ -10,7 +12,7 @@ const config = {
 	scale: {
 	autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
 	},
-	scene: [Menu, Level1, PauseMenu],
+	scene: [Menu, Level1,InventoryDaphne,InventoryPercival, PauseMenu],
 	physics: {
         default: "arcade",
         arcade: {

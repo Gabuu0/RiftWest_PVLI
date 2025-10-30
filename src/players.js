@@ -3,7 +3,7 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
         super(scene,x,y,texture,frame);
 
         this.scene.add.existing(this);
-        scene.physics.add.existing(this);
+        this.scene.physics.add.existing(this);
         this.setCollideWorldBounds(false);
         this.body.setSize(50,20);
         this.body.setOffset(55,100);
@@ -11,7 +11,32 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
         this.type = type;
         this.animations = this.getAnimationsByType();
 
-        this.play(type === "percival" ? "PercivalIdle" : "DaphneIdle", true);
+        this.inventory = this.getInventoryByType();
+
+        this.inventoryKey = this.scene.input.keyboard.addKey(this.inventory.key);
+        
+
+        this.inventoryKey.on('down',()=>{
+            if(!this.scene.scene.isActive(this.inventory.scene)){
+                this.scene.scene.launch(this.inventory.scene);
+                console.log('Escena cargada:' + this.inventory.scene);
+                return;
+            }
+            
+            if(!this.scene.scene.isSleeping(this.inventory.scene)){
+                this.scene.scene.sleep(this.inventory.scene);
+                console.log('Escena dormida:' + this.inventory.scene);
+            }
+            else{
+                this.scene.scene.wake(this.inventory.scene);
+            }
+
+        })
+
+
+        //this.play(type === "percival" ? "PercivalIdle" : "DaphneIdle", true);
+        this.play(this.animations.idle);
+
     }
 
     preUpdate(time, delta){
@@ -23,8 +48,16 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
             percival:{ idle: "PercivalIdle"},
             daphne:{ idle: "DaphneIdle"},
         }
-        return animations[this.type];
         console.log("Animación actual:", this.anims.currentAnim?.key);
+        return animations[this.type];
+    }
+
+    getInventoryByType(){
+        const inventory ={
+            percival:{key: Phaser.Input.Keyboard.KeyCodes.CTRL, scene: 'InventarioPercival'},
+            daphne:{key: Phaser.Input.Keyboard.KeyCodes.Q, scene: 'InventarioDaphne'},
+        }
+        return inventory[this.type];
     }
 
 }
