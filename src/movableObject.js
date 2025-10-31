@@ -6,9 +6,12 @@ export default class movableObject extends Phaser.GameObjects.Container{
 
         this.scene.add.existing(this);
         scene.physics.add.existing(this);
-
+        
         this.sprite = scene.add.sprite(0, 0, texture);
+        this.sprite.setScale(0.1);
         this.add(this.sprite);
+        this.body.setOffset(-41, -41);
+        this.body.setSize(82, 82);
 
         this.obCon = new objetoContenido(scene, cx, cy, texture)
         this.obCon.setScale(0.1);
@@ -32,5 +35,6 @@ class objetoContenido extends Phaser.GameObjects.Sprite{
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
+        this.body.immovable = true;
     }
 }

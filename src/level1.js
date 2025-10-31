@@ -78,6 +78,7 @@ export default class Level1 extends Phaser.Scene{
         
         const Paredes2 = map.createLayer('Paredes(SinColision)', tilesets, -500, -500);
         Paredes2.setScale(5);
+        Paredes2.setDepth(10);   
         
         this.physics.add.collider(this.daphne, Paredes);
         this.physics.add.collider(this.daphne, this.Puertas);
@@ -88,7 +89,7 @@ export default class Level1 extends Phaser.Scene{
         this.physics.add.overlap(this.percival, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
 
 
-         this.cajas = new movableObject(this, 10, 1500, 30, 0, "caja", this.percival,this.daphne)
+         this.cajas = new movableObject(this, 10, 1500, 500, 0, "cajaMovible", this.percival,this.daphne)
 
 
         //#endregion
@@ -112,7 +113,7 @@ export default class Level1 extends Phaser.Scene{
         this.load.image('tilesM', 'Sprites/TileSet/MagwartsTileset.png');
         this.load.tilemapTiledJSON('mapa', 'Sprites/TileSet/Mapa.json');
 
-        this.load.image('caja', 'Sprites/images/Cervezita.jpg');
+        this.load.image('cajaMovible', 'Sprites/images/Cervezita.jpg');
     }
 
     createAnims(){
