@@ -13,22 +13,22 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
 
         this.inventory = this.getInventoryByType();
 
-        this.inventoryKey = this.scene.input.keyboard.addKey(this.inventory.key);
-        
+        this.scene.input.keyboard.on('keydown',(event)=>{
+            if(event.code ===this.inventory.key){
 
-        this.inventoryKey.on('down',()=>{
-            if(!this.scene.scene.isActive(this.inventory.scene)){
-                this.scene.scene.launch(this.inventory.scene);
-                console.log('Escena cargada:' + this.inventory.scene);
-                return;
-            }
-            
-            if(!this.scene.scene.isSleeping(this.inventory.scene)){
-                this.scene.scene.sleep(this.inventory.scene);
-                console.log('Escena dormida:' + this.inventory.scene);
-            }
-            else{
-                this.scene.scene.wake(this.inventory.scene);
+                if(!this.scene.scene.isActive(this.inventory.scene)){
+                    this.scene.scene.launch(this.inventory.scene);
+                    console.log('Escena cargada:' + this.inventory.scene);
+                    return;
+                }
+                
+                if(!this.scene.scene.isSleeping(this.inventory.scene)){
+                    this.scene.scene.sleep(this.inventory.scene);
+                    console.log('Escena dormida:' + this.inventory.scene);
+                }
+                else{
+                    this.scene.scene.wake(this.inventory.scene);
+                }
             }
 
         })
@@ -54,8 +54,8 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
 
     getInventoryByType(){
         const inventory ={
-            percival:{key: Phaser.Input.Keyboard.KeyCodes.CTRL, scene: 'InventarioPercival'},
-            daphne:{key: Phaser.Input.Keyboard.KeyCodes.Q, scene: 'InventarioDaphne'},
+            percival:{key: 'KeyQ', scene: 'InventarioPercival'},
+            daphne:{key: 'ControlRight', scene: 'InventarioDaphne'},
         }
         return inventory[this.type];
     }
