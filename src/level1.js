@@ -2,6 +2,7 @@ import Players from "./players.js";
 import Movement from "./movement.js";   
 import PauseMenu from "./pauseMenu.js";
 import InteractableObjects from './interactableObjects.js';
+import movableObject from './movableObject.js';
 
 export default class Level1 extends Phaser.Scene{
     constructor(){
@@ -86,6 +87,10 @@ export default class Level1 extends Phaser.Scene{
         this.physics.add.collider(this.percival, this.Puertas);
         this.physics.add.overlap(this.percival, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
 
+
+         this.cajas = new movableObject(this, 10, 1500, 30, 0, "caja", this.percival,this.daphne)
+
+
         //#endregion
     }
 
@@ -106,6 +111,8 @@ export default class Level1 extends Phaser.Scene{
         this.load.image('tilesD', 'Sprites/TileSet/DustwartsTileset.png');
         this.load.image('tilesM', 'Sprites/TileSet/MagwartsTileset.png');
         this.load.tilemapTiledJSON('mapa', 'Sprites/TileSet/Mapa.json');
+
+        this.load.image('caja', 'Sprites/images/Cervezita.jpg');
     }
 
     createAnims(){
