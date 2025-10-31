@@ -1,9 +1,9 @@
 h1 {
-    color: blue;
+    color: rgb(167, 138, 61);
 }
 
 h2 {
-  color: rgb(62, 3, 71);
+  color: rgb(167, 138, 61);
   text-align: center;
   font-size: 40px;
 }
@@ -14,12 +14,12 @@ h3 {
     text-align: center;
 }
 h4 {
-    color: rgb(62, 3, 71);
+    color: rgb(167, 138, 61);
     font-size: 40px;
     text-align: center;
 }
 .h5 {
-    color: #9c277f;
+    color: rgb(167, 138, 61);
     font-size: 30px;
     font-weight: bold;
     position: relative;
@@ -65,7 +65,7 @@ margin: 20px  ;
 #juego {
     display: block;
     margin: 20px auto;
-    border: 3px solid rgb(148, 0, 111);
+    border: 3px solid rgb(167, 138, 61);
     width: 1080px;
     height: 540px;
 }
@@ -103,7 +103,7 @@ margin: 20px  ;
 :root {
     --primary-color: hsl(0, 0%, 100%);
     --secondary-color: hsl(0, 0%, 10%);
-    --accent-color: hsl(313, 70%, 45%); /* tono violeta-magenta acorde a RiftWest */
+    --accent-color: hsl(21, 57%, 24%); /* tono violeta-magenta acorde a RiftWest */
     --header-padding: 1rem 3rem;
     --button-padding: 0.5rem 2rem;
     --round-edges: 10px;
@@ -114,7 +114,7 @@ margin: 20px  ;
 body {
     margin: 0;
     padding: 0;
-    background-color: #deaadb;
+    background-color: #7c7a7a;
     font-family: var(--primary-font);
 }
 
