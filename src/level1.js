@@ -19,7 +19,7 @@ export default class Level1 extends Phaser.Scene{
         this.pText = this.add.text(240, 100, "Percival").setScrollFactor(0);
 		this.dText = this.add.text(240, 100, "Daphne").setScrollFactor(0);
 
-        this.percival = new Players(this,10,1500,"P",0,"percival");
+        this.percival = new Players(this,10, 1500,"P",0,"percival");
         this.daphne = new Players(this,1540,1500,"D",0,"daphne");
 
         this.percival.setDepth(1);
@@ -88,17 +88,17 @@ export default class Level1 extends Phaser.Scene{
         this.physics.add.collider(this.percival, this.Puertas);
         this.physics.add.overlap(this.percival, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
 
-
-         this.cajas = new movableObject(this, 10, 1500, 500, 0, "cajaMovible", this.percival,this.daphne)
-
+         this.cajaM1 = new movableObject(this, 20, 1540, 1520, 0, "cajaMovible", this.percival, this.daphne, Paredes)
 
         //#endregion
     }
 
-    update(){
+    update(t, dt){
         if (this.movementController) {
             this.movementController.update();
         }
+
+        console.log(dt);
     }
 
     preload(){

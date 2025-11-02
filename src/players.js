@@ -1,16 +1,21 @@
-export default class Players extends Phaser.Physics.Arcade.Sprite{
+export default class movableObject extends Phaser.GameObjects.Container{
     constructor(scene,x=0,y=0,texture = "percival",frame=0,type = "percival"){
-        super(scene,x,y,texture,frame);
+        super(scene,x,y);
 
-        this.scene.add.existing(this);
-        this.scene.physics.add.existing(this);
-        this.setCollideWorldBounds(false);
+        scene.add.existing(this);
+        scene.physics.add.existing(this);
+
+        this.sprite = scene.add.sprite(0, 0, texture, frame);
+        this.add(this.sprite);
+
+        scene.physics.add.existing(this);
+        this.body.setCollideWorldBounds(false);
         this.body.setSize(50,20);
-        this.body.setOffset(55,100);
+        this.body.setOffset(-25,15);
         console.log("Body añadido:", this.body);
+
         this.type = type;
         this.animations = this.getAnimationsByType();
-
         this.inventory = this.getInventoryByType();
 
         this.scene.input.keyboard.on('keydown',(event)=>{
@@ -35,20 +40,19 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
 
 
         //this.play(type === "percival" ? "PercivalIdle" : "DaphneIdle", true);
-        this.play(this.animations.idle);
-
+        this.sprite.play(this.animations.idle);
     }
 
-    preUpdate(time, delta){
-    super.preUpdate(time, delta);
-    }
+    // preUpdate(time, delta){
+    //     super.preUpdate(time, delta);
+    // }
 
     getAnimationsByType(){
         const animations={
             percival:{ idle: "PercivalIdle"},
             daphne:{ idle: "DaphneIdle"},
         }
-        console.log("Animación actual:", this.anims.currentAnim?.key);
+        console.log("Animación actual:", this.sprite.anims.currentAnim?.key);
         return animations[this.type];
     }
 
