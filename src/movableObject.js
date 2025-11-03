@@ -2,7 +2,6 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
     constructor(scene, x, y, cx, cy, texture, Player1, Player2, layer){
         super(scene, x, y, texture)
 
-        this.daphne = Player2
         this.tam = 0.075
         this.haveObject = false
         this.coolDown = false
@@ -38,6 +37,7 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
             }
         }
 
+        //Para dejar el objeto
         this.scene.input.keyboard.on('keydown',(event)=>{
             if(event.code === 'ShiftRight'){
                 if(this.haveObject && !this.coolDown){
@@ -46,10 +46,12 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
             }
         })
 
+        //Si tiene el objeto, su movimiento sera igual al del personaje
         if(this.haveObject){
             this.body.velocity.x = this.daphne.body.velocity.x
             this.body.velocity.y = this.daphne.body.velocity.y
         }
+        //El objeto de la dimension de percival, siempre sige al de la dimension de daphne
         this.obCon.body.velocity.x = this.body.velocity.x
         this.obCon.body.velocity.y = this.body.velocity.y
     }
