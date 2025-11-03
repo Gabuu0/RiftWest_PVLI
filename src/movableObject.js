@@ -60,26 +60,14 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
         this.scene.input.keyboard.on('keydown', (event) => {
             if (event.code === 'ShiftRight' && !this.coolDown) {
                 const distance = Phaser.Math.Distance.Between(this.daphne.x, this.daphne.y, this.x, this.y);
-                console.log("distancia:" + distance)
+                // console.log("distancia:" + distance)
                 if (distance < this.distance) {
-                    console.log("distancia:" + distance)
                     if (!this.haveObject) {
                         this.restartCoolDown();
                     }
                 }
             }
         });
-        
-    }
-
-    addObject(){
-        this.scene.input.keyboard.on('keydown',(event)=>{
-            if(event.code === 'ShiftRight'){
-                if(!this.haveObject && !this.coolDown){
-                    this.restartCoolDown()
-                }
-            }
-        })
     }
 
     //Esta funcion no solo controla el CoolDown, tambien toda la logica de coger y dejar
