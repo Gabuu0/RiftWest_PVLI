@@ -35,14 +35,12 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
             if (this.coolDownT <= 0) {
                 this.coolDown = false;
                 this.coolDownT = 0;
-                console.log('Cooldown terminado');
             }
         }
 
         this.scene.input.keyboard.on('keydown',(event)=>{
             if(event.code === 'ShiftRight'){
                 if(this.haveObject && !this.coolDown){
-                    console.log("3gua")
                     this.restartCoolDown()
                 }
             }
