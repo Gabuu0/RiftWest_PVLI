@@ -9,6 +9,7 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
         this.coolDownT = 0
         this.coolDownTMax = 10
         this.daphne = Player2
+        this.distance = 100
 
         //Lo añado a la escena con fisicas
         this.scene.add.existing(this);
@@ -21,7 +22,7 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
         this.obCon.setScale(this.tam);
 
         //Creo las colisiones
-        this.collision = scene.physics.add.collider(this, Player2, this.addObject.bind(this))
+        this.collision = scene.physics.add.collider(this, Player2, this.checkPickup.bind(this))
         scene.physics.add.collider(this.obCon, Player1)
         scene.physics.add.collider(this, layer)
         scene.physics.add.collider(this.obCon, layer)
@@ -41,6 +42,7 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
         this.scene.input.keyboard.on('keydown',(event)=>{
             if(event.code === 'ShiftRight'){
                 if(this.haveObject && !this.coolDown){
+                    console.log("3gua")
                     this.restartCoolDown()
                 }
             }
@@ -52,6 +54,22 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
         }
         this.obCon.body.velocity.x = this.body.velocity.x
         this.obCon.body.velocity.y = this.body.velocity.y
+    }
+
+    checkPickup() {
+        this.scene.input.keyboard.on('keydown', (event) => {
+            if (event.code === 'ShiftRight' && !this.coolDown) {
+                const distance = Phaser.Math.Distance.Between(this.daphne.x, this.daphne.y, this.x, this.y);
+                console.log("distancia:" + distance)
+                if (distance < this.distance) {
+                    console.log("distancia:" + distance)
+                    if (!this.haveObject) {
+                        this.restartCoolDown();
+                    }
+                }
+            }
+        });
+        
     }
 
     addObject(){
