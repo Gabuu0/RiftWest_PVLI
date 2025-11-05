@@ -1,4 +1,4 @@
-import InventorySlot from "./inventorySlot";
+import InventorySlot from "./inventorySlot.js";
 export default class InventoryDaphne extends Phaser.Scene{
     constructor(){
         super({key:'InventarioDaphne'});
@@ -17,9 +17,9 @@ export default class InventoryDaphne extends Phaser.Scene{
 
         //array de los huecos de inventario
         let inventorySlots = [];
-        inventorySlots.push(new InventorySlot(this,42,32,'hueco'));
-        inventorySlots.push(new InventorySlot(this,42,135,'hueco'));
-        inventorySlots.push(new InventorySlot(this,42,238,'hueco'));
+        inventorySlots.push(new InventorySlot(this,42,32,'hueco',true));
+        inventorySlots.push(new InventorySlot(this,42,135,'hueco',false));
+        inventorySlots.push(new InventorySlot(this,42,238,'hueco',false));
 
         this.slotSelected = 0;
 
