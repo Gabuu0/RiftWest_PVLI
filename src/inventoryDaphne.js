@@ -1,3 +1,4 @@
+import InventorySlot from "./inventorySlot";
 export default class InventoryDaphne extends Phaser.Scene{
     constructor(){
         super({key:'InventarioDaphne'});
@@ -8,24 +9,48 @@ export default class InventoryDaphne extends Phaser.Scene{
     }
 
     preload(){
-        this.load.spritesheet('Hueco','sprites/images/inventory/inventorySpace.png',{frameWidth: 64, frameHeight:64});
+        this.load.spritesheet('hueco','sprites/images/inventory/inventorySpace.png',{frameWidth: 64, frameHeight:64});
     }
 
     create(){
         this.cameras.main.setViewport(972,108,108,270);
-        let inventorySpaces = [];
 
-        inventorySpaces.push(this.add.image(42,32,'Hueco',0));
-        inventorySpaces.push(this.add.image(42,135,'Hueco',0));
-        inventorySpaces.push(this.add.image(42,238,'Hueco',0));
-        this.add.text(42,32, "1").setScrollFactor(0);
-        this.add.text(42,135, "2").setScrollFactor(0);
-        this.add.text(42,238, "3").setScrollFactor(0);
+        //array de los huecos de inventario
+        let inventorySlots = [];
+        inventorySlots.push(new InventorySlot(this,42,32,'hueco'));
+        inventorySlots.push(new InventorySlot(this,42,135,'hueco'));
+        inventorySlots.push(new InventorySlot(this,42,238,'hueco'));
 
+        this.slotSelected = 0;
+
+        //Gestion del movimiento por el inventario: 1 para subir 2 para bajar
+        this.input.keyboard.on('keydown', (event)=>{
+            if(event.code === 'Numpad1'){
+                if(this.slotSelected > 0){
+                    inventorySlots[this.slotSelected].setIsSelected();
+                    inventorySlots[--this.slotSelected].setIsSelected();
+                }
+            }
+            else if(event.code === 'Numpad2'){
+               if(this.slotSelected < inventorySlots.length-1){
+                    inventorySlots[this.slotSelected].setIsSelected();
+                    inventorySlots[++this.slotSelected].setIsSelected();
+                }
+            }
+
+        })
+
+      
     }
 
 
     update(){
 
+    }
+
+    setItems(objects){
+        for(i = 0;i<inventorySlots.length && i<objects.length;i++){
+            inventorySlots[i].add(objects[i]);
+        }
     }
 }
