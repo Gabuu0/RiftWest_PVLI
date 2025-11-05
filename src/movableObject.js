@@ -8,7 +8,8 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
         this.coolDownT = 0
         this.coolDownTMax = 10
         this.daphne = Player2
-        this.distance = 100
+        this.distanceMax = 100
+        this.distance;
 
         //Lo añado a la escena con fisicas
         this.scene.add.existing(this);
@@ -47,7 +48,9 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
         })
 
         //Si tiene el objeto, su movimiento sera igual al del personaje
-        if(this.haveObject){
+        if(this.haveObject && this.distance < this.distanceMax){
+            this.distance = Phaser.Math.Distance.Between(this.daphne.x, this.daphne.y, this.x, this.y);
+            console.log(this.distance)
             this.body.velocity.x = this.daphne.body.velocity.x
             this.body.velocity.y = this.daphne.body.velocity.y
         }
@@ -59,9 +62,8 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
     checkPickup() {
         this.scene.input.keyboard.on('keydown', (event) => {
             if (event.code === 'ShiftRight' && !this.coolDown) {
-                const distance = Phaser.Math.Distance.Between(this.daphne.x, this.daphne.y, this.x, this.y);
-                // console.log("distancia:" + distance)
-                if (distance < this.distance) {
+                this.distance = Phaser.Math.Distance.Between(this.daphne.x, this.daphne.y, this.x, this.y);
+                if (this.distance < this.distanceMax) {
                     if (!this.haveObject) {
                         this.restartCoolDown();
                     }
