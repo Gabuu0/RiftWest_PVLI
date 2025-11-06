@@ -20,8 +20,8 @@ export default class Level1 extends Phaser.Scene{
         this.pText = this.add.text(240, 100, "Percival").setScrollFactor(0);
 		this.dText = this.add.text(240, 100, "Daphne").setScrollFactor(0);
 
-        this.percival = new Players(this,10, 1500,"P",0,"percival");
-        this.daphne = new Players(this,1540,1500,"D",0,"daphne");
+        this.percival = new Players(this,350, 3600,"P",0,"percival");
+        this.daphne = new Players(this,2500,3600,"D",0,"daphne");
 
         this.percival.setDepth(1);
         this.daphne.setDepth(1);
@@ -89,7 +89,7 @@ export default class Level1 extends Phaser.Scene{
         this.physics.add.collider(this.percival, this.Puertas);
         this.physics.add.overlap(this.percival, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
 
-         this.cajaM1 = new movableObject(this, 1540, 1460, 20, 1460, "cajaMovible", this.percival, this.daphne, Paredes)
+         this.cajaM1 = new movableObject(this, 3125, 3100, 975, 3100, "cajaMovible", this.percival, this.daphne, Paredes)
 
          this.cajR1 = new breakableObjects(this,-140, 1600, 1700, 1464,'cajaRompible',this.percival,this.daphne);
         //#endregion
@@ -108,10 +108,10 @@ export default class Level1 extends Phaser.Scene{
         this.load.spritesheet("P","sprites/images/percival/PercivalIdle(x5).png",
               { frameWidth: 160, frameHeight: 160});
         
-        this.load.image('tilesPJ', 'Sprites/TileSet/TileSetPJ.png');
-        this.load.image('tilesD', 'Sprites/TileSet/DustwartsTileset.png');
-        this.load.image('tilesM', 'Sprites/TileSet/MagwartsTileset.png');
-        this.load.tilemapTiledJSON('mapa', 'Sprites/TileSet/Mapa.json');
+        this.load.image('tilesPJ', 'Sprites/tileSet/TileSetPJ.png');
+        this.load.image('tilesD', 'Sprites/tileSet/DustwartsTileset.png');
+        this.load.image('tilesM', 'Sprites/tileSet/MagwartsTileset.png');
+        this.load.tilemapTiledJSON('mapa', 'Sprites/tileSet/Mapa.json');
 
         this.load.image('cajaMovible', 'Sprites/images/Cervezita.jpg');
         this. load.image('cajaRompible','Sprites/images/cajaRompible.jpg');
