@@ -91,7 +91,7 @@ export default class Level1 extends Phaser.Scene{
 
          this.cajaM1 = new movableObject(this, 1540, 1460, 20, 1460, "cajaMovible", this.percival, this.daphne, Paredes)
 
-         this.cajR1 = new breakableObjects(this,30, 1550, 1550, 1550,'cajaRompible',this.percival,this.daphne);
+         this.cajR1 = new breakableObjects(this,-140, 1600, 1700, 1464,'cajaRompible',this.percival,this.daphne);
         //#endregion
     }
 

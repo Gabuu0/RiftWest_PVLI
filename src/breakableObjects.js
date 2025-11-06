@@ -2,23 +2,24 @@ import Players from "./players.js";
 
 export default class BreakableObject extends Phaser.Physics.Arcade.Sprite{
     constructor(scene, x, y,x2, y2, texture, percival, daphne){
-        super(scene, x, y)
-        this.scene = scene;
-        this.percival = percival;
-        this.daphne = daphne;
-        this.textureKey = texture;
-        this.size=0.075;
+        super(scene, x, y, texture)
+        this.scene = scene
+        this.percival = percival
+        this.daphne = daphne
+        this.textureKey = texture
+        this.scale=0.12;
 
 
-        //Caja principal (dimensión Percival)
+        //Caja1 (dimensión Percival) 
         this.scene.add.existing(this);
         scene.physics.add.existing(this);
-        this.setScale(this.size);
+        this.setScale(this.scale);
         this.body.immovable = true;
 
-        //Caja espejo (dimensión Daphne)
+        //Caja2 (dimensión Daphne)
         this.caja2 = new objetoContenido(scene, x2, y2, texture)
-        this.caja2.setScale(this.size);
+        this.caja2.setScale(this.scale);
+        this.caja2.body.immovable = true;
 
         //ajustar el tamaño
         //this.body.setSize(this.displayWidth, this.displayHeight);
@@ -77,7 +78,6 @@ export default class BreakableObject extends Phaser.Physics.Arcade.Sprite{
                 this.caja2.destroy();
             }
         });
-
     }
 }
 

@@ -20,6 +20,7 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
         //Creo el objeto hijo
         this.obCon = new objetoContenido(scene, cx, cy, texture)
         this.obCon.setScale(this.tam);
+        this.body.immovable = true;
 
         //Creo las colisiones
         this.collision = scene.physics.add.collider(this, Player2, this.checkPickup.bind(this))
