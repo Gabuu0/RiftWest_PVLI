@@ -56,7 +56,7 @@ export default class BreakableObject extends Phaser.Physics.Arcade.Sprite{
         if (distance < this.breakRange) {
 
             // Muestra que se puede romper
-            if (distance < this.breakRange && !this.glowTween) {
+            if (!this.glowTween) {
              this.glowTween = this.scene.tweens.add({
              targets: this,
              alpha: { from: 1, to: 0.2 },
