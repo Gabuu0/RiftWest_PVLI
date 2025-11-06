@@ -45,4 +45,10 @@ export default class InventoryPercival extends Phaser.Scene{
     update(){
 
     }
+
+    setItems(objects){
+        for(i = 0;i<inventorySlots.length && i<objects.length;i++){
+            inventorySlots[i].add(objects[i]);
+        }
+    }
 }

@@ -20,10 +20,10 @@ export default class InventorySlot extends Phaser.GameObjects.Container{
     //Cambia el frame segun si esta seleccionado o no
     setImageFrame(){
         if(!this.isSelected){
-            this.slotImage.setFrame(1); 
+            this.slotImage.setFrame(0); 
         } 
         else{
-            this.slotImage.setFrame(0);
+            this.slotImage.setFrame(1);
         } 
     }
 }
