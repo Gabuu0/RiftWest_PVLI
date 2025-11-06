@@ -31,7 +31,7 @@ export default class BreakableObject extends Phaser.Physics.Arcade.Sprite{
 
         // Estado inicial
         this.isBroken = false;
-        this.breakRange = 70; // distancia para poder romper
+        this.breakRange = 80; // distancia para poder romper
 
         // Asignar tecla SHIFT (para Percival)
         this.keyShift = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
@@ -40,11 +40,19 @@ export default class BreakableObject extends Phaser.Physics.Arcade.Sprite{
     preUpdate(t, dt){
         if (this.isBroken) return;
 
+        // Calcular centro exacto del cuerpo físico de la caja
+        const boxCenterX = this.body.x + this.body.width / 2;
+        const boxCenterY = this.body.y + this.body.height / 2;
+
+        // Calcular centro del personaje Percival
+        const percivalCenterX = this.percival.body.x + this.percival.body.width / 2;
+        const percivalCenterY = this.percival.body.y + this.percival.body.height / 2;
+
         const distance = Phaser.Math.Distance.Between(
-            this.x,
-            this.y,
-            this.percival.x,
-            this.percival.y
+            boxCenterX,
+            boxCenterY,
+            percivalCenterX,
+            percivalCenterY
         );
 
         if (distance < this.breakRange) {
