@@ -21,14 +21,11 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
                     console.log('Escena cargada:' + this.inventory.scene);
                     return;
                 }
-                
-                if(!this.scene.scene.isSleeping(this.inventory.scene)){
+                else{
                     this.scene.scene.sleep(this.inventory.scene);
                     console.log('Escena dormida:' + this.inventory.scene);
                 }
-                else{
-                    this.scene.scene.wake(this.inventory.scene);
-                }
+                
             }
         })
 
