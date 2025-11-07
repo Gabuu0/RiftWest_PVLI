@@ -79,7 +79,7 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
         this.scene.input.keyboard.on('keydown',(event)=>{
             if(event.code === 'ShiftRight'){
                 console.log("klk")
-                if(!this.coolDown && this.distanceMax){
+                if(!this.coolDown && this.distance < this.distanceMax){
                     console.log("3gua")
                     this.restartCoolDown()
                 }
