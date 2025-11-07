@@ -91,7 +91,7 @@ export default class Level1 extends Phaser.Scene{
 
          this.cajaM1 = new movableObject(this, 3125, 3100, 975, 3100, "cajaMovible", this.percival, this.daphne, Paredes)
 
-         this.cajR1 = new breakableObjects(this,-140, 1600, 1700, 1464,'cajaRompible',this.percival,this.daphne);
+         this.cajR1 = new breakableObjects(this,500, 3200, 2650, 3200,'cajaRompible',this.percival,this.daphne);
         //#endregion
     }
 
@@ -108,10 +108,10 @@ export default class Level1 extends Phaser.Scene{
         this.load.spritesheet("P","sprites/images/percival/PercivalIdle(x5).png",
               { frameWidth: 160, frameHeight: 160});
         
-        this.load.image('tilesPJ', 'Sprites/tileSet/TileSetPJ.png');
-        this.load.image('tilesD', 'Sprites/tileSet/DustwartsTileset.png');
-        this.load.image('tilesM', 'Sprites/tileSet/MagwartsTileset.png');
-        this.load.tilemapTiledJSON('mapa', 'Sprites/tileSet/Mapa.json');
+        this.load.image('tilesPJ', 'sprites/tileSet/TileSetPJ.png');
+        this.load.image('tilesD', 'sprites/tileSet/DustwartsTileset.png');
+        this.load.image('tilesM', 'sprites/tileSet/MagwartsTileset.png');
+        this.load.tilemapTiledJSON('mapa', 'sprites/tileSet/Mapa.json');
 
         this.load.image('cajaMovible', 'Sprites/images/Cervezita.jpg');
         this. load.image('cajaRompible','Sprites/images/cajaRompible.jpg');
