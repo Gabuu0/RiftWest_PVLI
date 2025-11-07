@@ -1,4 +1,4 @@
-# Rift West
+# 🪄Rift West🥊
 
 >Este proyecto forma parte de un trabajo universitario para el Grado de Desarrollo de Videojuegos de la UCM.
 
@@ -27,7 +27,9 @@ A causa de un hechizo fallido de Daphne, Percival fue mandado a otra dimensión 
 
 
 ## 🖼️ Imágenes del Juego
-
+![Captura1](imagesGDD/capturas/captura1.png)
+![Captura2](imagesGDD/capturas/captura2.png)
+![Captura3](imagesGDD/capturas/captura3.png)
 
 
 

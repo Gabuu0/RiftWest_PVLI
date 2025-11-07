@@ -36,6 +36,10 @@ export default class InventoryPercival extends Phaser.Scene{
                             inventorySlots[++this.slotSelected].setIsSelected();
                         }
                     }
+                    else if(event.code === 'Escape'){
+                        this.scene.pause();
+                    }
+
         
                 })
 
