@@ -2,7 +2,7 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
     constructor(scene, x, y, cx, cy, texture, Player1, Player2, layer){
         super(scene, x, y, texture)
 
-        this.tam = 0.075
+        this.tam = 5
         this.haveObject = false
         this.coolDown = false
         this.coolDownT = 0

@@ -8,7 +8,7 @@ export default class BreakableObject extends Phaser.Physics.Arcade.Sprite{
         this.percival = percival
         this.daphne = daphne
         this.textureKey = texture
-        this.scale=0.12;
+        this.scale = 5;
 
         //Caja1 (dimensión Percival) 
         this.scene.add.existing(this);
