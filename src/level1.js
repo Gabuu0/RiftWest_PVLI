@@ -90,7 +90,7 @@ export default class Level1 extends Phaser.Scene{
         this.physics.add.overlap(this.percival, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
 
         this.cajaM1 = new movableObject(this, 3140, 3100, 980, 3100, "cajaMovible", this.percival, this.daphne, Paredes)
-        this.cajR1 = new breakableObjects(this,500, 3225, 2650, 3225,'cajaRompible',this.percival,this.daphne);
+        this.cajR1 = new breakableObjects(this,475, 3225, 2625, 3225,'cajaRompible',this.percival,this.daphne);
 
         this.physics.add.overlap(this.cajaM1, PlacasDePresion, (movableObject,tile) => {InteractableObjects.activarPlaca(this, movableObject, tile)});
     //#endregion
