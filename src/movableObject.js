@@ -78,16 +78,19 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
         //Para dejar/coger el objeto
         this.scene.input.keyboard.on('keydown',(event)=>{
             if(event.code === 'ShiftRight'){
-                console.log("klk")
                 if(!this.coolDown && this.distance < this.distanceMax){
-                    console.log("3gua")
                     this.restartCoolDown()
                 }
             }
         })
 
+        //Si tiene el objetor, pero se aleja de el, lo suelta
+        if(this.distance > this.distanceMax && this.haveObject){
+            this.restartCoolDown()
+        }
+
         //Si tiene el objeto, su movimiento sera igual al del personaje
-        if(this.haveObject && this.distance < this.distanceMax){
+        if(this.haveObject){
             this.body.velocity.x = this.daphne.body.velocity.x
             this.body.velocity.y = this.daphne.body.velocity.y
         }
