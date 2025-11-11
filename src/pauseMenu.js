@@ -84,6 +84,8 @@ export default class PauseMenu extends Phaser.Scene {
             cerrarMenu(() => {
                 this.scene.stop();
                 this.scene.resume('level1');
+                this.scene.resume('InventarioPercival');
+                this.scene.resume('InventarioDaphne');
             });
         });
 
