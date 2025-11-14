@@ -1,6 +1,7 @@
 import Players from "./players.js";
 import Movement from "./movement.js";   
 import PauseMenu from "./pauseMenu.js";
+import Key from "./key.js";
 import InteractableObjects from './interactableObjects.js';
 import movableObject from './movableObject.js';
 import breakableObjects from './breakableObjects.js'
@@ -17,11 +18,16 @@ export default class Level1 extends Phaser.Scene{
     create(){
         this.createAnims();
 
-        this.pText = this.add.text(240, 100, "Percival").setScrollFactor(0);
-		this.dText = this.add.text(240, 100, "Daphne").setScrollFactor(0);
-
         this.percival = new Players(this,350, 3600,"P",0,"percival");
         this.daphne = new Players(this,2500,3600,"D",0,"daphne");
+        
+        const players = this.add.group();
+        players.add(this.percival);
+        players.add(this.daphne);
+
+
+        this.keys = this.add.group();
+        this.createItems();
 
         this.percival.setDepth(1);
         this.daphne.setDepth(1);
@@ -84,6 +90,10 @@ export default class Level1 extends Phaser.Scene{
         this.physics.add.collider(this.daphne, Paredes);
         this.physics.add.collider(this.daphne, this.Puertas);
         this.physics.add.overlap(this.daphne, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
+        this.physics.add.overlap(players,keys,(jugador,llave)=>{
+            //se oculta la llave si es posible cogerla
+            if(jugador.catchItem(llave)) llave.setVisible(false);
+        })
 
         this.physics.add.collider(this.percival, Paredes);
         this.physics.add.collider(this.percival, this.Puertas);
@@ -114,9 +124,12 @@ export default class Level1 extends Phaser.Scene{
         this.load.image('tilesM', 'sprites/tileSet/MagwartsTileset.png');
         this.load.tilemapTiledJSON('mapa', 'sprites/tileSet/Mapa.json');
 
-        this.load.image('cajaMovible', 'sprites/images/cajaMovible.png');
-        this. load.image('cajaRompible','sprites/images/cajaRompible.png');
-        this.load.image('cajaRota','sprites/images/cajaRompibleRota.png');
+        this.load.image('cajaMovible', 'sprites/images/items/cajaMovible.png');
+        this.load.image('cajaRompible','sprites/images/items/cajaRompible.png');
+        this.load.image('cajaRota','sprites/images/items/cajaRompibleRota.png');
+        this.load.spritesheet('llaveMapa','sprite/images/items/keyMap.png');
+        this.load.image('llaveInventario', 'sprite/images/items/keyInventory.png')
+
     }
 
     createAnims(){
@@ -134,7 +147,21 @@ export default class Level1 extends Phaser.Scene{
             frameRate: 5,
             repeat: -1,}
         );
-        //Daphne.play('daphneIdle');
+
+
+
+        this.anims.create(
+            {key:'keyIdle',
+                frames: this.anims.generateFrameNumbers('llaveMapa', {frames:[0,1,2,1]}),
+                frameRate: 4,
+                repeat:-1,
+            }
+        );
+    }
+
+
+    createItems(){
+        this.keys.add(new Key(this, 360,3600,'llaveMapa','llaveInventario','keyIdle','Llave to guapa mi bro'))
     }
 
     

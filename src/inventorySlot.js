@@ -27,3 +27,4 @@ export default class InventorySlot extends Phaser.GameObjects.Container{
         } 
     }
 }
+

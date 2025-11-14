@@ -30,7 +30,6 @@ export default class InteractableObjects {
 
     static activarPlaca(scene, jugador, tile) {
         const position = tile.x + ',' + tile.y;
-        //console.log("Percival está sobre una placa", tile);
 
         if (this.placasActivadas.has(position)) return;
 

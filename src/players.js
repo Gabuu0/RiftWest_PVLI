@@ -9,27 +9,30 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
         this.body.setOffset(55,100);
         console.log("Body añadido:", this.body);
 
+        const maxObjs = 3;
+
+        this.objects = [];
+
         this.type = type;
         this.animations = this.getAnimationsByType();
         this.inventory = this.getInventoryByType();
+        const inventoryScene = this.scene.scene.get(this.inventory.sceneKey);
 
         this.scene.input.keyboard.on('keydown',(event)=>{
             if(event.code ===this.inventory.key){
 
-                if(!this.scene.scene.isActive(this.inventory.scene)){
-                    this.scene.scene.launch(this.inventory.scene);
-                    console.log('Escena cargada:' + this.inventory.scene);
+                if(!this.scene.scene.isActive(this.inventory.sceneKey)){
+                    this.scene.scene.launch(this.inventory.sceneKey);
+                    inventoryScene.setItems(this.objects);
                     return;
                 }
                 else{
-                    this.scene.scene.sleep(this.inventory.scene);
-                    console.log('Escena dormida:' + this.inventory.scene);
+                    this.scene.scene.sleep(this.inventory.sceneKey);
                 }
                 
             }
         })
 
-        //this.play(type === "percival" ? "PercivalIdle" : "DaphneIdle", true);
         this.play(this.animations.idle);
     }
 
@@ -48,10 +51,23 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
 
     getInventoryByType(){
         const inventory ={
-            percival:{key: 'KeyQ', scene: 'InventarioPercival'},
-            daphne:{key: 'ControlRight', scene: 'InventarioDaphne'},
+            percival:{key: 'KeyQ', sceneKey: 'InventarioPercival'},
+            daphne:{key: 'ControlRight', sceneKey: 'InventarioDaphne'},
         }
         return inventory[this.type];
     }
+
+    catchItem(item){
+        if(this.objects.length < maxObjs){
+            item.setIndex(this.objects.length);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+
+    
 
 }
