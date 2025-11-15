@@ -1,3 +1,4 @@
+import InventoryItem from "./inventoryItem.js";
 import InventorySlot from "./inventorySlot.js";
 export default class InventoryPercival extends Phaser.Scene{
     constructor(){
@@ -9,39 +10,41 @@ export default class InventoryPercival extends Phaser.Scene{
     }
 
     preload(){
-        this.load.spritesheet('hueco','sprites/images/inventory/inventorySpace.png',{frameWidth: 64, frameHeight:64});
     }
 
     create(){
         this.cameras.main.setViewport(0,108,108,270);
+        
+        
         //array de los huecos de inventario
-                let inventorySlots = [];
-                inventorySlots.push(new InventorySlot(this,42,32,'hueco',true));
-                inventorySlots.push(new InventorySlot(this,42,135,'hueco',false));
-                inventorySlots.push(new InventorySlot(this,42,238,'hueco',false));
-        
-                this.slotSelected = 0;
-        
-                //Gestion del movimiento por el inventario: 1 para subir 2 para bajar
-                this.input.keyboard.on('keydown', (event)=>{
-                    if(event.code === 'Digit1'){
-                        if(this.slotSelected > 0){
-                            inventorySlots[this.slotSelected].setIsSelected();
-                            inventorySlots[--this.slotSelected].setIsSelected();
-                        }
-                    }
-                    else if(event.code === 'Digit2'){
-                       if(this.slotSelected < inventorySlots.length-1){
-                            inventorySlots[this.slotSelected].setIsSelected();
-                            inventorySlots[++this.slotSelected].setIsSelected();
-                        }
-                    }
-                    else if(event.code === 'Escape'){
-                        this.scene.pause();
-                    }
+        this.inventorySlots = [];
+        this.inventorySlots.push(new InventorySlot(this,42,32,'slot',0,false,'SlotSelected'));
+        this.inventorySlots.push(new InventorySlot(this,42,135,'slot',0,false,'SlotSelected'));
+        this.inventorySlots.push(new InventorySlot(this,42,238,'slot',0,false,'SlotSelected'));
+        this.slotSelected = 0;
+        this.inventorySlots[this.slotSelected].setIsSelected();
 
-        
-                })
+
+        //Gestion del movimiento por el inventario: 1 para subir 2 para bajar
+        this.input.keyboard.on('keydown', (event)=>{
+            if(event.code === 'Digit1'){
+                if(this.slotSelected > 0){
+                    this.inventorySlots[this.slotSelected].setIsSelected();
+                    this.inventorySlots[--this.slotSelected].setIsSelected();
+                }
+            }
+            else if(event.code === 'Digit2'){
+                if(this.slotSelected < this.inventorySlots.length-1){
+                    this.inventorySlots[this.slotSelected].setIsSelected();
+                    this.inventorySlots[++this.slotSelected].setIsSelected();
+                }
+            }
+            else if(event.code === 'Escape'){
+                this.scene.pause();
+            }
+
+
+        })
 
     }
 
@@ -50,9 +53,18 @@ export default class InventoryPercival extends Phaser.Scene{
 
     }
 
-    setItems(objects){
-        for(i = 0;i<inventorySlots.length && i<objects.length;i++){
-            inventorySlots[i].add(objects[i]);
-        }
+    setItem(item){
+       let i= 0;
+       let itemPicked = false;
+
+       //se coloca el item en la primera posicion vacia del inventario
+       while(i<this.inventorySlots.length &&!itemPicked){
+            if(this.inventorySlots[i].list.length == 0){
+                itemPicked = true;
+                this.inventorySlots[i].add(new InventoryItem(item.texture,item.textureInventory,item.description,i));
+            }
+
+       }
     }
+
 }

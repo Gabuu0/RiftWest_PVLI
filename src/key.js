@@ -1,11 +1,11 @@
-import Item from "./item.js";
+import WorldItem from "./item.js";
 
-export default class Key extends Item{
+export default class Key extends WorldItem{
     constructor(scene,x,y,texture,textureInventory,animation,description){
         super(scene,x,y,texture,textureInventory,description);
+        
         this.animation = animation;
 
         this.play(this.animation);
-
     }
 }

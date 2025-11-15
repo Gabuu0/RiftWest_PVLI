@@ -1,3 +1,6 @@
+import InventoryItem from "./inventoryItem.js";
+
+
 export default class Players extends Phaser.Physics.Arcade.Sprite{
     constructor(scene,x=0,y=0,texture = "percival",frame=0,type = "percival"){
         super(scene,x,y,texture,frame);
@@ -9,21 +12,22 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
         this.body.setOffset(55,100);
         console.log("Body añadido:", this.body);
 
-        const maxObjs = 3;
+        this.maxObjs = 3;
 
         this.objects = [];
 
         this.type = type;
         this.animations = this.getAnimationsByType();
         this.inventory = this.getInventoryByType();
-        const inventoryScene = this.scene.scene.get(this.inventory.sceneKey);
-
+        this.scene.scene.launch(this.inventory.sceneKey);
+        this.scene.scene.sleep(this.inventory.sceneKey);
+        this.inventoryScene = this.scene.scene.get(this.inventory.sceneKey);
+        
         this.scene.input.keyboard.on('keydown',(event)=>{
             if(event.code ===this.inventory.key){
-
+                
                 if(!this.scene.scene.isActive(this.inventory.sceneKey)){
                     this.scene.scene.launch(this.inventory.sceneKey);
-                    inventoryScene.setItems(this.objects);
                     return;
                 }
                 else{
@@ -45,7 +49,6 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
             percival:{ idle: "PercivalIdle"},
             daphne:{ idle: "DaphneIdle"},
         }
-        console.log("Animación actual:", this.anims.currentAnim?.key);
         return animations[this.type];
     }
 
@@ -57,9 +60,12 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
         return inventory[this.type];
     }
 
-    catchItem(item){
-        if(this.objects.length < maxObjs){
-            item.setIndex(this.objects.length);
+    pickItem(item){
+        if(this.objects.length < this.maxObjs){
+            const itemData = new InventoryItem(item.texture, item.textureInventory,
+                              item.description,this.objects.length)
+            this.objects.push(itemData);
+            this.inventoryScene.setItem();
             return true;
         }
         else{

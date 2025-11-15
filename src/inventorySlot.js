@@ -26,5 +26,9 @@ export default class InventorySlot extends Phaser.GameObjects.Container{
             this.slotImage.setFrame(1);
         } 
     }
+
+    showItem(){
+        
+    }
 }
 

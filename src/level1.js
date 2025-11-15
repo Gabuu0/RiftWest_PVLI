@@ -18,23 +18,23 @@ export default class Level1 extends Phaser.Scene{
     create(){
         this.createAnims();
 
+        
+
         this.percival = new Players(this,350, 3600,"P",0,"percival");
         this.daphne = new Players(this,2500,3600,"D",0,"daphne");
         
-        const players = this.add.group();
-        players.add(this.percival);
-        players.add(this.daphne);
-
-
         this.keys = this.add.group();
         this.createItems();
 
         this.percival.setDepth(1);
         this.daphne.setDepth(1);
-
+/*
         console.log("Movement:", Movement);
         console.log("Percival:", this.percival);
         console.log("Daphne:", this.daphne);
+*/
+        this.inventario1 = this.scene.get('InventarioPercival');
+        this.inventario2 = this.scene.get('InventarioDaphne');
 
         this.movementController = new Movement(this, this.percival, this.daphne);
 
@@ -55,11 +55,9 @@ export default class Level1 extends Phaser.Scene{
         this.percivalCam = this.cameras.main;
         this.percivalCam.setViewport(0,0,540,540);
         this.percivalCam.startFollow(this.percival);
-        this.percivalCam.ignore(this.dText);
         this.daphneCam = this.cameras.add(540,0,540,540,'DaphneCam');
         this.daphneCam.setViewport(540,0,540,540);
         this.daphneCam.startFollow(this.daphne);
-        this.daphneCam.ignore(this.pText);
 
         //#region Creacion Mapa
         const map = this.make.tilemap({ key: 'mapa' });
@@ -87,12 +85,26 @@ export default class Level1 extends Phaser.Scene{
         Paredes2.setScale(5);
         Paredes2.setDepth(10);   
         
+        //#endregion
+
+        //#region Colisiones
         this.physics.add.collider(this.daphne, Paredes);
         this.physics.add.collider(this.daphne, this.Puertas);
         this.physics.add.overlap(this.daphne, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
-        this.physics.add.overlap(players,keys,(jugador,llave)=>{
+        this.physics.add.overlap(this.percival,this.keys,(jugador,llave)=>{
             //se oculta la llave si es posible cogerla
-            if(jugador.catchItem(llave)) llave.setVisible(false);
+            if(jugador.pickItem(llave)) {
+                this.events.emit('itemPickedP', llave);
+                llave.destroy(); 
+            }
+        })
+
+        this.physics.add.overlap(this.daphne,this.keys,(jugador,llave)=>{
+            //se oculta la llave si es posible cogerla
+            if(jugador.pickItem(llave)) {
+                this.events.emit('itemPickedD', llave);
+                llave.destroy(); 
+            }
         })
 
         this.physics.add.collider(this.percival, Paredes);
@@ -103,7 +115,7 @@ export default class Level1 extends Phaser.Scene{
         this.cajR1 = new breakableObjects(this,475, 3225, 2625, 3225,'cajaRompible',this.percival,this.daphne);
 
         this.physics.add.overlap(this.cajaM1, PlacasDePresion, (movableObject,tile) => {InteractableObjects.activarPlaca(this, movableObject, tile)});
-    //#endregion
+        //#endregion
     }
 
     update(t, dt){
@@ -113,27 +125,39 @@ export default class Level1 extends Phaser.Scene{
     }
 
     preload(){
+
+        //#region Personajes
 		this.load.spritesheet("D","sprites/images/daphne/DaphneIdle(x5).png",
               { frameWidth: 160, frameHeight: 160});
 
         this.load.spritesheet("P","sprites/images/percival/PercivalIdle(x5).png",
               { frameWidth: 160, frameHeight: 160});
-        
+        //#endregion
+
+        //#region Tilemaps
         this.load.image('tilesPJ', 'sprites/tileSet/TileSetPJ.png');
         this.load.image('tilesD', 'sprites/tileSet/DustwartsTileset.png');
         this.load.image('tilesM', 'sprites/tileSet/MagwartsTileset.png');
         this.load.tilemapTiledJSON('mapa', 'sprites/tileSet/Mapa.json');
+        //#endregion
 
+        //#region Objetos
         this.load.image('cajaMovible', 'sprites/images/items/cajaMovible.png');
         this.load.image('cajaRompible','sprites/images/items/cajaRompible.png');
         this.load.image('cajaRota','sprites/images/items/cajaRompibleRota.png');
-        this.load.spritesheet('llaveMapa','sprite/images/items/keyMap.png');
-        this.load.image('llaveInventario', 'sprite/images/items/keyInventory.png')
 
+        this.load.spritesheet('llaveMapa','sprites/images/items/keyMap.png',
+              {frameWidth:16, frameHeight:16}
+        );
+        this.load.image('llaveInventario', 'sprites/images/items/keyInventory.png')
+        //#endregion
+
+        this.load.spritesheet('slot','sprites/images/inventory/inventorySpace.png',{frameWidth: 64, frameHeight:64});
     }
 
     createAnims(){
        
+        //#region Personajes
         this.anims.create(
             {key: "DaphneIdle",
             frames: this.anims.generateFrameNumbers("D", {frames:[0,1,2,3]}),
@@ -147,9 +171,9 @@ export default class Level1 extends Phaser.Scene{
             frameRate: 5,
             repeat: -1,}
         );
+        //#endregion
 
-
-
+        //#region Objetos
         this.anims.create(
             {key:'keyIdle',
                 frames: this.anims.generateFrameNumbers('llaveMapa', {frames:[0,1,2,1]}),
@@ -157,11 +181,28 @@ export default class Level1 extends Phaser.Scene{
                 repeat:-1,
             }
         );
+        //#endregion
+
+        //#region Inventario
+        this.anims.create(
+            {key: 'SlotSelected',
+            frames: this.anims.generateFrameNumbers('slot', {frames:[1,2]}),
+            frameRate: 2,
+            repeat: -1,}
+        );
+
+        this.anims.create(
+            {key: 'SlotIdle',
+            frames: this.anims.generateFrameNumbers('slot', {frames:[0]}),
+            frameRate: 2,
+            repeat: -1,}
+        );
+        //#endregion
     }
 
 
     createItems(){
-        this.keys.add(new Key(this, 360,3600,'llaveMapa','llaveInventario','keyIdle','Llave to guapa mi bro'))
+        this.keys.add(new Key(this, 400,3600,'llaveMapa','llaveInventario','keyIdle','Llave to guapa mi bro').setDepth(5))
     }
 
     

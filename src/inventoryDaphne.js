@@ -1,4 +1,5 @@
 import InventorySlot from "./inventorySlot.js";
+import InventoryItem from "./inventoryItem.js";
 export default class InventoryDaphne extends Phaser.Scene{
     constructor(){
         super({key:'InventarioDaphne'});
@@ -16,10 +17,12 @@ export default class InventoryDaphne extends Phaser.Scene{
         this.cameras.main.setViewport(972,108,108,270);
 
         //array de los huecos de inventario
-        let inventorySlots = [];
-        inventorySlots.push(new InventorySlot(this,42,32,'hueco',true));
-        inventorySlots.push(new InventorySlot(this,42,135,'hueco',false));
-        inventorySlots.push(new InventorySlot(this,42,238,'hueco',false));
+        this.inventorySlots = [];
+        this.inventorySlots.push(new InventorySlot(this,42,32,'slot',0,false,'SlotSelected'));
+        this.inventorySlots.push(new InventorySlot(this,42,135,'slot',0,false,'SlotSelected'));
+        this.inventorySlots.push(new InventorySlot(this,42,238,'slot',0,false,'SlotSelected'));
+        this.slotSelected = 0;
+        this.inventorySlots[this.slotSelected].setIsSelected();
 
         this.slotSelected = 0;
 
@@ -27,14 +30,14 @@ export default class InventoryDaphne extends Phaser.Scene{
         this.input.keyboard.on('keydown', (event)=>{
             if(event.code === 'Numpad1'){
                 if(this.slotSelected > 0){
-                    inventorySlots[this.slotSelected].setIsSelected();
-                    inventorySlots[--this.slotSelected].setIsSelected();
+                    this.inventorySlots[this.slotSelected].setIsSelected();
+                    this.inventorySlots[--this.slotSelected].setIsSelected();
                 }
             }
             else if(event.code === 'Numpad2'){
                if(this.slotSelected < inventorySlots.length-1){
-                    inventorySlots[this.slotSelected].setIsSelected();
-                    inventorySlots[++this.slotSelected].setIsSelected();
+                    this.inventorySlots[this.slotSelected].setIsSelected();
+                    this.inventorySlots[++this.slotSelected].setIsSelected();
                 }
             }
             else if(event.code === 'Escape'){
@@ -52,8 +55,8 @@ export default class InventoryDaphne extends Phaser.Scene{
     }
 
     setItems(objects){
-        for(i = 0;i<inventorySlots.length && i<objects.length;i++){
-            inventorySlots[i].add(objects[i]);
+        for(i = 0;i<this.inventorySlots.length && i<objects.length;i++){
+            this.inventorySlots[i].add(objects[i]);
         }
     }
 }
