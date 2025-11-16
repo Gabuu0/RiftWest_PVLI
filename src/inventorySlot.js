@@ -5,9 +5,12 @@ export default class InventorySlot extends Phaser.GameObjects.Container{
         this.scene.add.existing(this);
         this.isSelected= selected;
         
-        this.slotImage = this.scene.add.image(x,y,imagekey,0);
-        this.setImageFrame(); 
-
+        this.slotImage = this.scene.add.image(0,0,imagekey,0);
+        this.add(this.slotImage);
+        
+        this.setSize(this.slotImage.width,this.slotImage.height);
+        this.setImageFrame();
+        
        
     }
 
@@ -19,16 +22,7 @@ export default class InventorySlot extends Phaser.GameObjects.Container{
 
     //Cambia el frame segun si esta seleccionado o no
     setImageFrame(){
-        if(!this.isSelected){
-            this.slotImage.setFrame(0); 
-        } 
-        else{
-            this.slotImage.setFrame(1);
-        } 
-    }
-
-    showItem(){
-        
+       this.slotImage.setFrame(this.isSelected ? 1 : 0);
     }
 }
 

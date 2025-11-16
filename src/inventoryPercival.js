@@ -23,8 +23,7 @@ export default class InventoryPercival extends Phaser.Scene{
         this.inventorySlots.push(new InventorySlot(this,42,238,'slot',0,false,'SlotSelected'));
         this.slotSelected = 0;
         this.inventorySlots[this.slotSelected].setIsSelected();
-
-
+        
         //Gestion del movimiento por el inventario: 1 para subir 2 para bajar
         this.input.keyboard.on('keydown', (event)=>{
             if(event.code === 'Digit1'){
@@ -59,12 +58,13 @@ export default class InventoryPercival extends Phaser.Scene{
 
        //se coloca el item en la primera posicion vacia del inventario
        while(i<this.inventorySlots.length &&!itemPicked){
-            if(this.inventorySlots[i].list.length == 0){
+            if(this.inventorySlots[i].list.length === 1){
                 itemPicked = true;
-                this.inventorySlots[i].add(new InventoryItem(item.texture,item.textureInventory,item.description,i));
+                this.inventorySlots[i].add(new InventoryItem(this,0,0,item.texture,item.description,item.identifier).setScale(3));
+                console.log(this.inventorySlots[i].list);
             }
+            else {i++;}
 
        }
     }
-
 }

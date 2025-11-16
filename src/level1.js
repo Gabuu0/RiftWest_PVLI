@@ -33,8 +33,11 @@ export default class Level1 extends Phaser.Scene{
         console.log("Percival:", this.percival);
         console.log("Daphne:", this.daphne);
 */
+        this.scene.launch('InventarioPercival');
+        this.scene.launch('InventarioDaphne');
         this.inventario1 = this.scene.get('InventarioPercival');
         this.inventario2 = this.scene.get('InventarioDaphne');
+
 
         this.movementController = new Movement(this, this.percival, this.daphne);
 
@@ -202,7 +205,9 @@ export default class Level1 extends Phaser.Scene{
 
 
     createItems(){
-        this.keys.add(new Key(this, 400,3600,'llaveMapa','llaveInventario','keyIdle','Llave to guapa mi bro').setDepth(5))
+        this.keys.add(new Key(this, 400,3600,'llaveMapa','llaveInventario','keyIdle','Llave to guapa mi bro',1).setDepth(5))
+        this.keys.add(new Key(this, 450,3700,'llaveMapa','llaveInventario','keyIdle','Llave to guapa mi bro',2).setDepth(5))
+        this.keys.add(new Key(this, 425,3800,'llaveMapa','llaveInventario','keyIdle','Llave to guapa mi bro',3).setDepth(5))
     }
 
     

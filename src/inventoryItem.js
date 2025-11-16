@@ -1,8 +1,9 @@
-export default class InventoryItem{
-    constructor(texture,textureInventory,description,index){
-        this.texture = texture;
-        this.textureInventory = textureInventory;
+export default class InventoryItem extends Phaser.GameObjects.Sprite{
+    constructor(scene,x,y,texture,description,identifier){
+        super(scene,x,y,texture);
+
+        this.scene.add.existing(this);
         this.description = description;
-        this.index = index;
+        this.identifier = identifier;
     }
 }

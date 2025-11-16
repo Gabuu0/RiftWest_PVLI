@@ -10,7 +10,6 @@ export default class InventoryDaphne extends Phaser.Scene{
     }
 
     preload(){
-        this.load.spritesheet('hueco','sprites/images/inventory/inventorySpace.png',{frameWidth: 64, frameHeight:64});
     }
 
     create(){
@@ -24,8 +23,6 @@ export default class InventoryDaphne extends Phaser.Scene{
         this.slotSelected = 0;
         this.inventorySlots[this.slotSelected].setIsSelected();
 
-        this.slotSelected = 0;
-
         //Gestion del movimiento por el inventario: 1 para subir 2 para bajar
         this.input.keyboard.on('keydown', (event)=>{
             if(event.code === 'Numpad1'){
@@ -35,7 +32,7 @@ export default class InventoryDaphne extends Phaser.Scene{
                 }
             }
             else if(event.code === 'Numpad2'){
-               if(this.slotSelected < inventorySlots.length-1){
+               if(this.slotSelected < this.inventorySlots.length-1){
                     this.inventorySlots[this.slotSelected].setIsSelected();
                     this.inventorySlots[++this.slotSelected].setIsSelected();
                 }
@@ -54,9 +51,19 @@ export default class InventoryDaphne extends Phaser.Scene{
 
     }
 
-    setItems(objects){
-        for(i = 0;i<this.inventorySlots.length && i<objects.length;i++){
-            this.inventorySlots[i].add(objects[i]);
+    setItem(item){
+        let i= 0;
+        let itemPicked = false;
+
+        //se coloca el item en la primera posicion vacia del inventario
+        while(i<this.inventorySlots.length &&!itemPicked){
+            if(this.inventorySlots[i].list.length === 1){
+                itemPicked = true;
+                this.inventorySlots[i].add(new InventoryItem(this,0,0,item.texture,item.description,item.identifier).setScale(3));
+                console.log(this.inventorySlots[i].list);
+            }
+            else {i++;}
+
         }
     }
 }

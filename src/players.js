@@ -1,6 +1,3 @@
-import InventoryItem from "./inventoryItem.js";
-
-
 export default class Players extends Phaser.Physics.Arcade.Sprite{
     constructor(scene,x=0,y=0,texture = "percival",frame=0,type = "percival"){
         super(scene,x,y,texture,frame);
@@ -19,15 +16,13 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
         this.type = type;
         this.animations = this.getAnimationsByType();
         this.inventory = this.getInventoryByType();
-        this.scene.scene.launch(this.inventory.sceneKey);
-        this.scene.scene.sleep(this.inventory.sceneKey);
         this.inventoryScene = this.scene.scene.get(this.inventory.sceneKey);
         
         this.scene.input.keyboard.on('keydown',(event)=>{
             if(event.code ===this.inventory.key){
                 
                 if(!this.scene.scene.isActive(this.inventory.sceneKey)){
-                    this.scene.scene.launch(this.inventory.sceneKey);
+                    this.scene.scene.wake(this.inventory.sceneKey);
                     return;
                 }
                 else{
@@ -62,10 +57,13 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
 
     pickItem(item){
         if(this.objects.length < this.maxObjs){
-            const itemData = new InventoryItem(item.texture, item.textureInventory,
-                              item.description,this.objects.length)
+            const itemData={
+                texture: item.textureInventory,
+                description: item.description,
+                identifier:item.identifier,
+            }
+            this.inventoryScene.setItem(itemData); 
             this.objects.push(itemData);
-            this.inventoryScene.setItem();
             return true;
         }
         else{
