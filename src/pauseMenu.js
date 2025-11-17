@@ -50,6 +50,14 @@ export default class PauseMenu extends Phaser.Scene {
         }).setOrigin(0.5).setInteractive();
         container.add(menuButton);
 
+        // Botoon Inicio
+        const restartButton = this.add.text(0, 100, 'Reiniciar', {
+            fontSize: '24px',
+            fill: 'rgb(255, 255, 255)',
+            fontFamily: 'Merriweather'
+        }).setOrigin(0.5).setInteractive();
+        container.add(restartButton);
+
         // Entrar con animacion (panel y fondo)
         this.tweens.add({ targets: container, scale: 1, alpha: 1, duration: 500, ease: 'Power2' });
         this.tweens.add({ targets: background, alpha: 0.5, duration: 500, ease: 'Power2' });
@@ -57,9 +65,11 @@ export default class PauseMenu extends Phaser.Scene {
         // Interaccion con boton de continue y menu
         continueButton.on('pointerover', () => continueButton.setStyle({ fill: 'rgb(255, 255, 143)' }));
         menuButton.on('pointerover', () => menuButton.setStyle({ fill: 'rgb(255, 255, 143)' }));
+        restartButton.on('pointerover', () => restartButton.setStyle({ fill: 'rgb(255, 255, 143)' }));
 
         continueButton.on('pointerout',  () => continueButton.setStyle({ fill: 'rgb(255, 255, 255)' }));
         menuButton.on('pointerout',  () => menuButton.setStyle({ fill: 'rgb(255, 255, 255)' }));
+        restartButton.on('pointerout',  () => restartButton.setStyle({ fill: 'rgb(255, 255, 255)' }));
 
 
         const cerrarMenu = (callback) => {
@@ -95,6 +105,15 @@ export default class PauseMenu extends Phaser.Scene {
                 this.scene.stop('level1');
                 this.scene.stop();
                 this.scene.start('menu');
+            });
+        });
+
+        // Interaccion con boton de reinicio
+        restartButton.on('pointerdown', () => {
+            cerrarMenu(() => {
+                this.scene.stop();
+                this.scene.stop('level1'); 
+                this.scene.start('level1');
             });
         });
 
