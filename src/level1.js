@@ -4,6 +4,7 @@ import PauseMenu from "./pauseMenu.js";
 import InteractableObjects from './interactableObjects.js';
 import movableObject from './movableObject.js';
 import breakableObjects from './breakableObjects.js'
+import Watchman from "./watchman.js";
 
 export default class Level1 extends Phaser.Scene{
     constructor(){
@@ -93,7 +94,16 @@ export default class Level1 extends Phaser.Scene{
         this.cajR1 = new breakableObjects(this,475, 3225, 2625, 3225,'cajaRompible',this.percival,this.daphne);
 
         this.physics.add.overlap(this.cajaM1, PlacasDePresion, (movableObject,tile) => {InteractableObjects.activarPlaca(this, movableObject, tile)});
-    //#endregion
+    
+        // Recorrido del vigilante
+        const recorrido1 = [
+        { x: 400, y: 3700 },
+        { x: 600, y: 3700 },
+        { x: 600, y: 3500 },
+        { x: 400, y: 3500 } ];
+
+        this.guard = new Watchman(this,400, 3700,"profesor",this.percival,recorrido1);
+        //#endregion
     }
 
     update(t, dt){
@@ -117,6 +127,8 @@ export default class Level1 extends Phaser.Scene{
         this.load.image('cajaMovible', 'sprites/images/cajaMovible.png');
         this. load.image('cajaRompible','sprites/images/cajaRompible.png');
         this.load.image('cajaRota','sprites/images/cajaRompibleRota.png');
+
+        this.load.image('profesor','sprites/images/profesor.jpg');
     }
 
     createAnims(){
