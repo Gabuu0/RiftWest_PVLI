@@ -14,6 +14,12 @@ export default class DialogText{
 		this.init(opts);
 	}
 
+	setDepth(value) {
+		if (this.graphics) this.graphics.setDepth(value);
+		if (this.text) this.text.setDepth(value);
+		if (this.closeBtn) this.closeBtn.setDepth(value);
+	}
+
 	init(opts) {
 		// Mira si hay parámetros que se pasan, en caso de que no, se usan los por defecto
 		if (!opts) opts = {};
@@ -22,14 +28,18 @@ export default class DialogText{
 		this.borderThickness = opts.borderThickness || 3;
 		this.borderColor = opts.borderColor || 0x907748;
 		this.borderAlpha = opts.borderAlpha || 1;
-		this.windowAlpha = opts.windowAlpha || 0.8;
+		this.windowAlpha = opts.windowAlpha || 0.6;
 		this.windowColor = opts.windowColor || 0x303030;
-		this.windowHeight = opts.windowHeight || 150;
-		this.padding = opts.padding || 32;
+		this.windowHeight = opts.windowHeight || 125;
+		this.padding = opts.padding || 12;
 		this.closeBtnColor = opts.closeBtnColor || 'darkgoldenrod';
 		this.dialogSpeed = opts.dialogSpeed || 3;
 		this.fontSize = opts.fontSize || 24
-		this.fontFamily = opts.fontFamily || undefined
+		this.fontFamily = opts.fontFamily || "pixel"
+		this.offsetY = opts.offsetY || 270;
+		
+		//Para cuando usemos el setTextArray
+		this.array = [];
 		
 		// se usa para animar el texto
 		this.eventCounter = 0;
@@ -94,17 +104,32 @@ export default class DialogText{
 				loop: true
 			});
 		}
-		
 	}
+
+	setTextArray(textArray, animate){
+		this.array = textArray;
+		this.showNext(animate)
+	}
+
+	showNext(animate = true) {
+    if (this.array.length === 0) {
+        this.toggleWindow(); // ocultar cuando se acabe todo
+        return;
+    }
+
+    const nextText = this.array.shift(); // saca el siguiente texto
+    this.setText(nextText, animate);
+    this.visible = true;
+}
 
 	// Consigue el ancho del juego (en funcion del tamaño en la escena) 
 	_getGameWidth() {
-		return this.scene.sys.game.config.width;
+		return this.scene.sys.game.config.width / 2;
 	}
 
 	// Consigue el alto del juego (en funcion del tamaño de la escena) 
 	_getGameHeight() {
-		return this.scene.sys.game.config.height;
+		return this.scene.sys.game.config.height / 2;
 	}
 
 	// Calcula las dimensiones y pos de la ventana en funcion del tamaño de la pantalla de juego
@@ -150,11 +175,13 @@ export default class DialogText{
 		this.graphics = this.scene.add.graphics();
 		
 		//Se crean las ventanas interior y exterior
-		this._createOuterWindow(dimensions.x, dimensions.y, dimensions.rectWidth, dimensions.rectHeight);
-		this._createInnerWindow(dimensions.x, dimensions.y, dimensions.rectWidth, dimensions.rectHeight);
+		this._createOuterWindow(dimensions.x, dimensions.y + this.offsetY, dimensions.rectWidth, dimensions.rectHeight);
+		this._createInnerWindow(dimensions.x, dimensions.y + this.offsetY, dimensions.rectWidth, dimensions.rectHeight);
 		
 		this._createCloseModalButton(); //se muestra el boton de cerrar en la ventana
 		this._createCloseModalButtonBorder(); // se muestra el borde del boton de cerrar
+
+		this.graphics.setScrollFactor(0);
 	}
 
 	// Con el siguiente código se crea el boton de cerrar la ventana de diálogo
@@ -164,14 +191,14 @@ export default class DialogText{
 			//se crea el boton con las posiciones x e y siguientes
 			// se calculan de forma dinámica para que funcione para diferentes tamaños de pantalla
 			x: this._getGameWidth() - this.padding - 14,
-			y: this._getGameHeight() - this.windowHeight - this.padding + 3,
+			y: this._getGameHeight() - this.windowHeight - this.padding + 3 + this.offsetY,
 			
 			//el boton queda representado como una X con su estilo debajo
-			text: 'X',
+			text: '->',
 			style: {
 				font: 'bold 12px TimesNewRoman',
 				fill: this.closeBtnColor
-			}
+			}			
 		});
 		
 		this.closeBtn.setInteractive(); //hace interactuable el boton de cierre
@@ -182,20 +209,22 @@ export default class DialogText{
 			this.clearTint(); //vuelve al color original al quitar el cursor
 		});
 		this.closeBtn.on('pointerdown', function () {
-			self.toggleWindow(); //se llama al método que cierra o muestra la ventana de diálogo
-			
 			// elimina el game object con el texto y borra el evento
 			if (self.timedEvent) 
 				self.timedEvent.remove();
 			if (self.text) 
 				self.text.destroy();
+			
+			self.showNext();
 		});
+
+		this.closeBtn.setScrollFactor(0);
 	}
 
 	// Se crea el borde del botón
 	_createCloseModalButtonBorder() {
 		var x = this._getGameWidth() - this.padding - 20;
-		var y = this._getGameHeight() - this.windowHeight - this.padding;
+		var y = this._getGameHeight() - this.windowHeight - this.padding + this.offsetY;
 		
 		//Se crea el borde del botón sin relleno
 		this.graphics.strokeRect(x, y, 20, 20);
@@ -221,7 +250,7 @@ export default class DialogText{
 			this.text.destroy();
 
 		var x = this.padding + 10;
-		var y = this._getGameHeight() - this.windowHeight - this.padding + 10;
+		var y = this._getGameHeight() - this.windowHeight - this.padding + 10 + this.offsetY;
 
 		//Crea un game object que sea texto
 		this.text = this.scene.make.text({
@@ -235,5 +264,8 @@ export default class DialogText{
 				fontFamily: this.fontFamily
 			}
 		});
+
+		this.text.setScrollFactor(0);
+		this.text.setDepth(10);
 	}
 };
