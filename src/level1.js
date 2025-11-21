@@ -5,6 +5,7 @@ import Key from "./key.js";
 import InteractableObjects from './interactableObjects.js';
 import movableObject from './movableObject.js';
 import breakableObjects from './breakableObjects.js'
+import DialogText from "./dialogText.js";
 
 export default class Level1 extends Phaser.Scene{
     constructor(){
@@ -118,7 +119,18 @@ export default class Level1 extends Phaser.Scene{
         this.cajR1 = new breakableObjects(this,475, 3225, 2625, 3225,'cajaRompible',this.percival,this.daphne);
 
         this.physics.add.overlap(this.cajaM1, PlacasDePresion, (movableObject,tile) => {InteractableObjects.activarPlaca(this, movableObject, tile)});
-        //#endregion
+
+        this.dialog = new DialogText(this, {});
+        this.dialog.setDepth(10);
+        
+        this.dialog.setTextArray([
+            "Bryant Myers",
+            "Hoy de nuevo te voy a ver (Anonimus, this is the remix)",
+            "Si llaman, pichea el cel (Anuel, Almighty)",
+            "Estamos fumando marihuana (Maybach Música)",
+            "Hoy serás mi esclava en el cuarto de un motel (Carbon Fiber Music)"
+        ], true);
+    //#endregion
     }
 
     update(t, dt){
