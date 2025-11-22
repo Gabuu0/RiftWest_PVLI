@@ -5,7 +5,8 @@ export default class InventoryDaphne extends Phaser.Scene{
         super({key:'InventarioDaphne'});
     }
 
-    init(){
+    init(player){
+        this.player = player;
 
     }
 
@@ -31,7 +32,7 @@ export default class InventoryDaphne extends Phaser.Scene{
                     this.inventorySlots[--this.slotSelected].setIsSelected();
                 }
             }
-            else if(event.code === 'Numpad2'){
+            else if(event.code === 'Numpad3'){
                if(this.slotSelected < this.inventorySlots.length-1){
                     this.inventorySlots[this.slotSelected].setIsSelected();
                     this.inventorySlots[++this.slotSelected].setIsSelected();
@@ -40,7 +41,12 @@ export default class InventoryDaphne extends Phaser.Scene{
             else if(event.code === 'Escape'){
                 this.scene.pause();
             }
-
+             else if(event.code ==='Enter'){
+                this.registry.set('object',this.inventorySlots[this.slotSelected][1]);
+                this.player.removeItem(this.inventorySlots[this.slotSelected].list[1].identifier);
+                this.inventorySlots[this.slotSelected].list[1].destroy(true);
+                console.log('tuvieja2.0');
+            }
         })
 
       

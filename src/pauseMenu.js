@@ -103,6 +103,8 @@ export default class PauseMenu extends Phaser.Scene {
         menuButton.on('pointerdown', () => {
             cerrarMenu(() => {
                 this.scene.stop('level1');
+                this.scene.stop('InventarioPercival');
+                this.scene.stop('InventarioDaphne');
                 this.scene.stop();
                 this.scene.start('menu');
             });

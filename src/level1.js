@@ -34,8 +34,8 @@ export default class Level1 extends Phaser.Scene{
         console.log("Percival:", this.percival);
         console.log("Daphne:", this.daphne);
 */
-        this.scene.launch('InventarioPercival');
-        this.scene.launch('InventarioDaphne');
+        this.scene.launch('InventarioPercival',this.percival);
+        this.scene.launch('InventarioDaphne',this.daphne);
         this.inventario1 = this.scene.get('InventarioPercival');
         this.inventario2 = this.scene.get('InventarioDaphne');
 
@@ -117,9 +117,10 @@ export default class Level1 extends Phaser.Scene{
 
         this.cajaM1 = new movableObject(this, 3140, 3100, 980, 3100, "cajaMovible", this.percival, this.daphne, Paredes)
         this.cajR1 = new breakableObjects(this,475, 3225, 2625, 3225,'cajaRompible',this.percival,this.daphne);
-
+        
         this.physics.add.overlap(this.cajaM1, PlacasDePresion, (movableObject,tile) => {InteractableObjects.activarPlaca(this, movableObject, tile)});
-
+        //#endregion
+        //#region SistemaDialogos
         this.dialog = new DialogText(this, {});
         this.dialog.setDepth(10);
         
@@ -130,7 +131,7 @@ export default class Level1 extends Phaser.Scene{
             "Estamos fumando marihuana (Maybach Música)",
             "Hoy serás mi esclava en el cuarto de un motel (Carbon Fiber Music)"
         ], true);
-    //#endregion
+        //#endregion
     }
 
     update(t, dt){
@@ -217,9 +218,10 @@ export default class Level1 extends Phaser.Scene{
 
 
     createItems(){
-        this.keys.add(new Key(this, 400,3600,'llaveMapa','llaveInventario','keyIdle','Llave to guapa mi bro',1).setDepth(5))
-        this.keys.add(new Key(this, 450,3700,'llaveMapa','llaveInventario','keyIdle','Llave to guapa mi bro',2).setDepth(5))
-        this.keys.add(new Key(this, 425,3800,'llaveMapa','llaveInventario','keyIdle','Llave to guapa mi bro',3).setDepth(5))
+        this.keys.add(new Key(this, 2600,3600,'llaveMapa','llaveInventario','keyIdle','Llave to guapa mi bro',1).setDepth(5))
+        this.keys.add(new Key(this, 2650,3700,'llaveMapa','llaveInventario','keyIdle','Llave to guapa mi bro',2).setDepth(5))
+        this.keys.add(new Key(this, 2625,3800,'llaveMapa','llaveInventario','keyIdle','Llave to guapa mi bro',3).setDepth(5))
+        this.keys.add(new Key(this, 2645,3800,'llaveMapa','llaveInventario','keyIdle','Llave to guapa mi bro',3).setDepth(5))
     }
 
     

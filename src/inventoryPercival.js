@@ -5,7 +5,8 @@ export default class InventoryPercival extends Phaser.Scene{
         super({key:'InventarioPercival'});
     }
 
-    init(){
+    init(player){
+        this.player = player;
 
     }
 
@@ -41,8 +42,12 @@ export default class InventoryPercival extends Phaser.Scene{
             else if(event.code === 'Escape'){
                 this.scene.pause();
             }
-
-
+            else if(event.code ==='Tab'){
+                this.registry.set('object',this.inventorySlots[this.slotSelected][1]);
+                this.player.removeItem(this.inventorySlots[this.slotSelected].list[1].identifier);
+                this.inventorySlots[this.slotSelected].list[1].destroy(true);
+                console.log('tuvieja2.0');
+            }
         })
 
     }
