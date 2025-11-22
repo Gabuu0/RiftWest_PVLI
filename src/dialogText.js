@@ -11,6 +11,7 @@ export default class DialogText{
 
 	constructor(scene, opts){
 		this.scene = scene;
+		this.textCamera = opts.camera
 		this.init(opts);
 	}
 
@@ -40,6 +41,10 @@ export default class DialogText{
 		
 		//Para cuando usemos el setTextArray
 		this.array = [];
+
+		//Ignora la camara de Daphne o de percival
+		this.ignorePercival
+		this.ignoreDaphne
 		
 		// se usa para animar el texto
 		this.eventCounter = 0;
@@ -54,7 +59,7 @@ export default class DialogText{
 		this.dialog;
 		this.graphics;
 		this.closeBtn;
-		
+
 		//Crea la ventana de dialogo
 		this._createWindow();
 	}
@@ -117,8 +122,20 @@ export default class DialogText{
         return;
     }
 
-    const nextText = this.array.shift(); // saca el siguiente texto
-    this.setText(nextText, animate);
+	const [id, text] = this.array.shift(); // Divide en el número y el texto
+
+	//Reinicia valores
+    this.ignorePercival = false;
+    this.ignoreDaphne = false;
+
+    if (id === 1) {
+		this.ignoreDaphne = true;	// Solo Daphne ignora
+	}
+    if (id === 2) {
+		this.ignorePercival = true;	// Solo Percival ignora
+	} 
+
+    this.setText(text, animate);
     this.visible = true;
 }
 
@@ -267,5 +284,11 @@ export default class DialogText{
 
 		this.text.setScrollFactor(0);
 		this.text.setDepth(10);
+		if (this.ignoreDaphne){
+			this.scene.cameras.main.ignore(this.text);
+		}
+		else if (this.ignorePercival){
+			this.textCamera.ignore(this.text);
+		}
 	}
 };

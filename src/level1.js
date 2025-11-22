@@ -95,15 +95,15 @@ export default class Level1 extends Phaser.Scene{
 
         this.physics.add.overlap(this.cajaM1, PlacasDePresion, (movableObject,tile) => {InteractableObjects.activarPlaca(this, movableObject, tile)});
 
-        this.dialog = new DialogText(this, {});
+        this.dialog = new DialogText(this, {camera: this.percivalCam});
         this.dialog.setDepth(10);
         
         this.dialog.setTextArray([
-            "Bryant Myers",
-            "Hoy de nuevo te voy a ver (Anonimus, this is the remix)",
-            "Si llaman, pichea el cel (Anuel, Almighty)",
-            "Estamos fumando marihuana (Maybach Música)",
-            "Hoy serás mi esclava en el cuarto de un motel (Carbon Fiber Music)"
+            [1, "Bryant Myers"],
+            [2, "Hoy de nuevo te voy a ver (Anonimus, this is the remix)"],
+            [0, "Si llaman, pichea el cel (Anuel, Almighty)"],
+            [1, "Estamos fumando marihuana (Maybach Música)"],
+            [2, "Hoy serás mi esclava en el cuarto de un motel (Carbon Fiber Music)"]
         ], true);
     //#endregion
     }
