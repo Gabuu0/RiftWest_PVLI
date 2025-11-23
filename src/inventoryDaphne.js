@@ -58,18 +58,18 @@ export default class InventoryDaphne extends Phaser.Scene{
     }
 
     setItem(item){
-        let i= 0;
-        let itemPicked = false;
-
-        //se coloca el item en la primera posicion vacia del inventario
-        while(i<this.inventorySlots.length &&!itemPicked){
-            if(this.inventorySlots[i].list.length === 1){
-                itemPicked = true;
-                this.inventorySlots[i].add(new InventoryItem(this,0,0,item.texture,item.description,item.identifier).setScale(3));
-                console.log(this.inventorySlots[i].list);
-            }
-            else {i++;}
-
-        }
+           let i= 0;
+           let itemPicked = false;
+    
+           //se coloca el item en la primera posicion vacia del inventario
+           while(i<this.inventorySlots.length &&!itemPicked){
+                if(this.inventorySlots[i].length === 1){
+                    itemPicked = true;
+                    this.inventorySlots[i].add(new InventoryItem(this,0,0,item.texture,'descriptionBox',item.description,item.identifier));
+                    this.inventorySlots[i].manageItemDescription();
+                }
+                else {i++;}
+    
+           }
     }
 }

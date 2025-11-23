@@ -169,6 +169,7 @@ export default class Level1 extends Phaser.Scene{
         //#endregion
 
         this.load.spritesheet('slot','sprites/images/inventory/inventorySpace.png',{frameWidth: 64, frameHeight:64});
+        this.load.image('descriptionBox','sprites/images/inventory/descriptionBox.png');
     }
 
     createAnims(){
@@ -218,10 +219,10 @@ export default class Level1 extends Phaser.Scene{
 
 
     createItems(){
-        this.keys.add(new Key(this, 2600,3600,'llaveMapa','llaveInventario','keyIdle','Llave to guapa mi bro',1).setDepth(5))
-        this.keys.add(new Key(this, 2650,3700,'llaveMapa','llaveInventario','keyIdle','Llave to guapa mi bro',2).setDepth(5))
-        this.keys.add(new Key(this, 2625,3800,'llaveMapa','llaveInventario','keyIdle','Llave to guapa mi bro',3).setDepth(5))
-        this.keys.add(new Key(this, 2645,3800,'llaveMapa','llaveInventario','keyIdle','Llave to guapa mi bro',3).setDepth(5))
+        this.keys.add(new Key(this, 400,3600,'llaveMapa','llaveInventario','keyIdle','Llave to guapa mi bro',1).setDepth(5))
+        this.keys.add(new Key(this, 450,3700,'llaveMapa','llaveInventario','keyIdle','Llave de tu vieja',2).setDepth(5))
+        this.keys.add(new Key(this, 425,3800,'llaveMapa','llaveInventario','keyIdle','Llavecita de mi cora',3).setDepth(5))
+        this.keys.add(new Key(this, 445,3800,'llaveMapa','llaveInventario','keyIdle','Llave inglesa',3).setDepth(5))
     }
 
     

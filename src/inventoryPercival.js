@@ -14,7 +14,7 @@ export default class InventoryPercival extends Phaser.Scene{
     }
 
     create(){
-        this.cameras.main.setViewport(0,108,108,270);
+        this.cameras.main.setViewport(0,108,256,384);
         
         
         //array de los huecos de inventario
@@ -63,10 +63,10 @@ export default class InventoryPercival extends Phaser.Scene{
 
        //se coloca el item en la primera posicion vacia del inventario
        while(i<this.inventorySlots.length &&!itemPicked){
-            if(this.inventorySlots[i].list.length === 1){
+            if(this.inventorySlots[i].length === 1){
                 itemPicked = true;
-                this.inventorySlots[i].add(new InventoryItem(this,0,0,item.texture,item.description,item.identifier).setScale(3));
-                console.log(this.inventorySlots[i].list);
+                this.inventorySlots[i].add(new InventoryItem(this,0,0,item.texture,'descriptionBox',item.description,item.identifier));
+                this.inventorySlots[i].manageItemDescription();
             }
             else {i++;}
 
