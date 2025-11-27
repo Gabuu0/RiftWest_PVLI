@@ -120,6 +120,30 @@ export default class Level1 extends Phaser.Scene{
 
         this.load.spritesheet("P","sprites/images/percival/PercivalIdle(x5).png",
               { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("Dup","sprites/images/daphne/Daphne-caminando-arriba(x5).png",
+              { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("Pup","sprites/images/percival/Percival-caminando-arriba(x5).png",
+              { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("Ddown","sprites/images/daphne/Daphne-caminando-abajo(x5).png",
+                { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("Pdown","sprites/images/percival/Percival-caminando-abajo(x5).png",
+                { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("Dder","sprites/images/daphne/Daphne-caminando-derecha(x5).png",
+                { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("Pder","sprites/images/percival/Percival-caminando-derecha(x5).png",
+                { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("Dizq","sprites/images/daphne/Daphne-caminando-izquierda(x5).png",
+                { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("Pizq","sprites/images/percival/Percival-caminando-izquierda(x5).png",
+                { frameWidth: 160, frameHeight: 160});
         
         this.load.image('tilesPJ', 'sprites/tileSet/TileSetPJ.png');
         this.load.image('tilesD', 'sprites/tileSet/DustwartsTileset.png');
