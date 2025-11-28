@@ -19,7 +19,11 @@ export default class Level1 extends Phaser.Scene{
     create(){
         this.createAnims();
 
-        
+        this.registry.set('clownObj', {
+            objData: {},
+            hasObj: false,
+        });
+
 
         this.percival = new Players(this,350, 3600,"P",0,"percival");
         this.daphne = new Players(this,2500,3600,"D",0,"daphne");
