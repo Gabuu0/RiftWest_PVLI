@@ -1,9 +1,9 @@
-import InventoryDaphne from "./inventoryDaphne.js";
-import InventoryPercival from "./inventoryPercival.js";
-import Level1 from "./level1.js";
-import LevelPruebas from "./levelPruebas.js";
-import Menu from "./main.js";
-import PauseMenu from "./pauseMenu.js";
+import InventoryDaphne from "./scenes/inventories/inventoryDaphne.js";
+import InventoryPercival from "./scenes/inventories/inventoryPercival.js";
+import Level1 from "./scenes/levels/level1.js";
+import LevelPruebas from "./scenes/levels/levelPruebas.js";
+import Menu from "./scenes/main.js";
+import PauseMenu from "./scenes/pauseMenu.js";
 
 const config = {
 	type: Phaser.CANVAS,

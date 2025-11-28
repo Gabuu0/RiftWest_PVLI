@@ -1,5 +1,3 @@
-import Players from "./players.js";
-
 export default class BreakableObject extends Phaser.Physics.Arcade.Sprite{
     constructor(scene, x, y,x2, y2, texture, percival, daphne){
 

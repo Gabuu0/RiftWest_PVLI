@@ -1,13 +1,12 @@
-import Players from "./players.js";
-import Movement from "./movement.js";   
-import PauseMenu from "./pauseMenu.js";
-import Key from "./key.js";
-import Door from "./door.js";
-import PreassurePlate from "./preassurePlate.js";
-import InteractableObjects from './interactableObjects.js';
-import movableObject from './movableObject.js';
-import breakableObjects from './breakableObjects.js'
-import DialogText from "./dialogText.js";
+import Players from '../../players/players.js'
+import Movement from '../../players/movement.js'
+import Key from "../../objects/mapObjects/key.js";
+import InteractableObjects from '../../objects/mapObjects/interactableObjects.js';
+import movableObject from '../../objects/mapObjects/movableObject.js';
+import Door from '../../objects/mapObjects/door.js';
+import PreassurePlate from '../../objects/mapObjects/preassurePlate.js';
+import breakableObjects from '../../objects/mapObjects/breakableObjects.js'
+import DialogText from "../../objects/playerObjects/dialogText.js";
 
 export default class LevelPruebas extends Phaser.Scene{
     constructor(){

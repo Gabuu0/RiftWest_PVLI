@@ -1,5 +1,5 @@
-import InventoryItem from "./inventoryItem.js";
-import InventorySlot from "./inventorySlot.js";
+import InventorySlot from "../../objects/playerObjects/inventorySlot.js";
+import InventoryItem from "../../objects/playerObjects/inventoryItem.js";
 export default class InventoryPercival extends Phaser.Scene{
     constructor(){
         super({key:'InventarioPercival'});
