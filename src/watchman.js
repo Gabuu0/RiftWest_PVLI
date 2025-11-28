@@ -25,6 +25,18 @@ export default class Watchman extends Phaser.GameObjects.PathFollower {
 
         this.setScale(0.4);
 
+        this.trigger= scene.add.circle(this.x, this.y, 120, 0x00ff00, 0.1);
+        scene.physics.add.existing(this.trigger);
+
+        this.trigger.body.setCircle(120);
+        this.trigger.body.setAllowGravity(false);
+        this.trigger.body.setImmovable(true);
+
+        this.trigger.body.isSensor = true;
+        
+        // Collider con el jugador
+        this.scene.physics.add.overlap(this.trigger, this.player,() => this.onPlayerEnter(), null, this);
+
         //Movimiento
         this.startFollow({
             duration: 10000,
@@ -36,5 +48,11 @@ export default class Watchman extends Phaser.GameObjects.PathFollower {
 
     preUpdate(t, dt) {
         super.preUpdate(t, dt);
+        this.trigger.x=this.x;
+        this.trigger.y=this.y;
+    }
+
+    onPlayerEnter(){
+        console.log("jugador detectado");
     }
 }
