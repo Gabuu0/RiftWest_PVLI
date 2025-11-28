@@ -4,6 +4,7 @@ import PauseMenu from "./pauseMenu.js";
 import InteractableObjects from './interactableObjects.js';
 import movableObject from './movableObject.js';
 import breakableObjects from './breakableObjects.js'
+import DialogText from "./dialogText.js";
 
 export default class Level1 extends Phaser.Scene{
     constructor(){
@@ -93,6 +94,17 @@ export default class Level1 extends Phaser.Scene{
         this.cajR1 = new breakableObjects(this,475, 3225, 2625, 3225,'cajaRompible',this.percival,this.daphne);
 
         this.physics.add.overlap(this.cajaM1, PlacasDePresion, (movableObject,tile) => {InteractableObjects.activarPlaca(this, movableObject, tile)});
+
+        this.dialog = new DialogText(this, {camera: this.percivalCam});
+        this.dialog.setDepth(10);
+        
+        this.dialog.setTextArray([
+            [1, "Bryant Myers"],
+            [2, "Hoy de nuevo te voy a ver (Anonimus, this is the remix)"],
+            [0, "Si llaman, pichea el cel (Anuel, Almighty)"],
+            [1, "Estamos fumando marihuana (Maybach Música)"],
+            [2, "Hoy serás mi esclava en el cuarto de un motel (Carbon Fiber Music)"]
+        ], true);
     //#endregion
     }
 
@@ -108,6 +120,30 @@ export default class Level1 extends Phaser.Scene{
 
         this.load.spritesheet("P","sprites/images/percival/PercivalIdle(x5).png",
               { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("Dup","sprites/images/daphne/Daphne-caminando-arriba(x5).png",
+              { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("Pup","sprites/images/percival/Percival-caminando-arriba(x5).png",
+              { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("Ddown","sprites/images/daphne/Daphne-caminando-abajo(x5).png",
+                { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("Pdown","sprites/images/percival/Percival-caminando-abajo(x5).png",
+                { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("Dder","sprites/images/daphne/Daphne-caminando-derecha(x5).png",
+                { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("Pder","sprites/images/percival/Percival-caminando-derecha(x5).png",
+                { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("Dizq","sprites/images/daphne/Daphne-caminando-izquierda(x5).png",
+                { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("Pizq","sprites/images/percival/Percival-caminando-izquierda(x5).png",
+                { frameWidth: 160, frameHeight: 160});
         
         this.load.image('tilesPJ', 'sprites/tileSet/TileSetPJ.png');
         this.load.image('tilesD', 'sprites/tileSet/DustwartsTileset.png');
