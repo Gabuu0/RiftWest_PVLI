@@ -119,14 +119,10 @@ export default class Level1 extends Phaser.Scene{
         this.cajR1 = new breakableObjects(this,475, 3225, 2625, 3225,'cajaRompible',this.percival,this.daphne);
         
         this.physics.add.overlap(this.cajaM1, PlacasDePresion, (movableObject,tile) => {InteractableObjects.activarPlaca(this, movableObject, tile)});
-<<<<<<< HEAD
         //#endregion
         //#region SistemaDialogos
-        this.dialog = new DialogText(this, {});
-=======
 
         this.dialog = new DialogText(this, {camera: this.percivalCam});
->>>>>>> main
         this.dialog.setDepth(10);
         
         this.dialog.setTextArray([
@@ -153,11 +149,9 @@ export default class Level1 extends Phaser.Scene{
 
         this.load.spritesheet("P","sprites/images/percival/PercivalIdle(x5).png",
               { frameWidth: 160, frameHeight: 160});
-<<<<<<< HEAD
         //#endregion
 
         //#region Tilemaps
-=======
 
         this.load.spritesheet("Dup","sprites/images/daphne/Daphne-caminando-arriba(x5).png",
               { frameWidth: 160, frameHeight: 160});
@@ -183,7 +177,6 @@ export default class Level1 extends Phaser.Scene{
         this.load.spritesheet("Pizq","sprites/images/percival/Percival-caminando-izquierda(x5).png",
                 { frameWidth: 160, frameHeight: 160});
         
->>>>>>> main
         this.load.image('tilesPJ', 'sprites/tileSet/TileSetPJ.png');
         this.load.image('tilesD', 'sprites/tileSet/DustwartsTileset.png');
         this.load.image('tilesM', 'sprites/tileSet/MagwartsTileset.png');
