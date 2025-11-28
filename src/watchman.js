@@ -8,23 +8,27 @@ export default class Watchman extends Phaser.GameObjects.PathFollower {
         for (let i = 1; i < pathPoints.length; i++) {
             path.lineTo(pathPoints[i].x, pathPoints[i].y);
         }
-
-        path.lineTo(pathPoints[0].x, pathPoints[0].y); //Une el ultimo punto con el primero
-
+        path.lineTo(pathPoints[0].x,pathPoints[0].y); //Une el Ultimo punto con el primero
         //Crea un PathFollower
         super(scene, path, x, y, texture);
 
         this.scene = scene;
         this.player = player;
-        
 
         scene.add.existing(this);
         
         scene.physics.add.existing(this);
-
-        this.body.setScale(0.4);
         this.body.setImmovable(true);
-    
+
+        this.setScale(0.2);
+
+        //Movimiento
+        this.startFollow({
+            duration: 10000,
+            yoyo: false,
+            repeat: -1,
+            rotateToPath: false
+        });
     }
 
     preUpdate(t, dt) {
