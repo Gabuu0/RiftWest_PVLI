@@ -157,28 +157,28 @@ export default class Level1 extends Phaser.Scene{
 
         //#region Tilemaps
 
-        this.load.spritesheet("Dup","sprites/images/daphne/Daphne-caminando-arriba(x5).png",
+        this.load.spritesheet("DUp","sprites/images/daphne/Daphne-caminando-arriba(x5).png",
               { frameWidth: 160, frameHeight: 160});
 
-        this.load.spritesheet("Pup","sprites/images/percival/Percival-caminando-arriba(x5).png",
+        this.load.spritesheet("PUp","sprites/images/percival/Percival-caminando-arriba(x5).png",
               { frameWidth: 160, frameHeight: 160});
 
-        this.load.spritesheet("Ddown","sprites/images/daphne/Daphne-caminando-abajo(x5).png",
+        this.load.spritesheet("DDown","sprites/images/daphne/Daphne-caminando-abajo(x5).png",
                 { frameWidth: 160, frameHeight: 160});
 
-        this.load.spritesheet("Pdown","sprites/images/percival/Percival-caminando-abajo(x5).png",
+        this.load.spritesheet("PDown","sprites/images/percival/Percival-caminando-abajo(x5).png",
                 { frameWidth: 160, frameHeight: 160});
 
-        this.load.spritesheet("Dder","sprites/images/daphne/Daphne-caminando-derecha(x5).png",
+        this.load.spritesheet("DLeft","sprites/images/daphne/Daphne-caminando-derecha(x5).png",
                 { frameWidth: 160, frameHeight: 160});
 
-        this.load.spritesheet("Pder","sprites/images/percival/Percival-caminando-derecha(x5).png",
+        this.load.spritesheet("PLeft","sprites/images/percival/Percival-caminando-derecha(x5).png",
                 { frameWidth: 160, frameHeight: 160});
 
-        this.load.spritesheet("Dizq","sprites/images/daphne/Daphne-caminando-izquierda(x5).png",
+        this.load.spritesheet("DRight","sprites/images/daphne/Daphne-caminando-izquierda(x5).png",
                 { frameWidth: 160, frameHeight: 160});
 
-        this.load.spritesheet("Pizq","sprites/images/percival/Percival-caminando-izquierda(x5).png",
+        this.load.spritesheet("PRight","sprites/images/percival/Percival-caminando-izquierda(x5).png",
                 { frameWidth: 160, frameHeight: 160});
         
         this.load.image('tilesPJ', 'sprites/tileSet/TileSetPJ.png');
@@ -203,7 +203,6 @@ export default class Level1 extends Phaser.Scene{
     }
 
     createAnims(){
-       
         //#region Personajes
         this.anims.create(
             {key: "DaphneIdle",
@@ -211,10 +210,61 @@ export default class Level1 extends Phaser.Scene{
             frameRate: 5,
             repeat: -1,}
         );
-
-         this.anims.create(
+        this.anims.create(
             {key: "PercivalIdle",
             frames: this.anims.generateFrameNumbers("P", {frames:[0,1,2,3]}),
+            frameRate: 5,
+            repeat: -1,}
+        );
+
+        this.anims.create(
+            {key: "DaphneUp",
+            frames: this.anims.generateFrameNumbers("DUp", {frames:[0,1,2,3]}),
+            frameRate: 5,
+            repeat: -1,}
+        );
+        this.anims.create(
+            {key: "PercivalUp",
+            frames: this.anims.generateFrameNumbers("PUp", {frames:[0,1,2,3]}),
+            frameRate: 5,
+            repeat: -1,}
+        );
+        
+        this.anims.create(
+            {key: "DaphneDown",
+            frames: this.anims.generateFrameNumbers("DDown", {frames:[0,1,2,3]}),
+            frameRate: 5,
+            repeat: -1,}
+        );
+        this.anims.create(
+            {key: "PercivalDown",
+            frames: this.anims.generateFrameNumbers("PDown", {frames:[0,1,2,3]}),
+            frameRate: 5,
+            repeat: -1,}
+        );
+        
+        this.anims.create(
+            {key: "DaphneLeft",
+            frames: this.anims.generateFrameNumbers("DLeft", {frames:[0,1,2,3]}),
+            frameRate: 5,
+            repeat: -1,}
+        );
+        this.anims.create(
+            {key: "PercivalLeft",
+            frames: this.anims.generateFrameNumbers("PLeft", {frames:[0,1,2,3]}),
+            frameRate: 5,
+            repeat: -1,}
+        );
+
+        this.anims.create(
+            {key: "DaphneRight",
+            frames: this.anims.generateFrameNumbers("DRight", {frames:[0,1,2,3]}),
+            frameRate: 5,
+            repeat: -1,}
+        );
+        this.anims.create(
+            {key: "PercivalRight",
+            frames: this.anims.generateFrameNumbers("PRight", {frames:[0,1,2,3]}),
             frameRate: 5,
             repeat: -1,}
         );
