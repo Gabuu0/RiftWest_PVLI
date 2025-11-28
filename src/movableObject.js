@@ -28,6 +28,19 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
         scene.physics.add.collider(this.obCon, Player1)
         scene.physics.add.collider(this, layer)
         scene.physics.add.collider(this.obCon, layer)
+
+        scene.input.keyboard.on('keydown', (event) => {
+            if (event.code === 'ShiftRight') {
+                let action = { 
+                    inRange: this.distance < this.distanceMax, 
+                    isDropping: this.haveObject 
+                };
+                this.scene.events.emit("tryAbility", "daphne", this, action);
+            }
+        });
+
+        //evento de la habilidad
+        
     }
 
     preUpdate(t, dt) {
@@ -76,13 +89,7 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
         }
 
         //Para dejar/coger el objeto
-        this.scene.input.keyboard.on('keydown',(event)=>{
-            if(event.code === 'ShiftRight'){
-                if(!this.coolDown && this.distance < this.distanceMax){
-                    this.restartCoolDown()
-                }
-            }
-        })
+       
 
         //Si tiene el objetor, pero se aleja de el, lo suelta
         if(this.distance > this.distanceMax && this.haveObject){

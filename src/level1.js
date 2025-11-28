@@ -79,7 +79,7 @@ export default class Level1 extends Phaser.Scene{
         
         const Paredes2 = map.createLayer('Paredes(SinColision)', tilesets, -500, -500);
         Paredes2.setScale(5);
-        Paredes2.setDepth(10);   
+        Paredes2.setDepth(1);   
         
         this.physics.add.collider(this.daphne, Paredes);
         this.physics.add.collider(this.daphne, this.Puertas);
@@ -93,7 +93,50 @@ export default class Level1 extends Phaser.Scene{
         this.cajR1 = new breakableObjects(this,475, 3225, 2625, 3225,'cajaRompible',this.percival,this.daphne);
 
         this.physics.add.overlap(this.cajaM1, PlacasDePresion, (movableObject,tile) => {InteractableObjects.activarPlaca(this, movableObject, tile)});
+        this.physics.add.overlap(this.cajaM1.obCon, PlacasDePresion, (movableObject,tile) => {InteractableObjects.activarPlaca(this, movableObject, tile)});
     //#endregion
+
+    //INTERFAZ
+         this.PercivalAbility = this.add.image(60, 480, "percivalAbilityReady");
+         this.PercivalAbility.setScale(0.4);
+        this.PercivalAbility.setDepth(2);   
+         this.PercivalAbility.setScrollFactor(0);
+         
+         this.daphneAbility = this.add.image(480, 480, "daphneAbilityReady");
+         this.daphneAbility.setScale(0.4);
+         this.daphneAbility.setDepth(2);   
+         this.daphneAbility.setScrollFactor(0);
+
+        this.cooldowns = {
+        percival: 0,
+        daphne: 0
+        };
+
+        this.skillCooldownTime = 3000; // 3 segundos o lo que quieras
+
+        this.events.on("tryAbility", this.UseAbility, this);
+
+        // Mensajes flotantes
+        this.msgPercival = this.add.text(100, 500, "", {
+            fontSize: "16px",
+            color: "hsla(280, 3%, 82%, 1.00)",
+            fontStyle: "bold"
+        }).setScrollFactor(0).setDepth(10);
+
+        this.msgDaphne = this.add.text(220, 500, "", {
+            fontSize: "16px",
+            color: "hsla(280, 3%, 82%, 1.00)",
+            fontStyle: "bold"
+        }).setScrollFactor(0).setDepth(10);
+
+        // Cada cámara ignora el mensaje del otro jugador
+        this.percivalCam.ignore(this.msgDaphne);
+        this.percivalCam.ignore(this.daphneAbility);
+        this.daphneCam.ignore(this.msgPercival);
+        this.daphneCam.ignore(this.PercivalAbility);
+
+
+
     }
 
     update(t, dt){
@@ -117,6 +160,14 @@ export default class Level1 extends Phaser.Scene{
         this.load.image('cajaMovible', 'sprites/images/cajaMovible.png');
         this. load.image('cajaRompible','sprites/images/cajaRompible.png');
         this.load.image('cajaRota','sprites/images/cajaRompibleRota.png');
+        this.load.image('daphneAbilityReady', 'sprites/images/daphne/abilityEnabled.png');
+        this.load.image('daphneAbilityUsed', 'sprites/images/daphne/abilityDisabled.png');
+
+        this.load.image('percivalAbilityReady', 'sprites/images/percival/abilityEnabled.png');
+        this.load.image('percivalAbilityUsed', 'sprites/images/percival/abilityDisabled.png');
+        this.load.image('tilesM', 'sprites/tileSet/MagwartsTileset.png');
+        this.load.image('tilesM', 'sprites/tileSet/MagwartsTileset.png');
+
     }
 
     createAnims(){
@@ -137,5 +188,65 @@ export default class Level1 extends Phaser.Scene{
         //Daphne.play('daphneIdle');
     }
 
+    UseAbility(playerName, object, action) {
+        const now = this.time.now;
+
+        const abilityIcon = playerName === "percival" ? this.PercivalAbility : this.daphneAbility;
+        const readyTexture = playerName === "percival" ? "percivalAbilityReady" : "daphneAbilityReady";
+        const usedTexture = playerName === "percival" ? "percivalAbilityUsed" : "daphneAbilityUsed";
+        const msg = playerName === "percival" ? this.msgPercival : this.msgDaphne;
+
+        // Si la habilidad todavía está en cooldown
+        if (now < this.cooldowns[playerName]) {
+            msg.setText("Habilidad recargando...");
+            this.time.delayedCall(this.skillCooldownTime, () => msg.setText(""));
+            return;
+        }
+
+        if (playerName === "percival") {
+            // Siempre se ejecuta
+            if (action.inRange) {object.breakObject(); 
+            this.cooldowns[playerName] = now + this.skillCooldownTime;
+            abilityIcon.setTexture(usedTexture);
+            this.time.delayedCall(this.skillCooldownTime, () => abilityIcon.setTexture(readyTexture));
+            }
+            else {
+                    // por si acaso: mensaje corto (opcional)
+                    msg.setText("No hay nada que romper.");
+                    this.time.delayedCall(1000, () => msg.setText(""));
+                } 
+        } 
+        else if (playerName === "daphne") {
+            if (action.isDropping) {
+                // Asegúrate de que el objeto realmente estaba cogido antes de soltar
+                     object.restartCoolDown(); // esto hace toggle: deja el objeto
+                    this.cooldowns[playerName] = now + this.skillCooldownTime;
+                    abilityIcon.setTexture(usedTexture);
+                    this.time.delayedCall(this.skillCooldownTime, () => abilityIcon.setTexture(readyTexture));
+                }
+            else if(action.inRange){
+                object.restartCoolDown();
+            }
+            else {
+                    // por si acaso: mensaje corto (opcional)
+                    msg.setText("No estás agarrando nada.");
+                    this.time.delayedCall(1000, () => msg.setText(""));
+                }
+            
+        }
+    }
+
+    setSkillIcon(playerName, textureKey) {
+        this.skillIcons[playerName].setTexture(textureKey);
+    }
+
+    showMessage(text) {
+        this.messageText.setText(text);
+        this.messageText.setVisible(true);
+
+        this.scene.time.delayedCall(1000, () => {
+            this.messageText.setVisible(false);
+        });
+    }
     
 }

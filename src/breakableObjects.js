@@ -65,17 +65,18 @@ export default class BreakableObject extends Phaser.Physics.Arcade.Sprite{
              repeat: -1
              });
             } 
-
-            // Si pulsa SHIFT → romper
-            if (Phaser.Input.Keyboard.JustDown(this.keyShift)) {
-                this.breakObject();
-            }
         } 
         else if (distance >= this.breakRange && this.glowTween) {
             this.glowTween.stop();
             this.glowTween = null;
             this.alpha = 1;
         }
+        this.scene.input.keyboard.on('keydown', (event) => {
+            if (event.code === 'ShiftLeft') { // por ejemplo, Shift izquierdo para Percival
+                let action = { inRange: this.distance < this.breakRange, isDropping: true }; //no se utiliza is droping en percival asiq da igual el valor
+                this.scene.events.emit("tryAbility", "percival", this, action);
+            }
+        });
     }
 
     breakObject() {
