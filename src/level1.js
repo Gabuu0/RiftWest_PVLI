@@ -95,14 +95,22 @@ export default class Level1 extends Phaser.Scene{
 
         this.physics.add.overlap(this.cajaM1, PlacasDePresion, (movableObject,tile) => {InteractableObjects.activarPlaca(this, movableObject, tile)});
     
-        // Recorrido del vigilante
+        // Recorrido del profesor
         const recorrido1 = [
-        { x: 400, y: 3700 },
-        { x: 600, y: 3700 },
-        { x: 600, y: 3500 },
-        { x: 400, y: 3500 } ];
+        { x: 2600, y: 3600 },
+        { x: 2800, y: 3600 },
+        { x: 2800, y: 3700 },
+        { x: 2600, y: 3700 } ];
+        this.profesor = new Watchman(this,2600, 3700,"profesor",this.daphne,recorrido1);
+        
+        // Recorrido del sheriff
+        const recorrido2 = [
+        { x: 450, y: 3600 },
+        { x: 650, y: 3600 },
+        { x: 650, y: 3700 },
+        { x: 450, y: 3700 } ];
 
-        this.guard = new Watchman(this,400, 3700,"profesor",this.percival,recorrido1);
+        this.sheriff = new Watchman(this,450, 3700,"sheriff",this.percival,recorrido2);
         //#endregion
     }
 
@@ -129,6 +137,7 @@ export default class Level1 extends Phaser.Scene{
         this.load.image('cajaRota','sprites/images/cajaRompibleRota.png');
 
         this.load.image('profesor','sprites/images/profesor.jpg');
+        this.load.image('sheriff','sprites/images/sheriff.jpeg');
     }
 
     createAnims(){
