@@ -19,6 +19,7 @@ export default class InventoryItem extends Phaser.GameObjects.Container{
         this.description = this.scene.add.text(descriptionPos.x -descriptionOffset,descriptionPos.y/2,description,{
             fontSize: '20px',
             align: 'justify',
+            color: 'rgb(0,0,0)',
             wordWrap: {width: this.descriptionBg.displayWidth, useAdvancedWrap: true}
         });
         this.description.alpha = this.descriptionBg.alpha = 0.8;

@@ -26,8 +26,11 @@ export default class LevelPruebas extends Phaser.Scene{
             hasObj: false,
         });
 
+        this.players = this.add.group();
         this.percival = new Players(this,1500, 500,"P",0,"percival");
         this.daphne = new Players(this,4000,500,"D",0,"daphne");
+        this.players.add(this.percival);
+        this.players.add(this.daphne);
         
         this.keys = this.add.group();
         this.createItems();
@@ -51,6 +54,10 @@ export default class LevelPruebas extends Phaser.Scene{
 
         this.input.keyboard.on('keydown-ESC', () => {
             console.log('ESC pulsado');
+            let pauseScene = this.scene.manager.getScene('pauseMenu');
+            if(pauseScene.level != this.scene.key){
+                pauseScene.level = this.scene.key;
+            }
             this.scene.launch('pauseMenu');   // Lanza el menú
             this.scene.pause();              // Pausa la escena del juego
         });
@@ -84,70 +91,60 @@ export default class LevelPruebas extends Phaser.Scene{
         const Paredes2 = this.addMapLayer('paredes(sin_colision)',false);
         Paredes2.setDepth(3);   
 
+        //#region Creacion de los objetos del mapa (puertas, placas de presion, etc)
+
+        //Se obtienen las layers de los objetos para acceder a los objetos de cada una
+        //en cada layer se busca la propiedad identifier de cada objeto, en el caso de las puertas tambien se busca su tipo 
+        //  -identifier(int): identificador usado para abrir las puertas segun el mismo, las puertas se abriran si se interactua con un objeto con el mismo identificador
+        //  -doorType(int): tipo de puerta usado para saber que frame del spriteSheet de puertas usar
+        //Ademas se agrupa cada tipo de objeto en un grupo y se escala el objeto(tanto el tamaño como la posicion)
+
         const scaling = 5;
         this.doors = this.add.group();
         const doorsLayer = this.map.getObjectLayer('puertas');
         doorsLayer.objects.forEach(obj =>{
             let id = obj.properties.find(prop => prop.name ==='identifier').value;
             let doorType = obj.properties.find(prop => prop.name ==='doorType').value;
-            let door = new Door(this, obj.x, obj.y,'doors',doorType,id);
-            door.setScale(scaling);
-            //door.setRotation(Phaser.Math.DegToRad(obj.rotation));
-            this.scaleObjectPosition(door,scaling);
+            let door = new Door(this, obj.x, obj.y,'doors',doorType,obj.rotation,id);
+            this.scaleObject(door,scaling);
             this.doors.add(door);
         })
-/*
-let doorsAux = this.map.createFromObjects('puertas', {name: 'puerta3', key: 'tilesDoors', frame:2});
-doorsAux.forEach(door =>{
-    door.setScale(5);
-    door.setDepth(2);
-    this.scaleObjectPosition(door,scaling);
-    this.doors.add(door);
-})
 
-this.preassurePlatesAux = this.map.createFromObjects('placas_presion', {name:'placa', key: 'preassurePlate'});
-this.preassurePlatesAux.forEach(plate =>{
-    plate.setScale(5);
-    this.scaleObjectPosition(plate,scaling);
-    this.preassurePlates.add(plate);
-    })
-    */
         this.preassurePlates = this.add.group();
         const platesLayer = this.map.getObjectLayer('placas_presion');
         platesLayer.objects.forEach(obj =>{
             let id = obj.properties.find(prop => prop.name ==='identifier').value;
             let plate = new PreassurePlate(this, obj.x, obj.y,'preassurePlate',id);
             plate.setScale(scaling);
-            this.scaleObjectPosition(plate,scaling);
+            this.scaleObject(plate,scaling);
             this.preassurePlates.add(plate);
         });
+        //#endregion
         
         
         
         //#endregion
 
         //#region Colisiones
-        this.physics.add.collider(this.daphne, Paredes);
-        //this.physics.add.collider(this.daphne, this.Puertas);
-        //this.physics.add.overlap(this.daphne, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
-        this.physics.add.overlap(this.percival,this.keys,(jugador,llave)=>{
-            //se oculta la llave si es posible cogerla
+        this.physics.add.collider(this.players,Paredes);
+        this.physics.add.collider(this.players,this.doors);
+        this.physics.add.overlap(this.players,this.preassurePlates);
+        this.physics.add.overlap(this.players,this.keys,(jugador,llave)=>{
+            //se elimina la llave si es posible cogerla (inventario del jugador no lleno)
             if(jugador.pickItem(llave)) {
                 this.events.emit('itemPickedP', llave);
                 llave.destroy(); 
             }
-        })
+        });
 
-        this.physics.add.overlap(this.daphne,this.keys,(jugador,llave)=>{
-            //se oculta la llave si es posible cogerla
-            if(jugador.pickItem(llave)) {
-                this.events.emit('itemPickedD', llave);
-                llave.destroy(); 
-            }
-        })
 
-        this.physics.add.collider(this.percival, Paredes);
-        //this.physics.add.collider(this.percival, this.Puertas);
+
+
+        //this.physics.add.overlap(this.daphne, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
+       
+
+       
+
         //this.physics.add.overlap(this.percival, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
 
         this.cajaM1 = new movableObject(this, 3140, 3100, 980, 3100, "cajaMovible", this.percival, this.daphne, Paredes)
@@ -272,11 +269,10 @@ this.preassurePlatesAux.forEach(plate =>{
         return layer;
     }
 
-    scaleObjectPosition(object,scaling){
+    scaleObject(object,scaling){
         object.x *= scaling;
         object.y *= scaling;
-        console.log(object.y);
         object.y += (object.height*scaling);
-        console.log(object.y);
+        object.setScale(scaling);
     }
 }

@@ -50,6 +50,9 @@ export default class InventoryDaphne extends Phaser.Scene{
                     })
                 }
                 else if(!clown.hasObj){
+                    if(this.inventorySlots[this.slotSelected].list.length < 2){
+                        return;
+                    }
                     this.registry.set('clownObj',{
                         objData: this.inventorySlots[this.slotSelected].list[1].itemData,
                         hasObj:true

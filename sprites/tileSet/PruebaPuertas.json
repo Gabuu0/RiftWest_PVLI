@@ -98,8 +98,9 @@
          "name":"puertas",
          "objects":[
                 {
+                 "gid":3,
                  "height":16,
-                 "id":21,
+                 "id":26,
                  "name":"puerta3",
                  "properties":[
                         {
@@ -116,12 +117,13 @@
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":720,
+                 "x":704,
                  "y":176
                 }, 
                 {
+                 "gid":3,
                  "height":16,
-                 "id":25,
+                 "id":27,
                  "name":"puerta3",
                  "properties":[
                         {
@@ -168,7 +170,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":26,
+ "nextobjectid":28,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.0",
@@ -182,6 +184,7 @@
          "imagewidth":96,
          "margin":0,
          "name":"Doors",
+         "objectalignment":"topleft",
          "spacing":0,
          "tilecount":3,
          "tileheight":16,
@@ -248,6 +251,7 @@
          "imagewidth":300,
          "margin":0,
          "name":"DustwartsTileset",
+         "objectalignment":"topleft",
          "spacing":0,
          "tilecount":126,
          "tileheight":16,
@@ -274,6 +278,7 @@
          "imagewidth":160,
          "margin":0,
          "name":"TileSetPJ",
+         "objectalignment":"topleft",
          "spacing":0,
          "tilecount":100,
          "tileheight":16,
@@ -314,6 +319,7 @@
          "imagewidth":300,
          "margin":0,
          "name":"MagwartsTileset",
+         "objectalignment":"topleft",
          "spacing":0,
          "tilecount":126,
          "tileheight":16,
