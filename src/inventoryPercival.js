@@ -9,16 +9,16 @@ export default class InventoryPercival extends Phaser.Scene{
     }
 
     preload(){
-        this.load.spritesheet('hueco','sprites/images/inventory/inventorySpace.png',{frameWidth: 64, frameHeight:64});
+        this.load.spritesheet('huecoP','sprites/images/percival/inventorySpace.png',{frameWidth: 64, frameHeight:64});
     }
 
     create(){
         this.cameras.main.setViewport(0,108,108,270);
         //array de los huecos de inventario
                 let inventorySlots = [];
-                inventorySlots.push(new InventorySlot(this,42,32,'hueco',true));
-                inventorySlots.push(new InventorySlot(this,42,135,'hueco',false));
-                inventorySlots.push(new InventorySlot(this,42,238,'hueco',false));
+                inventorySlots.push(new InventorySlot(this,42,32,'huecoP',true));
+                inventorySlots.push(new InventorySlot(this,42,135,'huecoP',false));
+                inventorySlots.push(new InventorySlot(this,42,238,'huecoP',false));
         
                 this.slotSelected = 0;
         

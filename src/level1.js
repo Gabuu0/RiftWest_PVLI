@@ -97,43 +97,53 @@ export default class Level1 extends Phaser.Scene{
     //#endregion
 
     //INTERFAZ
-         this.PercivalAbility = this.add.image(60, 480, "percivalAbilityReady");
-         this.PercivalAbility.setScale(0.4);
-        this.PercivalAbility.setDepth(2);   
-         this.PercivalAbility.setScrollFactor(0);
+         this.percivalAbility = this.add.image(60, 480, "percivalAbilityReady");
+         this.percivalAbility.setScale(0.4);
+         this.percivalAbility.setDepth(2);   
+         this.percivalAbility.setScrollFactor(0);
          
          this.daphneAbility = this.add.image(480, 480, "daphneAbilityReady");
          this.daphneAbility.setScale(0.4);
          this.daphneAbility.setDepth(2);   
-         this.daphneAbility.setScrollFactor(0);
+        this.daphneAbility.setScrollFactor(0);
+         //HEADERS
+         this.percivalHeader = this.add.image(60,50,"percivalHead").setScale(0.4).setDepth(2).setScrollFactor(0);
+         this.daphneHeader = this.add.image(480,50,"daphneHead").setScale(0.4).setDepth(2).setScrollFactor(0);
 
-        this.cooldowns = {
-        percival: 0,
-        daphne: 0
+         this.percivalMapIcon =this.add.image(85, 50, "percivalMapEnabled").setScrollFactor(0).setDepth(2).setScale(0.4);
+
+         this.daphneMapIcon =this.add.image(455, 50, "daphneMapEnabled").setScrollFactor(0).setDepth(2).setScale(0.4);
+
+         
+         this.cooldowns = {
+         percival: 0,
+         daphne: 0
         };
 
         this.skillCooldownTime = 3000; // 3 segundos o lo que quieras
-
-        this.events.on("tryAbility", this.UseAbility, this);
 
         // Mensajes flotantes
         this.msgPercival = this.add.text(100, 500, "", {
             fontSize: "16px",
             color: "hsla(280, 3%, 82%, 1.00)",
             fontStyle: "bold"
-        }).setScrollFactor(0).setDepth(10);
+        }).setScrollFactor(0).setDepth(2);
 
         this.msgDaphne = this.add.text(220, 500, "", {
             fontSize: "16px",
             color: "hsla(280, 3%, 82%, 1.00)",
             fontStyle: "bold"
-        }).setScrollFactor(0).setDepth(10);
+        }).setScrollFactor(0).setDepth(2);
 
         // Cada cámara ignora el mensaje del otro jugador
         this.percivalCam.ignore(this.msgDaphne);
+        this.percivalCam.ignore(this.daphneHeader);
         this.percivalCam.ignore(this.daphneAbility);
+        this.percivalCam.ignore(this.daphneMapIcon);
         this.daphneCam.ignore(this.msgPercival);
-        this.daphneCam.ignore(this.PercivalAbility);
+        this.daphneCam.ignore(this.percivalHeader);
+        this.daphneCam.ignore(this.percivalAbility);
+        this.daphneCam.ignore(this.percivalMapIcon);
 
 
 
@@ -160,11 +170,19 @@ export default class Level1 extends Phaser.Scene{
         this.load.image('cajaMovible', 'sprites/images/cajaMovible.png');
         this. load.image('cajaRompible','sprites/images/cajaRompible.png');
         this.load.image('cajaRota','sprites/images/cajaRompibleRota.png');
+
+        this.load.image('daphneMapEnabled', 'sprites/images/daphne/mapIcon.png');
+        this.load.image('percivalMapEnabled', 'sprites/images/percival/mapIcon.png');
+
         this.load.image('daphneAbilityReady', 'sprites/images/daphne/abilityEnabled.png');
         this.load.image('daphneAbilityUsed', 'sprites/images/daphne/abilityDisabled.png');
-
         this.load.image('percivalAbilityReady', 'sprites/images/percival/abilityEnabled.png');
         this.load.image('percivalAbilityUsed', 'sprites/images/percival/abilityDisabled.png');
+
+        this.load.image('daphneHead', 'sprites/images/daphne/head.png');
+        this.load.image('percivalHead', 'sprites/images/percival/head.png');
+
+
         this.load.image('tilesM', 'sprites/tileSet/MagwartsTileset.png');
         this.load.image('tilesM', 'sprites/tileSet/MagwartsTileset.png');
 
@@ -196,7 +214,6 @@ export default class Level1 extends Phaser.Scene{
         const usedTexture = playerName === "percival" ? "percivalAbilityUsed" : "daphneAbilityUsed";
         const msg = playerName === "percival" ? this.msgPercival : this.msgDaphne;
 
-        // Si la habilidad todavía está en cooldown
         if (now < this.cooldowns[playerName]) {
             msg.setText("Habilidad recargando...");
             this.time.delayedCall(this.skillCooldownTime, () => msg.setText(""));
@@ -204,22 +221,19 @@ export default class Level1 extends Phaser.Scene{
         }
 
         if (playerName === "percival") {
-            // Siempre se ejecuta
             if (action.inRange) {object.breakObject(); 
             this.cooldowns[playerName] = now + this.skillCooldownTime;
             abilityIcon.setTexture(usedTexture);
             this.time.delayedCall(this.skillCooldownTime, () => abilityIcon.setTexture(readyTexture));
             }
             else {
-                    // por si acaso: mensaje corto (opcional)
                     msg.setText("No hay nada que romper.");
                     this.time.delayedCall(1000, () => msg.setText(""));
                 } 
         } 
         else if (playerName === "daphne") {
             if (action.isDropping) {
-                // Asegúrate de que el objeto realmente estaba cogido antes de soltar
-                     object.restartCoolDown(); // esto hace toggle: deja el objeto
+                     object.restartCoolDown(); // esto hace toggle, deja el objeto
                     this.cooldowns[playerName] = now + this.skillCooldownTime;
                     abilityIcon.setTexture(usedTexture);
                     this.time.delayedCall(this.skillCooldownTime, () => abilityIcon.setTexture(readyTexture));
@@ -234,10 +248,6 @@ export default class Level1 extends Phaser.Scene{
                 }
             
         }
-    }
-
-    setSkillIcon(playerName, textureKey) {
-        this.skillIcons[playerName].setTexture(textureKey);
     }
 
     showMessage(text) {

@@ -1,7 +1,7 @@
 export default class movableObject extends Phaser.Physics.Arcade.Sprite{
     constructor(scene, x, y, cx, cy, texture, Player1, Player2, layer){
         super(scene, x, y, texture)
-
+        this.scene = scene;
         this.tam = 5
         this.haveObject = false
         this.coolDown = false
@@ -35,7 +35,7 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
                     inRange: this.distance < this.distanceMax, 
                     isDropping: this.haveObject 
                 };
-                this.scene.events.emit("tryAbility", "daphne", this, action);
+                this.scene.UseAbility("daphne",this,action);
             }
         });
 

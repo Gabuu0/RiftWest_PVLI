@@ -9,7 +9,7 @@ export default class InventoryDaphne extends Phaser.Scene{
     }
 
     preload(){
-        this.load.spritesheet('hueco','sprites/images/inventory/inventorySpace.png',{frameWidth: 64, frameHeight:64});
+        this.load.spritesheet('huecoD','sprites/images/daphne/inventorySpace.png',{frameWidth: 64, frameHeight:64});
     }
 
     create(){
@@ -17,9 +17,9 @@ export default class InventoryDaphne extends Phaser.Scene{
 
         //array de los huecos de inventario
         let inventorySlots = [];
-        inventorySlots.push(new InventorySlot(this,42,32,'hueco',true));
-        inventorySlots.push(new InventorySlot(this,42,135,'hueco',false));
-        inventorySlots.push(new InventorySlot(this,42,238,'hueco',false));
+        inventorySlots.push(new InventorySlot(this,42,32,'huecoD',true));
+        inventorySlots.push(new InventorySlot(this,42,135,'huecoD',false));
+        inventorySlots.push(new InventorySlot(this,42,238,'huecoD',false));
 
         this.slotSelected = 0;
 
