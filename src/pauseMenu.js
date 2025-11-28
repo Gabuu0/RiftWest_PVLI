@@ -4,6 +4,7 @@ import Menu from "./main.js";
 export default class PauseMenu extends Phaser.Scene {
     constructor(){
         super({key: 'pauseMenu'});
+        this.level = 'level1';
     }
 
     create(){
@@ -93,7 +94,7 @@ export default class PauseMenu extends Phaser.Scene {
         continueButton.on('pointerdown', () => {
             cerrarMenu(() => {
                 this.scene.stop();
-                this.scene.resume('level1');
+                this.scene.resume(this.level);
                 this.scene.resume('InventarioPercival');
                 this.scene.resume('InventarioDaphne');
             });
@@ -102,7 +103,9 @@ export default class PauseMenu extends Phaser.Scene {
         // Interaccion con boton de inicio
         menuButton.on('pointerdown', () => {
             cerrarMenu(() => {
-                this.scene.stop('level1');
+                this.scene.stop(this.level);
+                this.scene.stop('InventarioPercival');
+                this.scene.stop('InventarioDaphne');
                 this.scene.stop();
                 this.scene.start('menu');
             });
@@ -112,8 +115,8 @@ export default class PauseMenu extends Phaser.Scene {
         restartButton.on('pointerdown', () => {
             cerrarMenu(() => {
                 this.scene.stop();
-                this.scene.stop('level1'); 
-                this.scene.start('level1');
+                this.scene.stop(this.level); 
+                this.scene.start(this.level);
             });
         });
 
@@ -121,8 +124,9 @@ export default class PauseMenu extends Phaser.Scene {
         this.input.keyboard.on('keydown-ESC', () => {
             cerrarMenu(() => {
                 this.scene.stop();
-                this.scene.resume('level1');
+                this.scene.resume(this.level);
             });
         });
     }
+
 }

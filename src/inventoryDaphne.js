@@ -1,46 +1,66 @@
 import InventorySlot from "./inventorySlot.js";
+import InventoryItem from "./inventoryItem.js";
 export default class InventoryDaphne extends Phaser.Scene{
     constructor(){
         super({key:'InventarioDaphne'});
     }
 
-    init(){
+    init(player){
+        this.player = player;
 
     }
 
     preload(){
-        this.load.spritesheet('hueco','sprites/images/inventory/inventorySpace.png',{frameWidth: 64, frameHeight:64});
     }
 
     create(){
-        this.cameras.main.setViewport(972,108,108,270);
+        this.cameras.main.setViewport(826,108,256,384);
 
         //array de los huecos de inventario
-        let inventorySlots = [];
-        inventorySlots.push(new InventorySlot(this,42,32,'hueco',true));
-        inventorySlots.push(new InventorySlot(this,42,135,'hueco',false));
-        inventorySlots.push(new InventorySlot(this,42,238,'hueco',false));
-
+        this.inventorySlots = [];
+        this.inventorySlots.push(new InventorySlot(this,222,32,'slot',0,false,'SlotSelected'));
+        this.inventorySlots.push(new InventorySlot(this,222,135,'slot',0,false,'SlotSelected'));
+        this.inventorySlots.push(new InventorySlot(this,222,238,'slot',0,false,'SlotSelected'));
         this.slotSelected = 0;
+        this.inventorySlots[this.slotSelected].setIsSelected();
 
         //Gestion del movimiento por el inventario: 1 para subir 2 para bajar
         this.input.keyboard.on('keydown', (event)=>{
             if(event.code === 'Numpad1'){
                 if(this.slotSelected > 0){
-                    inventorySlots[this.slotSelected].setIsSelected();
-                    inventorySlots[--this.slotSelected].setIsSelected();
+                    this.inventorySlots[this.slotSelected].setIsSelected();
+                    this.inventorySlots[--this.slotSelected].setIsSelected();
                 }
             }
-            else if(event.code === 'Numpad2'){
-               if(this.slotSelected < inventorySlots.length-1){
-                    inventorySlots[this.slotSelected].setIsSelected();
-                    inventorySlots[++this.slotSelected].setIsSelected();
+            else if(event.code === 'Numpad3'){
+               if(this.slotSelected < this.inventorySlots.length-1){
+                    this.inventorySlots[this.slotSelected].setIsSelected();
+                    this.inventorySlots[++this.slotSelected].setIsSelected();
                 }
             }
             else if(event.code === 'Escape'){
                 this.scene.pause();
             }
-
+             else if(event.code ==='Enter'){
+                let clown = this.registry.get('clownObj');
+                if(clown.hasObj &&this.player.pickItem(clown.objData)){
+                    this.registry.set('clownObj',{
+                        objData: {},
+                        hasObj: false,
+                    })
+                }
+                else if(!clown.hasObj){
+                    if(this.inventorySlots[this.slotSelected].list.length < 2){
+                        return;
+                    }
+                    this.registry.set('clownObj',{
+                        objData: this.inventorySlots[this.slotSelected].list[1].itemData,
+                        hasObj:true
+                    });
+                    this.player.removeItem(this.inventorySlots[this.slotSelected].list[1].identifier);
+                    this.inventorySlots[this.slotSelected].list[1].destroy(true);
+                }
+            }
         })
 
       
@@ -51,9 +71,20 @@ export default class InventoryDaphne extends Phaser.Scene{
 
     }
 
-    setItems(objects){
-        for(i = 0;i<inventorySlots.length && i<objects.length;i++){
-            inventorySlots[i].add(objects[i]);
-        }
+    setItem(item){
+           let i= 0;
+           let itemPicked = false;
+           const descriptionPos = {x:-80,y:32};
+
+           //se coloca el item en la primera posicion vacia del inventario
+           while(i<this.inventorySlots.length &&!itemPicked){
+                if(this.inventorySlots[i].length === 1){
+                    itemPicked = true;
+                    this.inventorySlots[i].add(new InventoryItem(this,0,0,item.texture,'descriptionBox',item.description,descriptionPos,item.identifier));
+                    this.inventorySlots[i].manageItemDescription();
+                }
+                else {i++;}
+    
+           }
     }
 }

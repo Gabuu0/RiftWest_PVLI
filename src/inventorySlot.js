@@ -5,25 +5,34 @@ export default class InventorySlot extends Phaser.GameObjects.Container{
         this.scene.add.existing(this);
         this.isSelected= selected;
         
-        this.slotImage = this.scene.add.image(x,y,imagekey,0);
-        this.setImageFrame(); 
-
-       
+        this.slotImage = this.scene.add.sprite(0,0,imagekey,0);
+        this.add(this.slotImage);
+        
+        this.setSize(this.slotImage.width,this.slotImage.height);
     }
-
+    
     setIsSelected(){
         this.isSelected = !this.isSelected;
-        this.setImageFrame();    
+        this.manageItemDescription();
+        this.manageAnimation();
+    }
+    
+    manageItemDescription(){
+        if(this.length >1){
+            if(this.isSelected) this.list[1].showDescription();
+            else this.list[1].hideDescription();
+        }
     }
 
-
-    //Cambia el frame segun si esta seleccionado o no
-    setImageFrame(){
-        if(!this.isSelected){
-            this.slotImage.setFrame(0); 
-        } 
+    manageAnimation(){
+        if(this.isSelected){
+            this.slotImage.play('SlotSelected');
+        }
         else{
-            this.slotImage.setFrame(1);
-        } 
+            this.slotImage.play('SlotIdle');
+        }
     }
+
+
 }
+
