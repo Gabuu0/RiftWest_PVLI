@@ -50,7 +50,7 @@ export default class InventoryPercival extends Phaser.Scene{
                     })
                 }
                 else if(!clown.hasObj){
-                    if(this.inventorySlots[this.slotSelected].list.length < 2){
+                    if(this.inventorySlots[this.slotSelected].length < 2){
                         return;
                     }
                     this.registry.set('clownObj',{
@@ -76,10 +76,25 @@ export default class InventoryPercival extends Phaser.Scene{
        const descriptionPos = {x:80,y:32};
        //se coloca el item en la primera posicion vacia del inventario
        while(i<this.inventorySlots.length &&!itemPicked){
-            if(this.inventorySlots[i].length === 1){
+            if(this.inventorySlots[i].length === 1 ){
                 itemPicked = true;
                 this.inventorySlots[i].add(new InventoryItem(this,0,0,item.texture,'descriptionBox',item.description,descriptionPos,item.identifier));
                 this.inventorySlots[i].manageItemDescription();
+            }
+            else {i++;}
+
+       }
+    }
+
+    removeItem(itemId){
+    let i= 0;
+       let itemRemoved = false;
+       //se coloca el item en la primera posicion vacia del inventario
+       while(i<this.inventorySlots.length &&!itemRemoved){
+            if(this.inventorySlots[i].length === 2 && this.inventorySlots[i].list[1].identifier === itemId){
+                itemRemoved = true;
+                this.inventorySlots[this.slotSelected].list[1].destroy(true);
+
             }
             else {i++;}
 

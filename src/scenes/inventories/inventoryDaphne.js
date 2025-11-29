@@ -87,4 +87,19 @@ export default class InventoryDaphne extends Phaser.Scene{
     
            }
     }
+
+    removeItem(itemId){
+    let i= 0;
+       let itemRemoved = false;
+       //se coloca el item en la primera posicion vacia del inventario
+       while(i<this.inventorySlots.length &&!itemRemoved){
+            if(this.inventorySlots[i].length === 2 && this.inventorySlots[i].list[1].identifier === itemId){
+                itemRemoved = true;
+                this.inventorySlots[this.slotSelected].list[1].destroy(true);
+
+            }
+            else {i++;}
+
+       }
+    }
 }

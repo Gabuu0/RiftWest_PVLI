@@ -21,7 +21,7 @@ export default class Menu extends Phaser.Scene {
 
          jugarButton.on('pointerdown', () => {
              console.log('JUGAR pulsado');
-              this.scene.start('level1');
+              this.scene.start('levelPruebas');
          });
     }
 }

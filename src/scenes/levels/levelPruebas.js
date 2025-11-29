@@ -36,11 +36,7 @@ export default class LevelPruebas extends Phaser.Scene{
 
         this.percival.setDepth(1);
         this.daphne.setDepth(1);
-/*
-        console.log("Movement:", Movement);
-        console.log("Percival:", this.percival);
-        console.log("Daphne:", this.daphne);
-*/
+
         this.scene.launch('InventarioPercival',this.percival);
         this.scene.launch('InventarioDaphne',this.daphne);
         this.inventario1 = this.scene.get('InventarioPercival');
@@ -126,8 +122,19 @@ export default class LevelPruebas extends Phaser.Scene{
 
         //#region Colisiones
         this.physics.add.collider(this.players,Paredes);
-        this.physics.add.collider(this.players,this.doors);
-        this.physics.add.overlap(this.players,this.preassurePlates);
+        this.physics.add.collider(this.players,this.doors,(jugador,puerta)=>{
+            if(jugador.haveItem(puerta.identifier)){
+                puerta.destroy(true);
+            }
+        });
+        this.physics.add.overlap(this.players,this.preassurePlates,(jugador,placa)=>{
+            //se miran las puertas y si alguna tiene el mismo identificador que la placa se abre
+            this.doors.getChildren().forEach(door =>{
+                if(door.identifier === placa.identifier){
+                    door.openDoor();
+                }
+            });
+        });
         this.physics.add.overlap(this.players,this.keys,(jugador,llave)=>{
             //se elimina la llave si es posible cogerla (inventario del jugador no lleno)
             if(jugador.pickItem(llave)) {
@@ -137,19 +144,9 @@ export default class LevelPruebas extends Phaser.Scene{
         });
 
 
-
-
-        //this.physics.add.overlap(this.daphne, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
-       
-
-       
-
-        //this.physics.add.overlap(this.percival, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
-
         this.cajaM1 = new movableObject(this, 3140, 3100, 980, 3100, "cajaMovible", this.percival, this.daphne, Paredes)
         this.cajR1 = new breakableObjects(this,475, 3225, 2625, 3225,'cajaRompible',this.percival,this.daphne);
         
-        //this.physics.add.overlap(this.cajaM1, PlacasDePresion, (movableObject,tile) => {InteractableObjects.activarPlaca(this, movableObject, tile)});
         //#endregion
         //#region SistemaDialogos
         this.dialog = new DialogText(this, {});

@@ -77,4 +77,17 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
         this.objects.splice(i,1);
     }
 
+
+    haveItem(itemId){
+        let hasItem = false;
+        this.objects.forEach(item =>{
+            if(item.identifier === itemId){
+                this.inventoryScene.removeItem(itemId);
+                this.removeItem(itemId);
+                hasItem = true;
+            }
+        })
+        return hasItem;
+    }
+
 }
