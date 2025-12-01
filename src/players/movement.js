@@ -40,8 +40,24 @@ export default class Movement{
             player.body.setVelocityX(this.speed);
         }
 
+        //Controla animaciones
+        //Si no se mueve
+        if (player.body.velocity.x === 0 && player.body.velocity.y === 0) {
+            player.play(player.animations.idle, true);
+        }
+        //Si se mueve en horizontal
+        else if(player.body.velocity.y != 0)
+        {
+            if (player.body.velocity.y < 0) player.play(player.animations.up, true);
+            else player.play(player.animations.down, true);
+        }
+        //Si se mueve en vertical
+        else if(player.body.velocity.x != 0)
+        {
+            if (player.body.velocity.x < 0) player.play(player.animations.right, true);
+            else player.play(player.animations.left, true);
+        }
+
         player.body.velocity.normalize().scale(this.speed);
-
-
     }
 }
