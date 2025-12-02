@@ -32,13 +32,9 @@ export default class Level1 extends Phaser.Scene{
 
         this.percival.setDepth(1);
         this.daphne.setDepth(1);
-/*
-        console.log("Movement:", Movement);
-        console.log("Percival:", this.percival);
-        console.log("Daphne:", this.daphne);
-*/
-        this.scene.launch('InventarioPercival',this.percival);
-        this.scene.launch('InventarioDaphne',this.daphne);
+
+        this.scene.launch('InventarioPercival',this.percival,this);
+        this.scene.launch('InventarioDaphne',this.daphne,this);
         this.inventario1 = this.scene.get('InventarioPercival');
         this.inventario2 = this.scene.get('InventarioDaphne');
 
@@ -135,7 +131,12 @@ export default class Level1 extends Phaser.Scene{
             [1, "Estamos fumando marihuana (Maybach Música)"],
             [2, "Hoy serás mi esclava en el cuarto de un motel (Carbon Fiber Music)"]
         ], true);
+            //#region CreacionDialogosPayaso
+            this.createClownDialogs();
+            //#endregion
         //#endregion
+
+
     }
 
     update(t, dt){
@@ -302,6 +303,23 @@ export default class Level1 extends Phaser.Scene{
         this.keys.add(new Key(this, 450,3700,'llaveMapa','llaveInventario','keyIdle','Llave de tu vieja',2).setDepth(5))
         this.keys.add(new Key(this, 425,3800,'llaveMapa','llaveInventario','keyIdle','Llavecita de mi cora',3).setDepth(5))
         this.keys.add(new Key(this, 445,3800,'llaveMapa','llaveInventario','keyIdle','Llave inglesa',3).setDepth(5))
+    }
+
+
+    showClownMessage(){
+
+    }
+
+    createClownDialogs(){
+        //chistes de cuando pillas un item del payaso
+        this.clownGetItemJokes = [
+            "Manin pa ti el objeto, que pesa mucho , pero no tanto como tu vieja",
+            "Uff menos mal que me lo has cogido, y el objeto tambien",
+            "Jope, ya le empezaba a tener cariño a ese objeto :(",
+        ];
+
+
+
     }
 
     

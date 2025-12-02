@@ -5,9 +5,9 @@ export default class InventoryDaphne extends Phaser.Scene{
         super({key:'InventarioDaphne'});
     }
 
-    init(player){
+    init(player,playerScene){
         this.player = player;
-
+        this.playerScene = playerScene;
     }
 
     preload(){
