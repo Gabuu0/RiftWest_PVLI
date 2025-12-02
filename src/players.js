@@ -9,29 +9,29 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
         this.body.setOffset(55,100);
         console.log("Body añadido:", this.body);
 
-        this.maxObjs = 3;
-
-        this.objects = [];
-
         this.type = type;
         this.animations = this.getAnimationsByType();
         this.inventory = this.getInventoryByType();
-        this.inventoryScene = this.scene.scene.get(this.inventory.sceneKey);
-        
+
         this.scene.input.keyboard.on('keydown',(event)=>{
-            if(event.code ===this.inventory.key){
-                
-                if(!this.scene.scene.isActive(this.inventory.sceneKey)){
-                    this.scene.scene.wake(this.inventory.sceneKey);
+            if(event.code === this.inventory.key){
+
+                if(!this.scene.scene.isActive(this.inventory.scene)){
+                    this.scene.scene.launch(this.inventory.scene);
+                    console.log('Escena cargada:' + this.inventory.scene);
                     return;
                 }
                 else{
-                    this.scene.scene.sleep(this.inventory.sceneKey);
+                    this.scene.scene.sleep(this.inventory.scene);
+                    console.log('Escena dormida:' + this.inventory.scene);
                 }
                 
             }
-        })
-
+            else if (event.code === 'KeyZ' || event.code === 'KeyM') {
+                this.scene.showMap(this.type);
+            }
+        });
+        //this.play(type === "percival" ? "PercivalIdle" : "DaphneIdle", true);
         this.play(this.animations.idle);
     }
 
@@ -44,37 +44,16 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
             percival:{ idle: "PercivalIdle"},
             daphne:{ idle: "DaphneIdle"},
         }
+        console.log("Animación actual:", this.anims.currentAnim?.key);
         return animations[this.type];
     }
 
     getInventoryByType(){
         const inventory ={
-            percival:{key: 'KeyQ', sceneKey: 'InventarioPercival'},
-            daphne:{key: 'ControlRight', sceneKey: 'InventarioDaphne'},
+            percival:{key: 'KeyQ', scene: 'InventarioPercival'},
+            daphne:{key: 'ControlRight', scene: 'InventarioDaphne'},
         }
         return inventory[this.type];
-    }
-
-    pickItem(item){
-        if(this.objects.length < this.maxObjs){
-            const itemData={
-                texture: item.textureInventory,
-                description: item.description,
-                identifier:item.identifier,
-            }
-            this.inventoryScene.setItem(itemData); 
-            this.objects.push(itemData);
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    removeItem(itemId){
-        let i = 0;
-        while(i<this.objects.length && this.objects[i].identifier != itemId) i++;
-        this.objects.splice(i,1);
     }
 
 }

@@ -1,9 +1,8 @@
-import InventoryDaphne from "./scenes/inventories/inventoryDaphne.js";
-import InventoryPercival from "./scenes/inventories/inventoryPercival.js";
-import Level1 from "./scenes/levels/level1.js";
-import LevelPruebas from "./scenes/levels/levelPruebas.js";
-import Menu from "./scenes/main.js";
-import PauseMenu from "./scenes/pauseMenu.js";
+import InventoryDaphne from "./inventoryDaphne.js";
+import InventoryPercival from "./inventoryPercival.js";
+import Level1 from "./level1.js";
+import Menu from "./main.js";
+import PauseMenu from "./pauseMenu.js";
 
 const config = {
 	type: Phaser.CANVAS,
@@ -13,11 +12,11 @@ const config = {
 	scale: {
 	autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
 	},
-	scene: [Menu,LevelPruebas, Level1,InventoryDaphne,InventoryPercival, PauseMenu],
+	scene: [Menu, Level1,InventoryDaphne,InventoryPercival, PauseMenu],
 	physics: {
         default: "arcade",
         arcade: {
-            debug: true,
+            debug: false,
             gravity: { y: 0 },
         },
     },
