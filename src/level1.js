@@ -97,6 +97,14 @@ export default class Level1 extends Phaser.Scene{
     //#endregion
 
     //INTERFAZ
+         //MAPS
+         this.daphneMap = this.add.image(580, 150, "daphneMap").setVisible(false);
+         this.daphneMap.setDepth(2);   
+         this.daphneMap.setScrollFactor(0);
+         this.percivalMap = this.add.image(250, 150, "percivalMap").setVisible(false);
+         this.percivalMap.setDepth(2);   
+         this.percivalMap.setScrollFactor(0);
+         //ABILITIES
          this.percivalAbility = this.add.image(60, 480, "percivalAbilityReady");
          this.percivalAbility.setScale(0.4);
          this.percivalAbility.setDepth(2);   
@@ -140,10 +148,13 @@ export default class Level1 extends Phaser.Scene{
         this.percivalCam.ignore(this.daphneHeader);
         this.percivalCam.ignore(this.daphneAbility);
         this.percivalCam.ignore(this.daphneMapIcon);
+        this.percivalCam.ignore(this.daphneMap);
+        
         this.daphneCam.ignore(this.msgPercival);
         this.daphneCam.ignore(this.percivalHeader);
         this.daphneCam.ignore(this.percivalAbility);
         this.daphneCam.ignore(this.percivalMapIcon);
+        this.daphneCam.ignore(this.percivalMap);
 
 
 
@@ -173,6 +184,8 @@ export default class Level1 extends Phaser.Scene{
 
         this.load.image('daphneMapEnabled', 'sprites/images/daphne/mapIcon.png');
         this.load.image('percivalMapEnabled', 'sprites/images/percival/mapIcon.png');
+        this.load.image('daphneMap', 'sprites/images/daphne/mapLevel1.png');
+        this.load.image('percivalMap', 'sprites/images/percival/mapLevel1.png');
 
         this.load.image('daphneAbilityReady', 'sprites/images/daphne/abilityEnabled.png');
         this.load.image('daphneAbilityUsed', 'sprites/images/daphne/abilityDisabled.png');
@@ -257,6 +270,12 @@ export default class Level1 extends Phaser.Scene{
         this.scene.time.delayedCall(1000, () => {
             this.messageText.setVisible(false);
         });
+    }
+
+    showMap(playerName){
+        console.log("HOLAAAAAA");
+        if(this.playerName === "daphne"){ this.daphneMap.setVisible(!this.daphneMap.visible()); }
+        //else { this.percivalMap.setVisible(true); }
     }
     
 }

@@ -14,7 +14,7 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
         this.inventory = this.getInventoryByType();
 
         this.scene.input.keyboard.on('keydown',(event)=>{
-            if(event.code ===this.inventory.key){
+            if(event.code === this.inventory.key){
 
                 if(!this.scene.scene.isActive(this.inventory.scene)){
                     this.scene.scene.launch(this.inventory.scene);
@@ -27,8 +27,10 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
                 }
                 
             }
-        })
-
+            else if (event.code === 'KeyZ' || event.code === 'KeyM') {
+                this.scene.showMap(this.type);
+            }
+        });
         //this.play(type === "percival" ? "PercivalIdle" : "DaphneIdle", true);
         this.play(this.animations.idle);
     }
