@@ -7,6 +7,7 @@ import Door from '../../objects/mapObjects/door.js';
 import PreassurePlate from '../../objects/mapObjects/preassurePlate.js';
 import breakableObjects from '../../objects/mapObjects/breakableObjects.js'
 import DialogText from "../../objects/playerObjects/dialogText.js";
+import EndTrigger from '../../objects/mapObjects/endTrigger.js';
 
 export default class LevelPruebas extends Phaser.Scene{
     constructor(){
@@ -118,6 +119,15 @@ export default class LevelPruebas extends Phaser.Scene{
             this.scaleObject(plate,scaling);
             this.preassurePlates.add(plate);
         });
+
+        this.endTriggers = this.add.group();
+        const endTLayer = this.map.getObjectLayer('endTriggers');
+        endTLayer.objects.forEach(obj =>{
+            let endT = new EndTrigger(this, obj.x, obj.y,'preassurePlate');
+            endT.setScale(scaling);
+            this.scaleObject(endT,scaling);
+            this.endTriggers.add(endT);
+        });
         //#endregion
         
         
@@ -135,6 +145,7 @@ export default class LevelPruebas extends Phaser.Scene{
                 llave.destroy(); 
             }
         });
+        this.physics.add.overlap(this.players,this.endTriggers);
 
 
 
