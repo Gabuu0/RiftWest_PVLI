@@ -41,8 +41,20 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
 
     getAnimationsByType(){
         const animations={
-            percival:{ idle: "PercivalIdle"},
-            daphne:{ idle: "DaphneIdle"},
+            percival: {
+                idle: "PercivalIdle",
+                up: "PercivalUp",
+                down: "PercivalDown",
+                left: "PercivalLeft",
+                right: "PercivalRight",
+            },
+            daphne: {
+                idle: "DaphneIdle",
+                up: "DaphneUp",
+                down: "DaphneDown",
+                left: "DaphneLeft",
+                right: "DaphneRight",
+            }
         }
         return animations[this.type];
     }
