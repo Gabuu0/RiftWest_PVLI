@@ -120,13 +120,13 @@ export default class LevelPruebas extends Phaser.Scene{
             this.preassurePlates.add(plate);
         });
 
-        this.endTriggers = this.add.group();
+        this.endTriggers = [];
         const endTLayer = this.map.getObjectLayer('endTriggers');
         endTLayer.objects.forEach(obj =>{
             let endT = new EndTrigger(this, obj.x, obj.y,'preassurePlate');
             endT.setScale(scaling);
             this.scaleObject(endT,scaling);
-            this.endTriggers.add(endT);
+            this.endTriggers.push(endT);
         });
         //#endregion
         
@@ -135,6 +135,9 @@ export default class LevelPruebas extends Phaser.Scene{
         //#endregion
 
         //#region Colisiones
+
+
+
         this.physics.add.collider(this.players,Paredes);
         this.physics.add.collider(this.players,this.doors);
         this.physics.add.overlap(this.players,this.preassurePlates);
@@ -145,10 +148,12 @@ export default class LevelPruebas extends Phaser.Scene{
                 llave.destroy(); 
             }
         });
-        this.physics.add.overlap(this.players,this.endTriggers);
-
-
-
+        this.physics.add.overlap(this.players,this.endTriggers,(jugador, endT)=>{
+            endT.on();
+            if (this.endTriggers.every(t => t.getIsPressed())) {
+                console.log("3Letra, la L");
+            }
+        });
 
         //this.physics.add.overlap(this.daphne, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
        
