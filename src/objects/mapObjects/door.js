@@ -14,11 +14,11 @@ export default class Door extends Phaser.Physics.Arcade.Sprite {
     }
 
 
-    openDoor(){
+    openDoor(type){
         if(this.isOpen) return;
         this.isOpen = true;
         this.disableBody(false,true);
-        this.scene.time.delayedCall(200,this.closeDoor,null,this);
+        if(type === "preassurePlate"){this.scene.time.delayedCall(200,this.closeDoor,null,this);}
     }
 
     closeDoor(){

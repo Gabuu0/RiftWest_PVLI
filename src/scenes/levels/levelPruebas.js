@@ -5,6 +5,7 @@ import InteractableObjects from '../../objects/mapObjects/interactableObjects.js
 import movableObject from '../../objects/mapObjects/movableObject.js';
 import Door from '../../objects/mapObjects/door.js';
 import PreassurePlate from '../../objects/mapObjects/preassurePlate.js';
+import Lever from '../../objects/mapObjects/lever.js';
 import breakableObjects from '../../objects/mapObjects/breakableObjects.js'
 import DialogText from "../../objects/playerObjects/dialogText.js";
 
@@ -105,14 +106,24 @@ export default class LevelPruebas extends Phaser.Scene{
             this.doors.add(door);
         })
 
-        this.preassurePlates = this.add.group();
-        const platesLayer = this.map.getObjectLayer('placas_presion');
-        platesLayer.objects.forEach(obj =>{
+        // this.preassurePlates = this.add.group();
+        // const platesLayer = this.map.getObjectLayer('placas_presion');
+        // platesLayer.objects.forEach(obj =>{
+        //     let id = obj.properties.find(prop => prop.name ==='identifier').value;
+        //     let plate = new PreassurePlate(this, obj.x, obj.y,'preassurePlate',id);
+        //     plate.setScale(scaling);
+        //     this.scaleObject(plate,scaling);
+        //     this.preassurePlates.add(plate);
+        // });
+
+        this.levers = this.add.group();
+        const leversLayer = this.map.getObjectLayer('placas_presion');
+        leversLayer.objects.forEach(obj =>{
             let id = obj.properties.find(prop => prop.name ==='identifier').value;
-            let plate = new PreassurePlate(this, obj.x, obj.y,'preassurePlate',id);
-            plate.setScale(scaling);
-            this.scaleObject(plate,scaling);
-            this.preassurePlates.add(plate);
+            let lever = new Lever(this, obj.x, obj.y,'levers',id);
+            lever.setScale(scaling);
+            this.scaleObject(lever,scaling);
+            this.levers.add(lever);
         });
         //#endregion
         
@@ -128,11 +139,20 @@ export default class LevelPruebas extends Phaser.Scene{
                 puerta.destroy(true);
             }
         });
-        this.physics.add.overlap(this.players,this.preassurePlates,(jugador,placa)=>{
+        // this.physics.add.overlap(this.players,this.preassurePlates,(jugador,placa)=>{
+        //     //se miran las puertas y si alguna tiene el mismo identificador que la placa se abre
+        //     this.doors.getChildren().forEach(door =>{
+        //         if(door.identifier === placa.identifier){
+        //             door.openDoor("preassurePlate");
+        //         }
+        //     });
+        // });
+        this.physics.add.overlap(this.players,this.levers,(jugador,lever)=>{
             //se miran las puertas y si alguna tiene el mismo identificador que la placa se abre
             this.doors.getChildren().forEach(door =>{
-                if(door.identifier === placa.identifier){
-                    door.openDoor();
+                if(door.identifier === lever.identifier){
+                    door.openDoor("lever");
+                    lever.useLever();
                 }
             });
         });
@@ -185,6 +205,7 @@ export default class LevelPruebas extends Phaser.Scene{
         this.load.image('tilesM', 'sprites/tileSet/MagwartsTileset.png');
         this.load.tilemapTiledJSON('mapa', 'sprites/tileSet/PruebaPuertas.json');
         this.load.spritesheet('doors','sprites/tileSet/Doors.png',{frameWidth:32, frameHeight:16});
+        this.load.spritesheet('levers','sprites/tileSet/Levers.png',{frameWidth:16, frameHeight:16});
         this.load.image('preassurePlate','sprites/tileSet/PreassurePlate.png');
         //#endregion
 
