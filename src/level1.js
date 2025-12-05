@@ -4,7 +4,6 @@ import PauseMenu from "./pauseMenu.js";
 import InteractableObjects from './interactableObjects.js';
 import movableObject from './movableObject.js';
 import breakableObjects from './breakableObjects.js'
-import Watchman from "./watchman.js";
 
 export default class Level1 extends Phaser.Scene{
     constructor(){
@@ -95,22 +94,6 @@ export default class Level1 extends Phaser.Scene{
 
         this.physics.add.overlap(this.cajaM1, PlacasDePresion, (movableObject,tile) => {InteractableObjects.activarPlaca(this, movableObject, tile)});
     
-        // Recorrido del profesor
-        const recorrido1 = [
-        { x: 2600, y: 3600 },
-        { x: 2800, y: 3600 },
-        { x: 2800, y: 3700 },
-        { x: 2600, y: 3700 } ];
-        this.profesor = new Watchman(this,2600, 3700,"profesor",this.daphne,recorrido1);
-        
-        // Recorrido del sheriff
-        const recorrido2 = [
-        { x: 450, y: 3600 },
-        { x: 650, y: 3600 },
-        { x: 650, y: 3700 },
-        { x: 450, y: 3700 } ];
-
-        this.sheriff = new Watchman(this,450, 3700,"sheriff",this.percival,recorrido2);
         //#endregion
     }
 
@@ -135,9 +118,6 @@ export default class Level1 extends Phaser.Scene{
         this.load.image('cajaMovible', 'sprites/images/cajaMovible.png');
         this. load.image('cajaRompible','sprites/images/cajaRompible.png');
         this.load.image('cajaRota','sprites/images/cajaRompibleRota.png');
-
-        this.load.image('profesor','sprites/images/profesor.jpg');
-        this.load.image('sheriff','sprites/images/sheriff.jpeg');
     }
 
     createAnims(){
