@@ -1,5 +1,5 @@
 export default class Watchman extends Phaser.GameObjects.PathFollower {
-    constructor(scene, x, y, texture, player, pathPoints) {
+    constructor(scene, x, y, texture, frame, player, pathPoints, type = "sheriff") {
 
         //Crea el path
         const path = new Phaser.Curves.Path(pathPoints[0].x, pathPoints[0].y);
@@ -11,7 +11,10 @@ export default class Watchman extends Phaser.GameObjects.PathFollower {
         path.lineTo(pathPoints[0].x,pathPoints[0].y); //Une el Ultimo punto con el primero
 
         //Crea un PathFollower
-        super(scene, path, x, y, texture);
+        super(scene, path, x, y, texture, frame);
+
+        this.type = type;
+        this.animations = this.getAnimationsByType();
 
         this.scene = scene;
         this.player = player;
@@ -25,7 +28,7 @@ export default class Watchman extends Phaser.GameObjects.PathFollower {
 
         this.setScale(0.4);
 
-        this.trigger= scene.add.circle(this.x, this.y, 120, 0xFF0000, 0.1);
+        this.trigger= scene.add.circle(this.x, this.y, 120);
         scene.physics.add.existing(this.trigger);
 
         this.trigger.body.setCircle(120);
@@ -56,6 +59,8 @@ export default class Watchman extends Phaser.GameObjects.PathFollower {
 
         //vemos la dirección
         this.updateDireccion();
+
+        this.playAnimations();
 
         //actualizamos la nueva dirección
         this.anteriorX=this.x;
@@ -100,5 +105,48 @@ export default class Watchman extends Phaser.GameObjects.PathFollower {
             if(realY>0) this.direccion=2; //Va hacia abajo
             if(realY<0) this.direccion=4; //Va hacia arriba
         }
+    }
+
+    playAnimations(){
+        switch(this.direccion) {
+            case 1: // Derecha
+                this.play(this.animations.left, true);
+                break;
+
+            case 2: // Abajo
+                this.play(this.animations.up, true);
+                break;
+
+            case 3: // Izquierda
+                this.play(this.animations.right, true);
+                break;
+
+            case 4: // Arriba
+                this.play(this.animations.down, true);
+                break;
+        }
+        console.log("KLK");
+    }
+    
+    getAnimationsByType(){
+        const animations={
+            sheriff: {
+                up: "SheriffUp",
+                down: "SheriffDown",
+                left: "SheriffLeft",
+                right: "SheriffRight",
+            },
+            profesor: {
+                up: "ProfesorUp",
+                down: "ProfesorDown",
+                left: "ProfesorLeft",
+                right: "ProfesorRight",
+            }
+        }
+        return animations[this.type];
+    }
+
+    triggerSize(size){
+        this.trigger.body.setCircle(size);
     }
 }

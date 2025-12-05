@@ -143,7 +143,7 @@ export default class Level1 extends Phaser.Scene{
         { x: 2800, y: 3600 },
         { x: 2800, y: 3700 },
         { x: 2600, y: 3700 } ];
-        this.profesor = new Watchman(this,2600, 3700,"profesor",this.daphne,recorrido1);
+        this.profesor = new Watchman(this,2600, 3700,"Pr",0,this.daphne,recorrido1, "profesor");
                 
         // Recorrido del sheriff
         const recorrido2 = [
@@ -151,7 +151,7 @@ export default class Level1 extends Phaser.Scene{
         { x: 650, y: 3600 },
         { x: 650, y: 3700 },
         { x: 450, y: 3700 } ];
-        this.sheriff = new Watchman(this,450, 3700,"sheriff",this.percival,recorrido2);
+        this.sheriff = new Watchman(this,450, 3700,"S",0,this.percival,recorrido2, "sheriff");
 
         //#endregion
     }
@@ -197,7 +197,40 @@ export default class Level1 extends Phaser.Scene{
 
         this.load.spritesheet("PRight","sprites/images/percival/Percival-caminando-izquierda(x5).png",
                 { frameWidth: 160, frameHeight: 160});
+                
+        //WatchMan
+        this.load.spritesheet("S","sprites/images/profesor/Profesor-idle.png",
+              { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("Pr","sprites/images/sheriff/Sheriff-idle.png",
+              { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("SUp","sprites/images/sheriff/Sheriif-up.png",
+              { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("PrUp","sprites/images/profesor/Profesor-up.png",
+              { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("SDown","sprites/images/sheriff/Sheriif-down.png",
+                { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("PrDown","sprites/images/profesor/Profesor-down.png",
+                { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("SLeft","sprites/images/sheriff/Sheriif-left.png",
+                { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("PrLeft","sprites/images/profesor/Profesor-left.png",
+                { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("SRight","sprites/images/sheriff/Sheriif-right.png",
+                { frameWidth: 160, frameHeight: 160});
+
+        this.load.spritesheet("PrRight","sprites/images/profesor/Profesor-right.png",
+                { frameWidth: 160, frameHeight: 160});
         
+        this.load.image('profesor','sprites/images/profesor.jpg');
+        this.load.image('sheriff','sprites/images/sheriff.jpeg');
         this.load.image('tilesPJ', 'sprites/tileSet/TileSetPJ.png');
         this.load.image('tilesD', 'sprites/tileSet/DustwartsTileset.png');
         this.load.image('tilesM', 'sprites/tileSet/MagwartsTileset.png');
@@ -217,9 +250,6 @@ export default class Level1 extends Phaser.Scene{
 
         this.load.spritesheet('slot','sprites/images/inventory/inventorySpace.png',{frameWidth: 64, frameHeight:64});
         this.load.image('descriptionBox','sprites/images/inventory/descriptionBox.png');
-
-        this.load.image('profesor','sprites/images/profesor.jpg');
-        this.load.image('sheriff','sprites/images/sheriff.jpeg');
     }
 
     createAnims(){
@@ -288,6 +318,60 @@ export default class Level1 extends Phaser.Scene{
             frameRate: 5,
             repeat: -1,}
         );
+
+        //#region Personajes
+        this.anims.create(
+            {key: "SheriffDown",
+            frames: this.anims.generateFrameNumbers("SDown", {frames:[0,1,2,3]}),
+            frameRate: 5,
+            repeat: -1,}
+        );
+        this.anims.create(
+            {key: "ProfesorDown",
+            frames: this.anims.generateFrameNumbers("PrDown", {frames:[0,1,2,3]}),
+            frameRate: 5,
+            repeat: -1,}
+        );
+
+        this.anims.create(
+            {key: "SheriffUp",
+            frames: this.anims.generateFrameNumbers("SUp", {frames:[0,1,2,3]}),
+            frameRate: 5,
+            repeat: -1,}
+        );
+        this.anims.create(
+            {key: "ProfesorUp",
+            frames: this.anims.generateFrameNumbers("PrUp", {frames:[0,1,2,3]}),
+            frameRate: 5,
+            repeat: -1,}
+        );
+        
+        this.anims.create(
+            {key: "SheriffLeft",
+            frames: this.anims.generateFrameNumbers("SLeft", {frames:[0,1,2,3]}),
+            frameRate: 5,
+            repeat: -1,}
+        );
+        this.anims.create(
+            {key: "ProfesorLeft",
+            frames: this.anims.generateFrameNumbers("PrLeft", {frames:[0,1,2,3]}),
+            frameRate: 5,
+            repeat: -1,}
+        );
+        
+        this.anims.create(
+            {key: "SheriffRight",
+            frames: this.anims.generateFrameNumbers("SRight", {frames:[0,1,2,3]}),
+            frameRate: 5,
+            repeat: -1,}
+        );
+        this.anims.create(
+            {key: "ProfesorRight",
+            frames: this.anims.generateFrameNumbers("PrRight", {frames:[0,1,2,3]}),
+            frameRate: 5,
+            repeat: -1,}
+        );
+
         //#endregion
 
         //#region Objetos
