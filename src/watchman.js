@@ -67,10 +67,24 @@ export default class Watchman extends Phaser.GameObjects.PathFollower {
     }
 
     onPlayerEnter(){
-        if(this.player.x < this.x && this.direccion==1){console.log("REINICIAR PARTIDA");}
-        else if(this.player.x > this.x && this.direccion==3){console.log("REINICIAR PARTIDA");}
-        else if(this.player.y < this.y && this.direccion==2){console.log("REINICIAR PARTIDA");}
-        else if(this.player.y > this.y && this.direccion==4){console.log("REINICIAR PARTIDA");}
+        let detectado=false;
+        
+        if(this.player.x < this.x && this.direccion==1){
+            detectado=true;
+            }
+        else if(this.player.x > this.x && this.direccion==3){
+            detectado=true;
+        }
+        else if(this.player.y < this.y && this.direccion==2){
+            detectado=true;
+        }
+        else if(this.player.y > this.y && this.direccion==4){
+            detectado=true;
+        }
+
+        if(detectado){
+            this.scene.scene.restart();
+        }
     }
 
     updateDireccion(){

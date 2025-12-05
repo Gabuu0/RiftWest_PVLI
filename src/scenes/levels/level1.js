@@ -5,6 +5,7 @@ import InteractableObjects from '../../objects/mapObjects/interactableObjects.js
 import movableObject from '../../objects/mapObjects/movableObject.js';
 import breakableObjects from '../../objects/mapObjects/breakableObjects.js'
 import DialogText from "../../objects/playerObjects/dialogText.js";
+import Watchman from "../../watchman.js";
 
 export default class Level1 extends Phaser.Scene{
     constructor(){
@@ -135,6 +136,23 @@ export default class Level1 extends Phaser.Scene{
             [1, "Estamos fumando marihuana (Maybach Música)"],
             [2, "Hoy serás mi esclava en el cuarto de un motel (Carbon Fiber Music)"]
         ], true);
+
+        // Recorrido del profesor
+        const recorrido1 = [
+        { x: 2600, y: 3600 },
+        { x: 2800, y: 3600 },
+        { x: 2800, y: 3700 },
+        { x: 2600, y: 3700 } ];
+        this.profesor = new Watchman(this,2600, 3700,"profesor",this.daphne,recorrido1);
+                
+        // Recorrido del sheriff
+        const recorrido2 = [
+        { x: 450, y: 3600 },
+        { x: 650, y: 3600 },
+        { x: 650, y: 3700 },
+        { x: 450, y: 3700 } ];
+        this.sheriff = new Watchman(this,450, 3700,"sheriff",this.percival,recorrido2);
+
         //#endregion
     }
 
@@ -199,6 +217,9 @@ export default class Level1 extends Phaser.Scene{
 
         this.load.spritesheet('slot','sprites/images/inventory/inventorySpace.png',{frameWidth: 64, frameHeight:64});
         this.load.image('descriptionBox','sprites/images/inventory/descriptionBox.png');
+
+        this.load.image('profesor','sprites/images/profesor.jpg');
+        this.load.image('sheriff','sprites/images/sheriff.jpeg');
     }
 
     createAnims(){
