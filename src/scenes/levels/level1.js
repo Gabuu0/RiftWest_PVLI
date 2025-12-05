@@ -16,13 +16,15 @@ export default class Level1 extends Phaser.Scene{
     }
 
     create(){
+
+
         this.createAnims();
+        this.random = new Phaser.Math.RandomDataGenerator();
 
         this.registry.set('clownObj', {
             objData: {},
             hasObj: false,
         });
-
 
         this.percival = new Players(this,350, 3600,"P",0,"percival");
         this.daphne = new Players(this,2500,3600,"D",0,"daphne");
@@ -33,8 +35,12 @@ export default class Level1 extends Phaser.Scene{
         this.percival.setDepth(1);
         this.daphne.setDepth(1);
 
-        this.scene.launch('InventarioPercival',this.percival,this);
-        this.scene.launch('InventarioDaphne',this.daphne,this);
+        this.scene.launch('InventarioPercival',{
+            player:this.percival,
+            playerScene: this});
+        this.scene.launch('InventarioDaphne',{
+            player:this.daphne,
+            playerScene: this});
         this.inventario1 = this.scene.get('InventarioPercival');
         this.inventario2 = this.scene.get('InventarioDaphne');
 
@@ -305,20 +311,101 @@ export default class Level1 extends Phaser.Scene{
         this.keys.add(new Key(this, 445,3800,'llaveMapa','llaveInventario','keyIdle','Llave inglesa',3).setDepth(5))
     }
 
+/**
+ * Este metodo se encarga de crear el dialogo del payaso al interactuar con él según los siguientes parámetros:
+ * @param {string} player - Personaje que ha interactuado con el payaso 
+ * @param {boolean} itemReceived - Si el personaje ha recibido un objeto del payaso 
+ * @param {boolean} hadItem - Si el personaje tiene un item seleccionado (en caso de dar un item al payaso)
+ * @param {boolean} clownEmpty - Si el payaso no tiene ningun objeto
+ * 
+ * Se usan los arrays de dialogos creados en {@link createClownDialogs()}
+ */
+    showClownMessage(player,itemReceived,hadItem = true,clownEmpty = false){
+        if(this.dialog.visible){
+            this.dialog.toggleWindow();
+        }
 
-    showClownMessage(){
+        let ignorePlayer;
+        if(player === "percival"){
+            ignorePlayer = 1;
+        }else{
+            ignorePlayer = 2;
+        }
+         
+        this.dialog.toggleWindow();
 
+        this.setClownMessage(ignorePlayer,itemReceived,hadItem,clownEmpty);
+    }
+/**
+ * Establece el texto del dialogo del payaso al interactuar con él
+ * @param {boolean} itemReceived - Si el personaje ha recibido un objeto del payaso 
+ * @param {boolean} hadItem - Si el personaje tiene un item seleccionado (en caso de dar un item al payaso)
+ * @param {boolean} clownEmpty - Si el payaso no tiene ningun objeto
+ */
+    setClownMessage(playerToIgnore,itemReceived,hadItem,clownEmpty){
+        if(itemReceived && !hadItem && !clownEmpty){
+            this.dialog.setTextArray([
+                [playerToIgnore,this.clownGetItemJokes[this.random.integerInRange(0, this.clownGetItemJokes.length-1)]],
+                [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length)]]
+            ],true);
+        }else if(!itemReceived && hadItem && clownEmpty){
+             this.dialog.setTextArray([
+                [playerToIgnore,this.clownGiveItemJokes[this.random.integerInRange(0, this.clownGiveItemJokes.length-1)]],
+                 [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length)]]
+            ],true);
+        }
+        else if(itemReceived && hadItem && !clownEmpty){
+            this.dialog.setTextArray([
+                [playerToIgnore,this.clownNoObjectTaken[this.random.integerInRange(0, this.clownNoObjectTaken.length-1)]],
+                 [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length)]]
+            ],true);
+        }
+        else if(!itemReceived && !hadItem && clownEmpty){
+            this.dialog.setTextArray([
+                [playerToIgnore,this.clownNoObjectGiven[this.random.integerInRange(0, this.clownNoObjectGiven.length-1)]],
+                 [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length)]]
+            ],true);
+        }
     }
 
+
+    //crea todos los posbiles dialogos del payaso a la hora de interactuar con él 
+    //al traspasar objetos entre jugadores
     createClownDialogs(){
-        //chistes de cuando pillas un item del payaso
+        //chistes cuando pillas un item del payaso
         this.clownGetItemJokes = [
             "Manin pa ti el objeto, que pesa mucho , pero no tanto como tu vieja",
             "Uff menos mal que me lo has cogido, y el objeto tambien",
-            "Jope, ya le empezaba a tener cariño a ese objeto :(",
+            "Jope, ya le empezaba a tener cariño a ese objeto :("
+        ];
+        
+        //chistes cuando le pasas un item al payaso
+        this.clownGiveItemJokes = [
+            "Tranqui, yo te lo sujeto sin problema",
+            "epale, lo pillé",
+            "Jope, ya le empezaba a tener cariño a ese objeto :("
         ];
 
+        
+        //posibles última frase del payaso
+        this.clownLast = [
+            "chao pescao",
+            "me las piro vampiro"
+        ];
 
+        //frases cuando el payaso esta vacio y pero no se selecionó ningun item
+        this.clownNoObjectGiven = [
+            "a",
+            "b",
+            "c"
+        ];
+
+          //frases cuando el payaso no esta vacio y pero no se pudo pillar el item (inventario lleno)
+        this.clownNoObjectTaken = [
+            "d",
+            "e",
+            "f"
+        ];
 
     }
 

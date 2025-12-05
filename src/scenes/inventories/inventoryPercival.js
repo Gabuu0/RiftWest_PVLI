@@ -5,8 +5,9 @@ export default class InventoryPercival extends Phaser.Scene{
         super({key:'InventarioPercival'});
     }
 
-    init(player){
-        this.player = player;
+    init(data){
+        this.player = data.player;
+        this.activeScene = data.playerScene;
     }
 
     preload(){
@@ -43,22 +44,31 @@ export default class InventoryPercival extends Phaser.Scene{
             }
             else if(event.code ==='Tab'){
                 let clown = this.registry.get('clownObj');
-                if(clown.hasObj &&this.player.pickItem(clown.objData)){
-                    this.registry.set('clownObj',{
-                        objData: {},
-                        hasObj: false,
-                    })
+                if(clown.hasObj){
+                    if(this.player.pickItem(clown.objData)){
+                        this.activeScene.showClownMessage(this.player.type,true,false,false);
+                        this.registry.set('clownObj',{
+                            objData: {},
+                            hasObj: false,
+                        })
+                    }
+                    else{
+                        this.activeScene.showClownMessage(this.player.type,true,);
+                    }
                 }
                 else if(!clown.hasObj){
                     if(this.inventorySlots[this.slotSelected].length < 2){
+                        this.activeScene.showClownMessage(this.player.type,false,false,true);
                         return;
                     }
                     this.registry.set('clownObj',{
                         objData: this.inventorySlots[this.slotSelected].list[1].itemData,
                         hasObj:true
                     });
+                    console.log(this.activeScene);
                     this.player.removeItem(this.inventorySlots[this.slotSelected].list[1].identifier);
                     this.inventorySlots[this.slotSelected].list[1].destroy(true);
+                    this.activeScene.showClownMessage(this.player.type,false,true,true);
                 }
             }
         })
