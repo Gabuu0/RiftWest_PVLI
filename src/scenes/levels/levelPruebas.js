@@ -6,6 +6,7 @@ import movableObject from '../../objects/mapObjects/movableObject.js';
 import Door from '../../objects/mapObjects/door.js';
 import PreassurePlate from '../../objects/mapObjects/preassurePlate.js';
 import Lever from '../../objects/mapObjects/lever.js';
+import KnockableObject from '../../objects/mapObjects/knockableObject.js';
 import breakableObjects from '../../objects/mapObjects/breakableObjects.js'
 import DialogText from "../../objects/playerObjects/dialogText.js";
 
@@ -116,14 +117,23 @@ export default class LevelPruebas extends Phaser.Scene{
         //     this.preassurePlates.add(plate);
         // });
 
-        this.levers = this.add.group();
-        const leversLayer = this.map.getObjectLayer('placas_presion');
-        leversLayer.objects.forEach(obj =>{
+        // this.levers = this.add.group();
+        // const leversLayer = this.map.getObjectLayer('placas_presion');
+        // leversLayer.objects.forEach(obj =>{
+        //     let id = obj.properties.find(prop => prop.name ==='identifier').value;
+        //     let lever = new Lever(this, obj.x, obj.y,'levers',id);
+        //     lever.setScale(scaling);
+        //     this.scaleObject(lever,scaling);
+        //     this.levers.add(lever);
+        // });
+        this.knockObjects = this.add.group();
+        const knockObject = this.map.getObjectLayer('placas_presion');
+        knockObject.objects.forEach(obj =>{
             let id = obj.properties.find(prop => prop.name ==='identifier').value;
-            let lever = new Lever(this, obj.x, obj.y,'levers',id);
-            lever.setScale(scaling);
-            this.scaleObject(lever,scaling);
-            this.levers.add(lever);
+            let kObject = new KnockableObject(this, obj.x, obj.y,'knockableObject',id);
+            kObject.setScale(scaling);
+            this.scaleObject(kObject,scaling);
+            this.knockObjects.add(kObject);
         });
         //#endregion
         
@@ -147,15 +157,18 @@ export default class LevelPruebas extends Phaser.Scene{
         //         }
         //     });
         // });
-        this.physics.add.overlap(this.players,this.levers,(jugador,lever)=>{
-            //se miran las puertas y si alguna tiene el mismo identificador que la placa se abre
-            this.doors.getChildren().forEach(door =>{
-                if(door.identifier === lever.identifier){
-                    door.openDoor("lever");
-                    lever.useLever();
-                }
+        // this.physics.add.overlap(this.players,this.levers,(jugador,lever)=>{
+        //     //se miran las puertas y si alguna tiene el mismo identificador que la placa se abre
+        //     this.doors.getChildren().forEach(door =>{
+        //         if(door.identifier === lever.identifier){
+        //             door.openDoor("lever");
+        //             lever.useLever();
+        //         }
+        //     });
+        // }); 
+        this.physics.add.collider(this.players,this.knockObjects,(jugador,kObject)=>{
+                kObject.knock();
             });
-        });
         this.physics.add.overlap(this.players,this.keys,(jugador,llave)=>{
             //se elimina la llave si es posible cogerla (inventario del jugador no lleno)
             if(jugador.pickItem(llave)) {
@@ -206,6 +219,7 @@ export default class LevelPruebas extends Phaser.Scene{
         this.load.tilemapTiledJSON('mapa', 'sprites/tileSet/PruebaPuertas.json');
         this.load.spritesheet('doors','sprites/tileSet/Doors.png',{frameWidth:32, frameHeight:16});
         this.load.spritesheet('levers','sprites/tileSet/Levers.png',{frameWidth:16, frameHeight:16});
+        this.load.spritesheet('knockableObject','sprites/tileSet/KnockableObject.png',{frameWidth:13, frameHeight:19});
         this.load.image('preassurePlate','sprites/tileSet/PreassurePlate.png');
         //#endregion
 
