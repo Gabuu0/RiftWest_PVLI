@@ -23,10 +23,10 @@ export default class Watchman extends Phaser.GameObjects.PathFollower {
         
         scene.physics.add.existing(this);
         this.body.setImmovable(true);
+        this.body.setSize(50, 64);
+        this.body.setOffset(55,50);
 
         scene.physics.add.collider(this, this.player);
-
-        this.setScale(0.4);
 
         this.trigger= scene.add.circle(this.x, this.y, 120);
         scene.physics.add.existing(this.trigger);
