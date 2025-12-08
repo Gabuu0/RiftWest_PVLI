@@ -4,6 +4,7 @@ import Level1 from "./scenes/levels/level1.js";
 import LevelPruebas from "./scenes/levels/levelPruebas.js";
 import Menu from "./scenes/main.js";
 import PauseMenu from "./scenes/pauseMenu.js";
+import LevelAx from "./scenes/levels/levelAx.js";
 
 const config = {
 	type: Phaser.CANVAS,
@@ -13,7 +14,7 @@ const config = {
 	scale: {
 	autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
 	},
-	scene: [Menu,LevelPruebas, Level1,InventoryDaphne,InventoryPercival, PauseMenu],
+	scene: [Menu, LevelPruebas, Level1,InventoryDaphne,InventoryPercival, PauseMenu, LevelAx],
 	physics: {
         default: "arcade",
         arcade: {
