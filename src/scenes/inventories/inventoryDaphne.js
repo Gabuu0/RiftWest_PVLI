@@ -5,9 +5,9 @@ export default class InventoryDaphne extends Phaser.Scene{
         super({key:'InventarioDaphne'});
     }
 
-    init(player){
-        this.player = player;
-
+    init(data){
+        this.player = data.player;
+        this.activeScene = data.playerScene;
     }
 
     preload(){
@@ -43,14 +43,21 @@ export default class InventoryDaphne extends Phaser.Scene{
             }
              else if(event.code ==='Enter'){
                 let clown = this.registry.get('clownObj');
-                if(clown.hasObj &&this.player.pickItem(clown.objData)){
-                    this.registry.set('clownObj',{
-                        objData: {},
-                        hasObj: false,
-                    })
+                if(clown.hasObj){
+                    if(this.player.pickItem(clown.objData)){
+                        this.activeScene.showClownMessage(this.player.type,true,false,false);
+                        this.registry.set('clownObj',{
+                            objData: {},
+                            hasObj: false,
+                        })
+                    }
+                    else{
+                        this.activeScene.showClownMessage(this.player.type,true,);
+                    }
                 }
                 else if(!clown.hasObj){
-                    if(this.inventorySlots[this.slotSelected].list.length < 2){
+                    if(this.inventorySlots[this.slotSelected].length < 2){
+                        this.activeScene.showClownMessage(this.player.type,false,false,true);
                         return;
                     }
                     this.registry.set('clownObj',{
@@ -59,6 +66,7 @@ export default class InventoryDaphne extends Phaser.Scene{
                     });
                     this.player.removeItem(this.inventorySlots[this.slotSelected].list[1].identifier);
                     this.inventorySlots[this.slotSelected].list[1].destroy(true);
+                    this.activeScene.showClownMessage(this.player.type,false,true,true);
                 }
             }
         })
@@ -86,5 +94,20 @@ export default class InventoryDaphne extends Phaser.Scene{
                 else {i++;}
     
            }
+    }
+
+    removeItem(itemId){
+    let i= 0;
+       let itemRemoved = false;
+       //se coloca el item en la primera posicion vacia del inventario
+       while(i<this.inventorySlots.length &&!itemRemoved){
+            if(this.inventorySlots[i].length === 2 && this.inventorySlots[i].list[1].identifier === itemId){
+                itemRemoved = true;
+                this.inventorySlots[this.slotSelected].list[1].destroy(true);
+
+            }
+            else {i++;}
+
+       }
     }
 }

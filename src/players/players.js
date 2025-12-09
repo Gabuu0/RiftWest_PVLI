@@ -89,4 +89,19 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
         this.objects.splice(i,1);
     }
 
+
+    haveItem(itemId){
+        let hasItem = false;
+        //se busca el identificador dado en los identificadores de todos los objetos que se tienen
+        //y en caso de que coincida con alguno se elimina el item del inventario del jugador
+        this.objects.forEach(item =>{
+            if(item.identifier === itemId){
+                this.inventoryScene.removeItem(itemId);
+                this.removeItem(itemId);
+                hasItem = true;
+            }
+        })
+        return hasItem;
+    }
+
 }
