@@ -123,7 +123,7 @@ export default class LevelPruebas extends Phaser.Scene{
         this.endTriggers = [];
         const endTLayer = this.map.getObjectLayer('endTriggers');
         endTLayer.objects.forEach(obj =>{
-            let endT = new EndTrigger(this, obj.x, obj.y,'preassurePlate');
+            let endT = new EndTrigger(this, obj.x, obj.y,'endTrigger');
             endT.setScale(scaling);
             this.scaleObject(endT,scaling);
             this.endTriggers.push(endT);

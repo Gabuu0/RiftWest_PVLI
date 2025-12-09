@@ -23,8 +23,8 @@ export default class LevelAx extends Phaser.Scene {
         //#region Creacion Personajes
         this.createAnims();
 
-        this.percival = new Players(this,1280,1888,"P",0,"percival");
-        this.daphne = new Players(this,4500,1900,"D",0,"daphne");
+        this.percival = new Players(this,1240,1800,"P",0,"percival");
+        this.daphne = new Players(this,4520,1800,"D",0,"daphne");
 
         this.players = this.add.group();
         this.players.add(this.percival);
@@ -93,54 +93,59 @@ export default class LevelAx extends Phaser.Scene {
             this.doors.add(door);
         })
 
-        // this.preassurePlates = this.add.group();
-        // const platesLayer = this.map.getObjectLayer('placas_presion');
-        // platesLayer.objects.forEach(obj =>{
-        //     let id = obj.properties.find(prop => prop.name ==='identifier').value;
-        //     let plate = new PreassurePlate(this, obj.x, obj.y,'preassurePlate',id);
-        //     plate.setScale(scaling);
-        //     this.scaleObject(plate,scaling);
-        //     this.preassurePlates.add(plate);
-        // });
+        this.preassurePlates = this.add.group();
+        const platesLayer = this.map.getObjectLayer('placas_presion');
+        platesLayer.objects.forEach(obj =>{
+            let id = obj.properties.find(prop => prop.name ==='identifier').value;
+            let plate = new PreassurePlate(this, obj.x, obj.y,'preassurePlate',id);
+            plate.setScale(scaling);
+            this.scaleObject(plate,scaling);
+            this.preassurePlates.add(plate);
+        });
 
-        // this.endTriggers = [];
-        // const endTLayer = this.map.getObjectLayer('endTriggers');
-        // endTLayer.objects.forEach(obj =>{
-        //     let endT = new EndTrigger(this, obj.x, obj.y,'preassurePlate');
-        //     endT.setScale(scaling);
-        //     this.scaleObject(endT,scaling);
-        //     this.endTriggers.push(endT);
-        // });
+        this.endTriggers = [];
+        const endTLayer = this.map.getObjectLayer('end_trigger');
+        endTLayer.objects.forEach(obj =>{
+            let endT = new EndTrigger(this, obj.x, obj.y,'preassurePlate');
+            endT.setScale(scaling);
+            this.scaleObject(endT,scaling);
+            this.endTriggers.push(endT);
+        });
 
-        this.cajaM1 = new movableObject(this, 3140, 3100, 980, 3100, "cajaMovible", this.percival, this.daphne, Paredes)
-        this.cajaM2 = new movableObject(this, 3140, 3100, 980, 3100, "cajaMovible", this.percival, this.daphne, Paredes)
-        this.cajaM3 = new movableObject(this, 3140, 3100, 980, 3100, "cajaMovible", this.percival, this.daphne, Paredes)
+        this.cajaM1 = new movableObject(this, 4280, 1240, 1000, 1240, "cajaMovible", this.percival, this.daphne, Paredes)
+        this.cajaM2 = new movableObject(this, 4920, 1240, 1640, 1240, "cajaMovible", this.percival, this.daphne, Paredes)
+        this.cajaM3 = new movableObject(this, 3960, 1720, 600, 1720, "cajaMovible", this.percival, this.daphne, Paredes)
+        this.cajaM4 = new movableObject(this, 4280, 760, 1000, 760, "cajaMovible", this.percival, this.daphne, Paredes)
+        this.cajaM5 = new movableObject(this, 4760, 760, 1480, 760, "cajaMovible", this.percival, this.daphne, Paredes)
 
-        this.cajR1 = new breakableObjects(this,475, 3225, 2625, 3225,'cajaRompible',this.percival,this.daphne);
+        this.cajR1 = new breakableObjects(this, 1240, 1160, 4520, 1160,'cajaRompible',this.percival,this.daphne);
+        this.cajR2 = new breakableObjects(this, 840, 1560, 4120, 1560,'cajaRompible',this.percival,this.daphne);
+        this.cajR3 = new breakableObjects(this, 1160, 920, 4520, 920,'cajaRompible',this.percival,this.daphne);
+        this.cajR4 = new breakableObjects(this, 1480, 920, 4840, 920,'cajaRompible',this.percival,this.daphne);
+        this.cajR5 = new breakableObjects(this, 680, 520, 3960, 520,'cajaRompible',this.percival,this.daphne);
+        this.cajR6 = new breakableObjects(this, 840, 1080, 4120, 1000,'cajaRompible',this.percival,this.daphne);
         
         // this.physics.add.overlap(this.cajaM1, PlacasDePresion, (movableObject,tile) => {InteractableObjects.activarPlaca(this, movableObject, tile)});
         //#endregion
 
         //#region Colisiones
-        this.physics.add.collider(this.players,Paredes);
-        // this.physics.add.collider(this.players,this.doors);
-        // this.physics.add.overlap(this.players,this.preassurePlates);
-        // this.physics.add.overlap(this.players,this.keys,(jugador,llave)=>{
-        //     //se elimina la llave si es posible cogerla (inventario del jugador no lleno)
-        //     if(jugador.pickItem(llave)) {
-        //         this.events.emit('itemPickedP', llave);
-        //         llave.destroy(); 
-        //     }
-        // });
-        // this.physics.add.overlap(this.players,this.endTriggers,(jugador, endT)=>{
-        //     endT.on();
-        //     if (this.endTriggers.every(t => t.getIsPressed())) {
-        //         console.log("3Letra, la L");
-        //     }
-        // });
+        // this.physics.add.collider(this.players,Paredes);
+        this.physics.add.collider(this.players,this.doors);
+        this.physics.add.overlap(this.players,this.preassurePlates);
+        this.physics.add.overlap(this.players,this.keys,(jugador,llave)=>{
+            //se elimina la llave si es posible cogerla (inventario del jugador no lleno)
+            if(jugador.pickItem(llave)) {
+                this.events.emit('itemPickedP', llave);
+                llave.destroy(); 
+            }
+        });
+        this.physics.add.overlap(this.players,this.endTriggers,(jugador, endT)=>{
+            endT.on();
+            if (this.endTriggers.every(t => t.getIsPressed())) {
+                console.log("3Letra, la L");
+            }
+        });
         //#endregion
-
-        console.log("CREATE TERMINADO");
     }
 
     update(t, dt){
