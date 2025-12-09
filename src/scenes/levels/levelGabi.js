@@ -172,17 +172,20 @@ export default class Level1 extends Phaser.Scene{
     preload(){
 
         //#region Personajes
-        //#region Players
-		this.load.spritesheet("D","sprites/images/daphne/DaphneIdle(x5).png",
+        this.load.spritesheet("D","sprites/images/daphne/DaphneIdle(x5).png",
               { frameWidth: 160, frameHeight: 160});
 
         this.load.spritesheet("P","sprites/images/percival/PercivalIdle(x5).png",
               { frameWidth: 160, frameHeight: 160});
+        //#endregion
+
+        //#region Tilemaps
+
         this.load.spritesheet("DUp","sprites/images/daphne/Daphne-caminando-arriba(x5).png",
-            { frameWidth: 160, frameHeight: 160});
+              { frameWidth: 160, frameHeight: 160});
 
         this.load.spritesheet("PUp","sprites/images/percival/Percival-caminando-arriba(x5).png",
-            { frameWidth: 160, frameHeight: 160});
+              { frameWidth: 160, frameHeight: 160});
 
         this.load.spritesheet("DDown","sprites/images/daphne/Daphne-caminando-abajo(x5).png",
                 { frameWidth: 160, frameHeight: 160});
@@ -201,20 +204,20 @@ export default class Level1 extends Phaser.Scene{
 
         this.load.spritesheet("PRight","sprites/images/percival/Percival-caminando-izquierda(x5).png",
                 { frameWidth: 160, frameHeight: 160});
-                
         //#endregion
+                
         //#region WatchMan
         this.load.spritesheet("S","sprites/images/profesor/Profesor-idle.png",
-            { frameWidth: 160, frameHeight: 160});
+              { frameWidth: 160, frameHeight: 160});
 
         this.load.spritesheet("Pr","sprites/images/sheriff/Sheriff-idle.png",
-            { frameWidth: 160, frameHeight: 160});
+              { frameWidth: 160, frameHeight: 160});
 
         this.load.spritesheet("SUp","sprites/images/sheriff/Sheriif-up.png",
-            { frameWidth: 160, frameHeight: 160});
+              { frameWidth: 160, frameHeight: 160});
 
         this.load.spritesheet("PrUp","sprites/images/profesor/Profesor-up.png",
-            { frameWidth: 160, frameHeight: 160});
+              { frameWidth: 160, frameHeight: 160});
 
         this.load.spritesheet("SDown","sprites/images/sheriff/Sheriif-down.png",
                 { frameWidth: 160, frameHeight: 160});
@@ -233,14 +236,9 @@ export default class Level1 extends Phaser.Scene{
 
         this.load.spritesheet("PrRight","sprites/images/profesor/Profesor-right.png",
                 { frameWidth: 160, frameHeight: 160});
+        
         this.load.image('profesor','sprites/images/profesor.jpg');
         this.load.image('sheriff','sprites/images/sheriff.jpeg');
-        //#endregion
-        //#endregion
-
-        //#region Tilemaps
-
-        
         this.load.image('tilesPJ', 'sprites/tileSet/TileSetPJ.png');
         this.load.image('tilesD', 'sprites/tileSet/DustwartsTileset.png');
         this.load.image('tilesM', 'sprites/tileSet/MagwartsTileset.png');
@@ -516,6 +514,4 @@ export default class Level1 extends Phaser.Scene{
         ];
 
     }
-
-    
 }
