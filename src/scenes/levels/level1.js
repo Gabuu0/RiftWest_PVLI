@@ -149,7 +149,7 @@ export default class Level1 extends Phaser.Scene{
         { x: 2800, y: 3600 },
         { x: 2800, y: 3700 },
         { x: 2600, y: 3700 } ];
-        //this.profesor = new Watchman(this,2600, 3700,"Pr",0,this.daphne,recorrido1, "profesor");
+        this.profesor = new Watchman(this,2600, 3700,"Pr",0,this.daphne,recorrido1, "profesor");
                 
         // Recorrido del sheriff
         const recorrido2 = [
@@ -157,7 +157,7 @@ export default class Level1 extends Phaser.Scene{
         { x: 650, y: 3600 },
         { x: 650, y: 3700 },
         { x: 450, y: 3700 } ];
-        //this.sheriff = new Watchman(this,450, 3700,"S",0,this.percival,recorrido2, "sheriff");
+        this.sheriff = new Watchman(this,450, 3700,"S",0,this.percival,recorrido2, "sheriff");
 
         //sonidos
         this.walkSound = this.sound.add('pasos', { loop: false, volume: 0.5});
@@ -244,6 +244,7 @@ export default class Level1 extends Phaser.Scene{
         this.load.audio('pasos', 'sounds/pasos.mp3');
         this.load.audio('romper', 'sounds/romper.mp3');
         this.load.audio('pickItem', 'sounds/pickItem.mp3');
+        this.load.audio('reset', 'sounds/reset.mp3');
 
         this.load.image('profesor','sprites/images/profesor.jpg');
         this.load.image('sheriff','sprites/images/sheriff.jpeg');
