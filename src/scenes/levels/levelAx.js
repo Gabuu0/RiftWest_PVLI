@@ -135,18 +135,22 @@ export default class LevelAx extends Phaser.Scene {
         //#endregion
 
         //#region Colisiones
-        this.physics.add.collider(this.players,Paredes);
+        // this.physics.add.collider(this.players,Paredes);
         this.physics.add.collider(this.players,this.doors,(jugador,puerta)=>{
             //si el jugador tiene un item con el mismo identificador que la puerta esta se destruye
             if(jugador.haveItem(puerta.identifier)){
-                puerta.destroy(true);
-            }
+                 this.doors.getChildren().forEach(door =>{
+                    if(door.identifier === puerta.identifier){
+                        door.destroy(true);
+                    }
+                });
+            }   
         });
         this.physics.add.overlap(this.players,this.preassurePlates,(jugador,placa)=>{
             //se miran las puertas y si alguna tiene el mismo identificador que la placa se abre
             this.doors.getChildren().forEach(door =>{
                 if(door.identifier === placa.identifier){
-                    door.openDoor("preassurePlate");
+                    door.openDoor();
                 }
             });
         });
