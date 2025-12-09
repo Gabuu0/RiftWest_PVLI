@@ -112,6 +112,12 @@ export default class LevelAx extends Phaser.Scene {
             this.endTriggers.push(endT);
         });
 
+        this.keys = this.add.group();
+        this.keys.add(new Key(this, 1800,600,'llaveMapa','llaveInventario','keyIdle','Llave salida magica',5).setDepth(5))
+        this.keys.add(new Key(this, 5080,600,'llaveMapa','llaveInventario','keyIdle','Llave salida oeste',6).setDepth(5))
+        this.keys.add(new Key(this, 1800,1880,'llaveMapa','llaveInventario','keyIdle','Llave sala principal-trastero',0).setDepth(5))
+        this.keys.add(new Key(this, 5080,1880,'llaveMapa','llaveInventario','keyIdle','Llave sala principal-pasillos',1).setDepth(5))
+
         this.cajaM1 = new movableObject(this, 4280, 1240, 1000, 1240, "cajaMovible", this.percival, this.daphne, Paredes)
         this.cajaM2 = new movableObject(this, 4920, 1240, 1640, 1240, "cajaMovible", this.percival, this.daphne, Paredes)
         this.cajaM3 = new movableObject(this, 3960, 1720, 600, 1720, "cajaMovible", this.percival, this.daphne, Paredes)
@@ -129,9 +135,21 @@ export default class LevelAx extends Phaser.Scene {
         //#endregion
 
         //#region Colisiones
-        // this.physics.add.collider(this.players,Paredes);
-        this.physics.add.collider(this.players,this.doors);
-        this.physics.add.overlap(this.players,this.preassurePlates);
+        this.physics.add.collider(this.players,Paredes);
+        this.physics.add.collider(this.players,this.doors,(jugador,puerta)=>{
+            //si el jugador tiene un item con el mismo identificador que la puerta esta se destruye
+            if(jugador.haveItem(puerta.identifier)){
+                puerta.destroy(true);
+            }
+        });
+        this.physics.add.overlap(this.players,this.preassurePlates,(jugador,placa)=>{
+            //se miran las puertas y si alguna tiene el mismo identificador que la placa se abre
+            this.doors.getChildren().forEach(door =>{
+                if(door.identifier === placa.identifier){
+                    door.openDoor("preassurePlate");
+                }
+            });
+        });
         this.physics.add.overlap(this.players,this.keys,(jugador,llave)=>{
             //se elimina la llave si es posible cogerla (inventario del jugador no lleno)
             if(jugador.pickItem(llave)) {
