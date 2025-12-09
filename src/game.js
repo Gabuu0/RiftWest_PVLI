@@ -14,7 +14,7 @@ const config = {
 	scale: {
 	autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
 	},
-	scene: [Menu, LevelPruebas, Level1,InventoryDaphne,InventoryPercival, PauseMenu, LevelAx],
+	scene: [Menu, LevelPruebas, Level1,LevelAx,InventoryDaphne,InventoryPercival, PauseMenu],
 	physics: {
         default: "arcade",
         arcade: {
