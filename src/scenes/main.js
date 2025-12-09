@@ -2,6 +2,9 @@ export default class Menu extends Phaser.Scene {
     constructor() {
         super({ key: "menu" });
     }
+    preload(){
+        this.load.audio('select', 'sounds/select.mp3');
+    }
 
     init() {
 
@@ -21,6 +24,7 @@ export default class Menu extends Phaser.Scene {
 
          jugarButton.on('pointerdown', () => {
              console.log('JUGAR pulsado');
+                this.sound.play('select');
               this.scene.start('level1');
          });
     }

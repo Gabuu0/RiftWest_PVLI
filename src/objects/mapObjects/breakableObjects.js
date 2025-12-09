@@ -66,6 +66,7 @@ export default class BreakableObject extends Phaser.Physics.Arcade.Sprite{
 
             // Si pulsa SHIFT → romper
             if (Phaser.Input.Keyboard.JustDown(this.keyShift)) {
+                this.scene.breakSound.play();
                 this.breakObject();
             }
         } 

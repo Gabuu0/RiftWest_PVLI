@@ -33,6 +33,11 @@ export default class PauseMenu extends Phaser.Scene {
         }).setOrigin(0.5);
         container.add(texto);
 
+        //Función para el sonido de seleccionar
+        const playSelectSound = () => {
+            this.sound.play('select');
+        };
+
         // Botón Reanudar
         const continueButton = this.add.text(0, -20, 'Reanudar', {
             fontSize: '24px',
@@ -90,6 +95,7 @@ export default class PauseMenu extends Phaser.Scene {
 
         // Interaccion con boton de reanudar
         continueButton.on('pointerdown', () => {
+            playSelectSound();
             cerrarMenu(() => {
                 this.scene.stop();
                 this.scene.resume(this.level);
@@ -100,6 +106,7 @@ export default class PauseMenu extends Phaser.Scene {
 
         // Interaccion con boton de inicio
         menuButton.on('pointerdown', () => {
+            playSelectSound();
             cerrarMenu(() => {
                 this.scene.stop(this.level);
                 this.scene.stop('InventarioPercival');
@@ -111,6 +118,7 @@ export default class PauseMenu extends Phaser.Scene {
 
         // Interaccion con boton de reinicio
         restartButton.on('pointerdown', () => {
+            playSelectSound();
             cerrarMenu(() => {
                 this.scene.stop();
                 this.scene.stop(this.level); 
@@ -120,6 +128,7 @@ export default class PauseMenu extends Phaser.Scene {
 
         // Tecla ESC para cerrar menu
         this.input.keyboard.on('keydown-ESC', () => {
+            playSelectSound();
             cerrarMenu(() => {
                 this.scene.stop();
                 this.scene.resume(this.level);
