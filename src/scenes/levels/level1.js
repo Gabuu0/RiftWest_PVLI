@@ -97,18 +97,14 @@ export default class Level1 extends Phaser.Scene{
         //#endregion
 
         //#region Colisiones
-
-        const activatePlaca = (jugador, tile) => { const activatedPosition = InteractableObjects.activarPlaca(this, jugador, tile);
-    if (activatedPosition) {
-        this.sound.play('placa');
-    }
-    };
+        
         this.physics.add.collider(this.daphne, Paredes);
         this.physics.add.collider(this.daphne, this.Puertas);
-        this.physics.add.overlap(this.daphne, PlacasDePresion,activatePlaca);
+        this.physics.add.overlap(this.daphne, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
         this.physics.add.overlap(this.percival,this.keys,(jugador,llave)=>{
             //se oculta la llave si es posible cogerla
             if(jugador.pickItem(llave)) {
+                this.sound.play('pickItem');
                 this.events.emit('itemPickedP', llave);
                 llave.destroy(); 
             }
@@ -117,6 +113,7 @@ export default class Level1 extends Phaser.Scene{
         this.physics.add.overlap(this.daphne,this.keys,(jugador,llave)=>{
             //se oculta la llave si es posible cogerla
             if(jugador.pickItem(llave)) {
+                this.sound.play('pickItem');
                 this.events.emit('itemPickedD', llave);
                 llave.destroy(); 
             }
@@ -246,7 +243,7 @@ export default class Level1 extends Phaser.Scene{
         //Sonidos
         this.load.audio('pasos', 'sounds/pasos.mp3');
         this.load.audio('romper', 'sounds/romper.mp3');
-        this.load.audio('placa', 'sounds/placa.mp3');
+        this.load.audio('pickItem', 'sounds/pickItem.mp3');
 
         this.load.image('profesor','sprites/images/profesor.jpg');
         this.load.image('sheriff','sprites/images/sheriff.jpeg');
