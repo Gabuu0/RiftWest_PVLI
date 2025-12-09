@@ -166,7 +166,7 @@ export default class LevelPruebas extends Phaser.Scene{
         //     //se miran las puertas y si alguna tiene el mismo identificador que la placa se abre
         //     this.doors.getChildren().forEach(door =>{
         //         if(door.identifier === placa.identifier){
-        //             door.openDoor("preassurePlate");
+        //             door.openDoor();
         //         }
         //     });
         // });
@@ -174,7 +174,7 @@ export default class LevelPruebas extends Phaser.Scene{
         //     //se miran las puertas y si alguna tiene el mismo identificador que la placa se abre
         //     this.doors.getChildren().forEach(door =>{
         //         if(door.identifier === lever.identifier){
-        //             door.openDoor("lever");
+        //             door.destroy(true);
         //             lever.useLever();
         //         }
         //     });
