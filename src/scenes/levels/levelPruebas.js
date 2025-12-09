@@ -9,6 +9,7 @@ import Lever from '../../objects/mapObjects/lever.js';
 import KnockableObject from '../../objects/mapObjects/knockableObject.js';
 import breakableObjects from '../../objects/mapObjects/breakableObjects.js'
 import DialogText from "../../objects/playerObjects/dialogText.js";
+import EndTrigger from '../../objects/mapObjects/endTrigger.js';
 
 export default class LevelPruebas extends Phaser.Scene{
     constructor(){
@@ -135,6 +136,15 @@ export default class LevelPruebas extends Phaser.Scene{
             this.scaleObject(kObject,scaling);
             this.knockObjects.add(kObject);
         });
+
+        this.endTriggers = [];
+        const endTLayer = this.map.getObjectLayer('endTriggers');
+        endTLayer.objects.forEach(obj =>{
+            let endT = new EndTrigger(this, obj.x, obj.y,'endTrigger');
+            endT.setScale(scaling);
+            this.scaleObject(endT,scaling);
+            this.endTriggers.push(endT);
+        });
         //#endregion
         
         
@@ -142,6 +152,9 @@ export default class LevelPruebas extends Phaser.Scene{
         //#endregion
 
         //#region Colisiones
+
+
+
         this.physics.add.collider(this.players,Paredes);
         this.physics.add.collider(this.players,this.doors,(jugador,puerta)=>{
             //si el jugador tiene un item con el mismo identificador que la puerta esta se destruye
@@ -176,6 +189,19 @@ export default class LevelPruebas extends Phaser.Scene{
                 llave.destroy(); 
             }
         });
+        this.physics.add.overlap(this.players,this.endTriggers,(jugador, endT)=>{
+            endT.on();
+            if (this.endTriggers.every(t => t.getIsPressed())) {
+                console.log("3Letra, la L");
+            }
+        });
+
+        //this.physics.add.overlap(this.daphne, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
+       
+
+       
+
+        //this.physics.add.overlap(this.percival, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
 
 
         this.cajaM1 = new movableObject(this, 3140, 3100, 980, 3100, "cajaMovible", this.percival, this.daphne, Paredes)
