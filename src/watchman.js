@@ -88,7 +88,7 @@ export default class Watchman extends Phaser.GameObjects.PathFollower {
         }
 
         if(detectado){
-            this.scene.sound.play('reset');
+            this.scene.resetSound.play();
             this.scene.scene.restart();
         }
     }

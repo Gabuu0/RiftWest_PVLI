@@ -160,8 +160,10 @@ export default class Level1 extends Phaser.Scene{
         this.sheriff = new Watchman(this,450, 3700,"S",0,this.percival,recorrido2, "sheriff");
 
         //sonidos
-        this.walkSound = this.sound.add('pasos', { loop: false, volume: 0.5});
-        this.breakSound = this.sound.add('romper', {loop: false, volume: 0.5});
+        this.walkSound = this.sound.add('pasos', { loop: false});
+        this.breakSound = this.sound.add('romper');
+        this.resetSound = this.sound.add('reset',{loop: false, volume: 0.3});
+        this.music = this.sound.add('musica', {loop: true, volume:0.7});
         //#endregion
     }
 
@@ -245,6 +247,7 @@ export default class Level1 extends Phaser.Scene{
         this.load.audio('romper', 'sounds/romper.mp3');
         this.load.audio('pickItem', 'sounds/pickItem.mp3');
         this.load.audio('reset', 'sounds/reset.mp3');
+        this.load.audio('musica', 'sounds/musica.mp3');
 
         this.load.image('profesor','sprites/images/profesor.jpg');
         this.load.image('sheriff','sprites/images/sheriff.jpeg');
@@ -439,6 +442,11 @@ export default class Level1 extends Phaser.Scene{
          } else if (!isMoving && this.walkSound.isPlaying) {
         // Ningún jugador se mueve y el sonido está sonando.
              this.walkSound.pause(); 
+         }
+
+         //MUSICA
+         if(!this.music.isPlaying){
+         this.music.play();
          }
     }
 
