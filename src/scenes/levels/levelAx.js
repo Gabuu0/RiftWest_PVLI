@@ -21,8 +21,6 @@ export default class LevelAx extends Phaser.Scene {
 
     create(){
         //#region Creacion Personajes
-        this.createAnims();
-
         this.percival = new Players(this,1240,1800,"P",0,"percival");
         this.daphne = new Players(this,4520,1800,"D",0,"daphne");
 
@@ -63,11 +61,11 @@ export default class LevelAx extends Phaser.Scene {
         });
 
         //#region Creacion Mapa
-        this.map = this.make.tilemap({ key: 'mapaAx' });
+        this.map = this.make.tilemap({ key: 'mapLevelAxel' });
         const tileset1 = this.map.addTilesetImage('TileSetPJ', 'tilesPJ');
         const tilesetD = this.map.addTilesetImage('DustwartsTileset', 'tilesD');
         const tilesetM = this.map.addTilesetImage('MagwartsTileset', 'tilesM');
-        const tilesetDec = this.map.addTilesetImage('decoration', 'tilesDec');
+        const tilesetDec = this.map.addTilesetImage('decoration', 'tilesDecoration');
         this.tilesets = [tileset1, tilesetD, tilesetM, tilesetDec];
 
         const Suelo = this.addMapLayer('suelo',false);
@@ -198,186 +196,6 @@ export default class LevelAx extends Phaser.Scene {
         if (this.movementController) {
             this.movementController.update();
         }
-    }
-
-    preload(){
-        //#region Personajes
-        this.load.spritesheet("D","sprites/images/daphne/DaphneIdle(x5).png",
-              { frameWidth: 160, frameHeight: 160});
-        this.load.spritesheet("P","sprites/images/percival/PercivalIdle(x5).png",
-              { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("DUp","sprites/images/daphne/Daphne-caminando-arriba(x5).png",
-              { frameWidth: 160, frameHeight: 160});
-        this.load.spritesheet("PUp","sprites/images/percival/Percival-caminando-arriba(x5).png",
-              { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("DDown","sprites/images/daphne/Daphne-caminando-abajo(x5).png",
-                { frameWidth: 160, frameHeight: 160});
-        this.load.spritesheet("PDown","sprites/images/percival/Percival-caminando-abajo(x5).png",
-                { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("DLeft","sprites/images/daphne/Daphne-caminando-derecha(x5).png",
-                { frameWidth: 160, frameHeight: 160});
-        this.load.spritesheet("PLeft","sprites/images/percival/Percival-caminando-derecha(x5).png",
-                { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("DRight","sprites/images/daphne/Daphne-caminando-izquierda(x5).png",
-                { frameWidth: 160, frameHeight: 160});
-        this.load.spritesheet("PRight","sprites/images/percival/Percival-caminando-izquierda(x5).png",
-                { frameWidth: 160, frameHeight: 160});
-                
-        //WatchMans
-        this.load.spritesheet("S","sprites/images/profesor/Profesor-idle.png",
-              { frameWidth: 160, frameHeight: 160});
-        this.load.spritesheet("Pr","sprites/images/sheriff/Sheriif-idle.png",
-              { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("SUp","sprites/images/sheriff/Sheriif-up.png",
-              { frameWidth: 160, frameHeight: 160});
-        this.load.spritesheet("PrUp","sprites/images/profesor/Profesor-up.png",
-              { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("SDown","sprites/images/sheriff/Sheriif-down.png",
-                { frameWidth: 160, frameHeight: 160});
-        this.load.spritesheet("PrDown","sprites/images/profesor/Profesor-down.png",
-                { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("SLeft","sprites/images/sheriff/Sheriif-left.png",
-                { frameWidth: 160, frameHeight: 160});
-        this.load.spritesheet("PrLeft","sprites/images/profesor/Profesor-left.png",
-                { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("SRight","sprites/images/sheriff/Sheriif-right.png",
-                { frameWidth: 160, frameHeight: 160});
-        this.load.spritesheet("PrRight","sprites/images/profesor/Profesor-right.png",
-                { frameWidth: 160, frameHeight: 160});
-        
-        this.load.image('profesor','sprites/images/profesor.jpg');
-        this.load.image('sheriff','sprites/images/sheriff.jpeg');
-        //#endregion
-
-        //#region Tilemaps
-        this.load.image('tilesPJ', 'sprites/tileSet/TileSetPJ.png');
-        this.load.image('tilesD', 'sprites/tileSet/DustwartsTileset.png');
-        this.load.image('tilesM', 'sprites/tileSet/MagwartsTileset.png');
-        this.load.image('tilesDec', 'sprites/tileSet/decoration.png');
-        this.load.tilemapTiledJSON('mapaAx', 'sprites/tileSet/LvlAxel.json');
-        this.load.spritesheet('doors','sprites/tileSet/Doors.png',{frameWidth:32, frameHeight:16});
-        this.load.image('preassurePlate','sprites/tileSet/PreassurePlate.png');
-        //#endregion
-
-        //#region Objetos
-        this.load.image('cajaMovible', 'sprites/images/items/cajaMovible.png');
-        this.load.image('cajaRompible','sprites/images/items/cajaRompible.png');
-        this.load.image('cajaRota','sprites/images/items/cajaRompibleRota.png');
-        this.load.spritesheet('llaveMapa','sprites/images/items/keyMap.png',
-              {frameWidth:16, frameHeight:16}
-        );
-        this.load.image('llaveInventario', 'sprites/images/items/keyInventory.png')
-        //#endregion
-
-        this.load.spritesheet('slot','sprites/images/inventory/inventorySpace.png',{frameWidth: 64, frameHeight:64});
-        this.load.image('descriptionBox','sprites/images/inventory/descriptionBox.png');
-    }
-  
-        createAnims(){
-        //#region Personajes
-        this.anims.create(
-            {key: "DaphneIdle",
-            frames: this.anims.generateFrameNumbers("D", {frames:[0,1,2,3]}), frameRate: 5, repeat: -1,}
-        );
-        this.anims.create(
-            {key: "PercivalIdle",
-            frames: this.anims.generateFrameNumbers("P", {frames:[0,1,2,3]}), frameRate: 5, repeat: -1,}
-        );
-        this.anims.create(
-            {key: "DaphneUp",
-            frames: this.anims.generateFrameNumbers("DUp", {frames:[0,1,2,3]}), frameRate: 5, repeat: -1,}
-        );
-        this.anims.create(
-            {key: "PercivalUp",
-            frames: this.anims.generateFrameNumbers("PUp", {frames:[0,1,2,3]}), frameRate: 5, repeat: -1,}
-        );
-        this.anims.create(
-            {key: "DaphneDown",
-            frames: this.anims.generateFrameNumbers("DDown", {frames:[0,1,2,3]}), frameRate: 5, repeat: -1,}
-        );
-        this.anims.create(
-            {key: "PercivalDown",
-            frames: this.anims.generateFrameNumbers("PDown", {frames:[0,1,2,3]}), frameRate: 5, repeat: -1,}
-        );
-        this.anims.create(
-            {key: "DaphneLeft",
-            frames: this.anims.generateFrameNumbers("DLeft", {frames:[0,1,2,3]}), frameRate: 5, repeat: -1,}
-        );
-        this.anims.create(
-            {key: "PercivalLeft",
-            frames: this.anims.generateFrameNumbers("PLeft", {frames:[0,1,2,3]}), frameRate: 5, repeat: -1,}
-        );
-        this.anims.create(
-            {key: "DaphneRight",
-            frames: this.anims.generateFrameNumbers("DRight", {frames:[0,1,2,3]}), frameRate: 5, repeat: -1,}
-        );
-        this.anims.create(
-            {key: "PercivalRight",
-            frames: this.anims.generateFrameNumbers("PRight", {frames:[0,1,2,3]}), frameRate: 5, repeat: -1,}
-        );
-
-        this.anims.create(
-            {key: "SheriffDown",
-            frames: this.anims.generateFrameNumbers("SDown", {frames:[0,1,2,3]}), frameRate: 5, repeat: -1,}
-        );
-        this.anims.create(
-            {key: "ProfesorDown",
-            frames: this.anims.generateFrameNumbers("PrDown", {frames:[0,1,2,3]}), frameRate: 5,
-            repeat: -1,}
-        );
-        this.anims.create(
-            {key: "SheriffUp",
-            frames: this.anims.generateFrameNumbers("SUp", {frames:[0,1,2,3]}), frameRate: 5, repeat: -1,}
-        );
-        this.anims.create(
-            {key: "ProfesorUp",
-            frames: this.anims.generateFrameNumbers("PrUp", {frames:[0,1,2,3]}), frameRate: 5, repeat: -1,}
-        );
-        this.anims.create(
-            {key: "SheriffLeft",
-            frames: this.anims.generateFrameNumbers("SLeft", {frames:[0,1,2,3]}), frameRate: 5, repeat: -1,}
-        );
-        this.anims.create(
-            {key: "ProfesorLeft",
-            frames: this.anims.generateFrameNumbers("PrLeft", {frames:[0,1,2,3]}), frameRate: 5, repeat: -1,}
-        );
-        this.anims.create(
-            {key: "SheriffRight",
-            frames: this.anims.generateFrameNumbers("SRight", {frames:[0,1,2,3]}), frameRate: 5, repeat: -1,}
-        );
-        this.anims.create(
-            {key: "ProfesorRight",
-            frames: this.anims.generateFrameNumbers("PrRight", {frames:[0,1,2,3]}), frameRate: 5, repeat: -1,}
-        );
-        //#endregion
-
-        //#region Objetos
-        this.anims.create(
-            {key:'keyIdle',
-                frames: this.anims.generateFrameNumbers('llaveMapa', {frames:[0,1,2,1]}), frameRate: 4, repeat:-1,
-            }
-        );
-        //#endregion
-
-        //#region Inventario
-        this.anims.create(
-            {key: 'SlotSelected',
-            frames: this.anims.generateFrameNumbers('slot', {frames:[1,2]}), frameRate: 2, repeat: -1,}
-        );
-
-        this.anims.create(
-            {key: 'SlotIdle',
-            frames: this.anims.generateFrameNumbers('slot', {frames:[0]}), frameRate: 2, repeat: -1,}
-        );
-        //#endregion
     }
     
     addMapLayer(name,collision){
