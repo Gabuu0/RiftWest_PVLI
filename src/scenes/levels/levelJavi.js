@@ -330,6 +330,13 @@ export default class LevelJavi extends Phaser.Scene{
         ], true);
 
         //#endregion
+
+        //#region Sonidos
+        this.walkSound = this.sound.add('pasos', { loop: false});
+        this.breakSound = this.sound.add('romper');
+        this.resetSound = this.sound.add('reset',{loop: false, volume: 0.3});
+        this.music = this.sound.add('musica', {loop: true, volume:0.7});
+        //#endregion
     }
 
     update(t, dt){
@@ -415,5 +422,26 @@ export default class LevelJavi extends Phaser.Scene{
         object.y *= scaling;
         //object.y += (object.height*scaling);
         object.setScale(scaling);
+    }
+
+    updateSounds(){
+        //SONIDO DE PASOS
+        const percivalIsMoving = (this.percival.body.velocity.x !== 0 || this.percival.body.velocity.y !== 0);
+        const daphneIsMoving = (this.daphne.body.velocity.x !== 0 || this.daphne.body.velocity.y !== 0);
+
+         const isMoving = percivalIsMoving || daphneIsMoving;
+
+        if (isMoving && !this.walkSound.isPlaying) {
+        // Al menos un jugador se mueve y el sonido no está sonando.
+             this.walkSound.play();
+         } else if (!isMoving && this.walkSound.isPlaying) {
+        // Ningún jugador se mueve y el sonido está sonando.
+             this.walkSound.pause(); 
+         }
+
+         //MUSICA
+         if(!this.music.isPlaying){
+         this.music.play();
+         }
     }
 }

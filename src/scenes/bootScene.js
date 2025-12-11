@@ -75,8 +75,33 @@ export default class BootScene extends Phaser.Scene{
         this.load.image('llaveInventario', 'sprites/images/items/keyInventory.png')
         //#endregion
 
+        //#region Interfaz
         this.load.spritesheet('slot','sprites/images/inventory/inventorySpace.png',{frameWidth: 64, frameHeight:64});
         this.load.image('descriptionBox','sprites/images/inventory/descriptionBox.png');
+
+        this.load.image('daphneMapEnabled', 'sprites/images/daphne/mapIcon.png');
+        this.load.image('percivalMapEnabled', 'sprites/images/percival/mapIcon.png');
+        this.load.image('daphneMap', 'sprites/images/daphne/mapLevel1.png');
+        this.load.image('percivalMap', 'sprites/images/percival/mapLevel1.png');
+
+        this.load.image('daphneAbilityReady', 'sprites/images/daphne/abilityEnabled.png');
+        this.load.image('daphneAbilityUsed', 'sprites/images/daphne/abilityDisabled.png');
+        this.load.image('percivalAbilityReady', 'sprites/images/percival/abilityEnabled.png');
+        this.load.image('percivalAbilityUsed', 'sprites/images/percival/abilityDisabled.png');
+
+        this.load.image('daphneHead', 'sprites/images/daphne/head.png');
+        this.load.image('percivalHead', 'sprites/images/percival/head.png');
+        //#endregion
+
+        //#region Sonidos
+        this.load.audio('pasos', 'sounds/pasos.mp3');
+        this.load.audio('romper', 'sounds/romper.mp3');
+        this.load.audio('pickItem', 'sounds/pickItem.mp3');
+        this.load.audio('reset', 'sounds/reset.mp3');
+        this.load.audio('musica', 'sounds/musica.mp3');
+        this.load.audio('select', 'sounds/select.mp3');
+        //#endregion
+
     }
     create(){
          this.registry.set('clownObj', {

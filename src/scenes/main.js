@@ -3,7 +3,6 @@ export default class Menu extends Phaser.Scene {
         super({ key: "menu" });
     }
     preload(){
-        this.load.audio('select', 'sounds/select.mp3');
     }
 
     init(data) {

@@ -339,19 +339,6 @@ export default class Level1 extends Phaser.Scene{
 
         this.load.spritesheet('slot','sprites/images/inventory/inventorySpace.png',{frameWidth: 64, frameHeight:64});
         this.load.image('descriptionBox','sprites/images/inventory/descriptionBox.png');
-        //#region interfaz
-        this.load.image('daphneMapEnabled', 'sprites/images/daphne/mapIcon.png');
-        this.load.image('percivalMapEnabled', 'sprites/images/percival/mapIcon.png');
-        this.load.image('daphneMap', 'sprites/images/daphne/mapLevel1.png');
-        this.load.image('percivalMap', 'sprites/images/percival/mapLevel1.png');
-
-        this.load.image('daphneAbilityReady', 'sprites/images/daphne/abilityEnabled.png');
-        this.load.image('daphneAbilityUsed', 'sprites/images/daphne/abilityDisabled.png');
-        this.load.image('percivalAbilityReady', 'sprites/images/percival/abilityEnabled.png');
-        this.load.image('percivalAbilityUsed', 'sprites/images/percival/abilityDisabled.png');
-
-        this.load.image('daphneHead', 'sprites/images/daphne/head.png');
-        this.load.image('percivalHead', 'sprites/images/percival/head.png');
 
     }
 
