@@ -62,7 +62,7 @@ export default class Players extends Phaser.Physics.Arcade.Sprite{
     getInventoryByType(){
         const inventory ={
             percival:{key: 'KeyQ', sceneKey: 'InventarioPercival'},
-            daphne:{key: 'ControlRight', sceneKey: 'InventarioDaphne'},
+            daphne:{key: 'AltRight', sceneKey: 'InventarioDaphne'},
         }
         return inventory[this.type];
     }
