@@ -29,12 +29,22 @@ export default class BreakableObject extends Phaser.Physics.Arcade.Sprite{
         this.isBroken = false;
         this.breakRange = 90; // distancia para poder romper
 
-        this.scene.input.keyboard.on('keydown', (event) => {
-            if (event.code === 'ShiftLeft') { // por ejemplo, Shift izquierdo para Percival
+        //Para detectar si se ha pulsado para romper un objeto
+        this.keyPressed = false;
+
+        this.scene.input.keyboard.on('keydown',(event)=>{
+            if(event.code === 'ShiftLeft'){
+                this.keyPressed = true;
                 let action = { inRange: this.distance < this.breakRange, isDropping: true }; //no se utiliza is droping en percival asiq da igual el valor
                 this.scene.UseAbility("percival",this,action);
             }
-        });    
+        })
+
+        this.scene.input.keyboard.on('keyup',(event)=>{
+            if(event.code === 'ShiftLeft'){
+                this.keyPressed = false;
+            }
+        })
     }
 
     preUpdate(t, dt){
@@ -69,6 +79,12 @@ export default class BreakableObject extends Phaser.Physics.Arcade.Sprite{
              repeat: -1
              });
             } 
+
+            // Si pulsa SHIFT → romper
+            if (this.keyPressed) {
+                this.scene.breakSound.play();
+                this.breakObject();
+            }
         } 
         else if (distance >= this.breakRange && this.glowTween) {
             this.glowTween.stop();

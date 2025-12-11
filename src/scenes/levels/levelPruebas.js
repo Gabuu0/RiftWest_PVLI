@@ -5,8 +5,11 @@ import InteractableObjects from '../../objects/mapObjects/interactableObjects.js
 import movableObject from '../../objects/mapObjects/movableObject.js';
 import Door from '../../objects/mapObjects/door.js';
 import PreassurePlate from '../../objects/mapObjects/preassurePlate.js';
+import Lever from '../../objects/mapObjects/lever.js';
+import KnockableObject from '../../objects/mapObjects/knockableObject.js';
 import breakableObjects from '../../objects/mapObjects/breakableObjects.js'
 import DialogText from "../../objects/playerObjects/dialogText.js";
+import EndTrigger from '../../objects/mapObjects/endTrigger.js';
 
 export default class LevelPruebas extends Phaser.Scene{
     constructor(){
@@ -36,11 +39,7 @@ export default class LevelPruebas extends Phaser.Scene{
 
         this.percival.setDepth(1);
         this.daphne.setDepth(1);
-/*
-        console.log("Movement:", Movement);
-        console.log("Percival:", this.percival);
-        console.log("Daphne:", this.daphne);
-*/
+
         this.scene.launch('InventarioPercival',this.percival);
         this.scene.launch('InventarioDaphne',this.daphne);
         this.inventario1 = this.scene.get('InventarioPercival');
@@ -109,14 +108,42 @@ export default class LevelPruebas extends Phaser.Scene{
             this.doors.add(door);
         })
 
-        this.preassurePlates = this.add.group();
-        const platesLayer = this.map.getObjectLayer('placas_presion');
-        platesLayer.objects.forEach(obj =>{
+        // this.preassurePlates = this.add.group();
+        // const platesLayer = this.map.getObjectLayer('placas_presion');
+        // platesLayer.objects.forEach(obj =>{
+        //     let id = obj.properties.find(prop => prop.name ==='identifier').value;
+        //     let plate = new PreassurePlate(this, obj.x, obj.y,'preassurePlate',id);
+        //     plate.setScale(scaling);
+        //     this.scaleObject(plate,scaling);
+        //     this.preassurePlates.add(plate);
+        // });
+
+        // this.levers = this.add.group();
+        // const leversLayer = this.map.getObjectLayer('placas_presion');
+        // leversLayer.objects.forEach(obj =>{
+        //     let id = obj.properties.find(prop => prop.name ==='identifier').value;
+        //     let lever = new Lever(this, obj.x, obj.y,'levers',id);
+        //     lever.setScale(scaling);
+        //     this.scaleObject(lever,scaling);
+        //     this.levers.add(lever);
+        // });
+        this.knockObjects = this.add.group();
+        const knockObject = this.map.getObjectLayer('placas_presion');
+        knockObject.objects.forEach(obj =>{
             let id = obj.properties.find(prop => prop.name ==='identifier').value;
-            let plate = new PreassurePlate(this, obj.x, obj.y,'preassurePlate',id);
-            plate.setScale(scaling);
-            this.scaleObject(plate,scaling);
-            this.preassurePlates.add(plate);
+            let kObject = new KnockableObject(this, obj.x, obj.y,'knockableObject',id);
+            kObject.setScale(scaling);
+            this.scaleObject(kObject,scaling);
+            this.knockObjects.add(kObject);
+        });
+
+        this.endTriggers = [];
+        const endTLayer = this.map.getObjectLayer('endTriggers');
+        endTLayer.objects.forEach(obj =>{
+            let endT = new EndTrigger(this, obj.x, obj.y,'endTrigger');
+            endT.setScale(scaling);
+            this.scaleObject(endT,scaling);
+            this.endTriggers.push(endT);
         });
         //#endregion
         
@@ -125,9 +152,40 @@ export default class LevelPruebas extends Phaser.Scene{
         //#endregion
 
         //#region Colisiones
+
+
+
         this.physics.add.collider(this.players,Paredes);
-        this.physics.add.collider(this.players,this.doors);
-        this.physics.add.overlap(this.players,this.preassurePlates);
+        this.physics.add.collider(this.players,this.doors,(jugador,puerta)=>{
+            //si el jugador tiene un item con el mismo identificador que la puerta esta se destruye
+            if(jugador.haveItem(puerta.identifier)){
+                 this.doors.getChildren().forEach(door =>{
+                    if(door.identifier === puerta.identifier){
+                        door.destroy(true);
+                    }
+                });
+            }
+        });
+        // this.physics.add.overlap(this.players,this.preassurePlates,(jugador,placa)=>{
+        //     //se miran las puertas y si alguna tiene el mismo identificador que la placa se abre
+        //     this.doors.getChildren().forEach(door =>{
+        //         if(door.identifier === placa.identifier){
+        //             door.openDoor();
+        //         }
+        //     });
+        // });
+        // this.physics.add.overlap(this.players,this.levers,(jugador,lever)=>{
+        //     //se miran las puertas y si alguna tiene el mismo identificador que la placa se abre
+        //     this.doors.getChildren().forEach(door =>{
+        //         if(door.identifier === lever.identifier){
+        //             door.destroy(true);
+        //             lever.useLever();
+        //         }
+        //     });
+        // }); 
+        this.physics.add.collider(this.players,this.knockObjects,(jugador,kObject)=>{
+                kObject.knock();
+            });
         this.physics.add.overlap(this.players,this.keys,(jugador,llave)=>{
             //se elimina la llave si es posible cogerla (inventario del jugador no lleno)
             if(jugador.pickItem(llave)) {
@@ -135,9 +193,12 @@ export default class LevelPruebas extends Phaser.Scene{
                 llave.destroy(); 
             }
         });
-
-
-
+        this.physics.add.overlap(this.players,this.endTriggers,(jugador, endT)=>{
+            endT.on();
+            if (this.endTriggers.every(t => t.getIsPressed())) {
+                console.log("3Letra, la L");
+            }
+        });
 
         //this.physics.add.overlap(this.daphne, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
        
@@ -146,21 +207,21 @@ export default class LevelPruebas extends Phaser.Scene{
 
         //this.physics.add.overlap(this.percival, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
 
+
         this.cajaM1 = new movableObject(this, 3140, 3100, 980, 3100, "cajaMovible", this.percival, this.daphne, Paredes)
         this.cajR1 = new breakableObjects(this,475, 3225, 2625, 3225,'cajaRompible',this.percival,this.daphne);
         
-        //this.physics.add.overlap(this.cajaM1, PlacasDePresion, (movableObject,tile) => {InteractableObjects.activarPlaca(this, movableObject, tile)});
         //#endregion
         //#region SistemaDialogos
-        this.dialog = new DialogText(this, {});
+        this.dialog = new DialogText(this, {camera: this.percivalCam});
         this.dialog.setDepth(10);
-        
+                
         this.dialog.setTextArray([
-            "Bryant Myers",
-            "Hoy de nuevo te voy a ver (Anonimus, this is the remix)",
-            "Si llaman, pichea el cel (Anuel, Almighty)",
-            "Estamos fumando marihuana (Maybach Música)",
-            "Hoy serás mi esclava en el cuarto de un motel (Carbon Fiber Music)"
+            [1, "Bryant Myers"],
+            [2, "Hoy de nuevo te voy a ver (Anonimus, this is the remix)"],
+            [0, "Si llaman, pichea el cel (Anuel, Almighty)"],
+            [1, "Estamos fumando marihuana (Maybach Música)"],
+            [2, "Hoy serás mi esclava en el cuarto de un motel (Carbon Fiber Music)"]
         ], true);
         //#endregion
     }
@@ -187,6 +248,8 @@ export default class LevelPruebas extends Phaser.Scene{
         this.load.image('tilesM', 'sprites/tileSet/MagwartsTileset.png');
         this.load.tilemapTiledJSON('mapa', 'sprites/tileSet/PruebaPuertas.json');
         this.load.spritesheet('doors','sprites/tileSet/Doors.png',{frameWidth:32, frameHeight:16});
+        this.load.spritesheet('levers','sprites/tileSet/Levers.png',{frameWidth:16, frameHeight:16});
+        this.load.spritesheet('knockableObject','sprites/tileSet/KnockableObject.png',{frameWidth:13, frameHeight:19});
         this.load.image('preassurePlate','sprites/tileSet/PreassurePlate.png');
         //#endregion
 

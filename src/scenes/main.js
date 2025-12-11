@@ -2,9 +2,16 @@ export default class Menu extends Phaser.Scene {
     constructor() {
         super({ key: "menu" });
     }
+    preload(){
+        this.load.audio('select', 'sounds/select.mp3');
+    }
 
-    init() {
-
+    init(data) {
+        this.clownGetItemJokes = data.clownGetItemJokes;
+        this.clownGiveItemJokes = data.clownGiveItemJokes;
+        this.clownNoObjectGiven = data.clownNoObjectGiven;
+        this.clownNoObjectTaken = data.clownNoObjectTaken;
+        this.clownLast = data.clownLast;
     }
 
     create() {
@@ -20,8 +27,14 @@ export default class Menu extends Phaser.Scene {
         });
 
          jugarButton.on('pointerdown', () => {
-             console.log('JUGAR pulsado');
-              this.scene.start('level1');
+             this.sound.play('select');
+            this.scene.run('levelJavi',{clownGetItemJokes:this.clownGetItemJokes,
+            clownGiveItemJokes:this.clownGiveItemJokes,
+            clownNoObjectGiven: this.clownNoObjectGiven,
+            clownNoObjectTaken: this.clownNoObjectTaken,
+            clownLast:this.clownLast
+            });
+            this.scene.sleep('menu');
          });
     }
 }
