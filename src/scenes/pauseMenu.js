@@ -136,4 +136,8 @@ export default class PauseMenu extends Phaser.Scene {
         });
     }
 
+    setLevel(level){
+        this.level = level;
+    }
+
 }

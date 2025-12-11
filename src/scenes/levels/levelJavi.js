@@ -54,6 +54,7 @@ export default class LevelJavi extends Phaser.Scene{
             playerScene: this});
         this.inventario1 = this.scene.get('InventarioPercival');
         this.inventario2 = this.scene.get('InventarioDaphne');
+        this.pauseMenu = this.scene.get('pauseMenu');
 
 
         this.movementController = new Movement(this, this.percival, this.daphne);
@@ -63,6 +64,7 @@ export default class LevelJavi extends Phaser.Scene{
         this.input.keyboard.on('keydown-ESC', () => {
             console.log('ESC pulsado');
             this.scene.launch('pauseMenu');   // Lanza el menú
+            this.pauseMenu.setLevel(this.scene.key);
             this.scene.pause();              // Pausa la escena del juego
         });
 
@@ -343,6 +345,7 @@ export default class LevelJavi extends Phaser.Scene{
         if (this.movementController) {
             this.movementController.update();
         }
+        this.updateSounds();
     }
         
     createItems(){
@@ -428,15 +431,14 @@ export default class LevelJavi extends Phaser.Scene{
         //SONIDO DE PASOS
         const percivalIsMoving = (this.percival.body.velocity.x !== 0 || this.percival.body.velocity.y !== 0);
         const daphneIsMoving = (this.daphne.body.velocity.x !== 0 || this.daphne.body.velocity.y !== 0);
-
-         const isMoving = percivalIsMoving || daphneIsMoving;
+        const isMoving = percivalIsMoving || daphneIsMoving;
 
         if (isMoving && !this.walkSound.isPlaying) {
-        // Al menos un jugador se mueve y el sonido no está sonando.
-             this.walkSound.play();
+            // Al menos un jugador se mueve y el sonido no está sonando.
+            this.walkSound.play();
          } else if (!isMoving && this.walkSound.isPlaying) {
-        // Ningún jugador se mueve y el sonido está sonando.
-             this.walkSound.pause(); 
+            // Ningún jugador se mueve y el sonido está sonando.
+            this.walkSound.pause(); 
          }
 
          //MUSICA
