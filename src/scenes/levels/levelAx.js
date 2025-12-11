@@ -5,7 +5,7 @@ import InteractableObjects from '../../objects/mapObjects/interactableObjects.js
 import movableObject from '../../objects/mapObjects/movableObject.js';
 import breakableObjects from '../../objects/mapObjects/breakableObjects.js'
 import DialogText from "../../objects/playerObjects/dialogText.js";
-import Watchman from "../../watchman.js";
+import Watchman from "../../objects/mapObjects/watchman.js";
 import PreassurePlate from '../../objects/mapObjects/preassurePlate.js';
 import EndTrigger from '../../objects/mapObjects/endTrigger.js';
 import Door from '../../objects/mapObjects/door.js';

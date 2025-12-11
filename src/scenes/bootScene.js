@@ -54,7 +54,7 @@ export default class BootScene extends Phaser.Scene{
         this.load.image('tilesM2', 'sprites/tileSet/Magwarts.png');
         this.load.image('tilesDecoration','sprites/tileSet/decoration.png');
         this.load.tilemapTiledJSON('mapLevelAxel', 'sprites/tileSet/LvlAxel.json');
-        this.load.tilemapTiledJSON('mapLevel1', 'sprites/tileSet/Mapa.json');
+        this.load.tilemapTiledJSON('mapLevelJavi', 'sprites/tileSet/LevelJavi.json');
         this.load.tilemapTiledJSON('mapLevelGabi', 'sprites/tileSet/LevelGabi.json');
         this.load.tilemapTiledJSON('mapa', 'sprites/tileSet/PruebaPuertas.json');
         this.load.spritesheet('doors','sprites/tileSet/Doors.png',{frameWidth:32, frameHeight:16});

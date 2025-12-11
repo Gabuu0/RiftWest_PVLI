@@ -1,5 +1,5 @@
 export default class KnockableObject extends Phaser.GameObjects.Sprite{
-    constructor(scene,x,y,texture,identifier){
+    constructor(scene,x,y,texture){
         super(scene,x,y,texture);
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
@@ -10,11 +10,9 @@ export default class KnockableObject extends Phaser.GameObjects.Sprite{
 
         this.currentFrame = 0;
         this.setFrame(this.currentFrame);
-        this.identifier = identifier;
     }
 
-    knock(watchMan) {
-        watchMan.TriggerSize(200); //camio el tamaño del radio del vigilante
+    knock() {
         this.currentFrame = 1;
         this.setFrame(this.currentFrame);
         this.scene.tweens.add({
