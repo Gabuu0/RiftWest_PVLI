@@ -26,12 +26,13 @@ export default class BootScene extends Phaser.Scene{
             // progressBar.fillRect(250, 280, 300 * value, 30);
         });
         this.load.on('complete',()=>{
-            // progressBar.destroy();
-            // progressBox.destroy();
-            // loadingText.destroy();
-            // percentText.destroy();
-
-            this.scene.run('menu');
+            this.createClownDialogs();
+            this.scene.run('menu',{clownGetItemJokes:this.clownGetItemJokes,
+            clownGiveItemJokes:this.clownGiveItemJokes,
+            clownNoObjectGiven: this.clownNoObjectGiven,
+            clownNoObjectTaken: this.clownNoObjectTaken,
+            clownLast:this.clownLast
+            });
             this.scene.sleep('boot');
         });
 
@@ -83,7 +84,6 @@ export default class BootScene extends Phaser.Scene{
             hasObj: false,
         });
         this.createAnims();
-        this.createClownDialogs();
     }
 
     createAnims(){
@@ -193,8 +193,8 @@ export default class BootScene extends Phaser.Scene{
         //frases cuando el payaso esta vacio y pero no se selecionó ningun item
         this.clownNoObjectGiven = [
             "Si seleccionas un objeto casi que mejor",
-            "Lo siento de momento no puedo agarrar objetos intangibles, a no ser que quieras que agarre otra cosa...",
-            "Sigo estando igual de vacio que cuando ella te dejo, la proxima dame algo venga",
+            "Si no me das un objeto no puedo agarrar na, a no ser que quieras que agarre otra cosa...",
+            "Sigo estando igual de vacio que cuando ella te dejó, la próxima dame algo venga",
             "Toma, un cachico más de vacio"
         ];
 

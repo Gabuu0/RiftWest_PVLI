@@ -12,27 +12,23 @@ export default class LiftingPlatform extends Phaser.Physics.Arcade.Sprite {
         this.isRaised = isRaised;
         this.originalState = isRaised;
         this.identifier = identifier;
+        this.setFrameByState();
     }
 
 
     activatePlatform(){
-        if(this.isOpen === !this.originalState) return;
-        this.isOpen = !this.originalState;
+        if(this.isRaised === !this.originalState) return;
+        this.isRaised = !this.originalState;
         this.setFrameByState();
         this.scene.time.delayedCall(200,this.desactivatePlatform,null,this);
     }
     
     desactivatePlatform(){
-        this.isOpen = !this.isOpen;
+        this.isRaised = !this.isRaised;
         this.setFrameByState();
     }
 
     setFrameByState(){
-        if(this.isOpen){
-            this.setFrame(1);
-        }
-        else{
-            this.setFrame(0);
-        }
+      this.setFrame(this.isRaised ? 0 : 1)
     }
 }

@@ -14,8 +14,12 @@ export default class LevelGabi extends Phaser.Scene{
         super({key: "levelGabi"});
     }
 
-    init(){
-        
+    init(data){
+        this.clownGetItemJokes = data.clownGetItemJokes;
+        this.clownGiveItemJokes = data.clownGiveItemJokes;
+        this.clownNoObjectGiven = data.clownNoObjectGiven;
+        this.clownNoObjectTaken = data.clownNoObjectTaken;
+        this.clownLast = data.clownLast;
     }
 
     create(){
@@ -26,8 +30,9 @@ export default class LevelGabi extends Phaser.Scene{
             hasObj: false,
         });
 
-        this.percival = new Players(this,1350, 1900,"P",0,"percival");
-        this.daphne = new Players(this,2500,3600,"D",0,"daphne");
+        this.percival = new Players(this,200, 1000,"P",0,"percival");
+        //2500,1000 pos algunas cajas
+        this.daphne = new Players(this,3250,1000,"D",0,"daphne");
         this.players = this.add.group();
         this.players.add(this.percival);
         this.players.add(this.daphne);
@@ -89,6 +94,7 @@ export default class LevelGabi extends Phaser.Scene{
         const Paredes = this.addMapLayer('paredes',true);
 
         const Paredes2 = this.addMapLayer('paredes(sin_colision)',false);
+        const Decoracion = this.addMapLayer('decoracion',true);
         Paredes2.setDepth(3);   
 
         //#region Creacion de los objetos del mapa (puertas, placas de presion, etc)
@@ -163,6 +169,9 @@ export default class LevelGabi extends Phaser.Scene{
 
         //#region Colisiones
         this.physics.add.collider(this.players,Paredes);
+        this.physics.add.collider(this.players,Decoracion);
+
+        //Colisiones con Puertas
         this.physics.add.collider(this.players,this.doors,(jugador,puerta)=>{
             //si el jugador tiene un item con el mismo identificador que la puerta esta se destruye
             if(jugador.haveItem(puerta.identifier)){
@@ -173,7 +182,8 @@ export default class LevelGabi extends Phaser.Scene{
                 });
             }
         });
-
+        
+        //Colisiones con Placas de Presion
         this.physics.add.overlap(this.players,this.preassurePlates,(jugador,placa)=>{
             //se miran las puertas y si alguna tiene el mismo identificador que la placa se abre
             this.doors.getChildren().forEach(door =>{
@@ -181,8 +191,15 @@ export default class LevelGabi extends Phaser.Scene{
                     door.openDoor();
                 }
             });
-        });
 
+            this.liftingPlatforms.getChildren().forEach(platform =>{
+                if(platform.identifier === placa.identifier){
+                    platform.activatePlatform();
+                }
+            });
+        });
+        
+        //Colisiones con Palancas
         this.physics.add.overlap(this.players,this.levers,(jugador,lever)=>{
             //se miran las puertas y si alguna tiene el mismo identificador que la placa se abre
             this.doors.getChildren().forEach(door =>{
@@ -192,9 +209,26 @@ export default class LevelGabi extends Phaser.Scene{
                 }
             });
         }); 
+
+        this.physics.add.overlap(this.players,this.liftingPlatforms,(jugador,platform)=>{
+            console.log('j');
+            if(!platform.isRaised){
+                console.log('j0');
+                this.scene.restart({clownGetItemJokes:this.clownGetItemJokes,
+                clownGiveItemJokes:this.clownGiveItemJokes,
+                clownNoObjectGiven: this.clownNoObjectGiven,
+                clownNoObjectTaken: this.clownNoObjectTaken,
+                clownLast:this.clownLast
+                });
+            }
+        });
+
+        //Colisiones con Objetos Tirables
         this.physics.add.collider(this.players,this.knockObjects,(jugador,kObject)=>{
                 kObject.knock();
             });
+
+        //Colisiones con LLaves
         this.physics.add.overlap(this.players,this.keys,(jugador,llave)=>{
             //se elimina la llave si es posible cogerla (inventario del jugador no lleno)
             if(jugador.pickItem(llave)) {
@@ -202,6 +236,8 @@ export default class LevelGabi extends Phaser.Scene{
                 llave.destroy(); 
             }
         });
+
+        //Colisiones con los triggers de Final de Nivel
         this.physics.add.overlap(this.players,this.endTriggers,(jugador, endT)=>{
             endT.on();
             if (this.endTriggers.every(t => t.getIsPressed())) {
