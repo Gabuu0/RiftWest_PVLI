@@ -203,8 +203,9 @@ export default class BootScene extends Phaser.Scene{
             "Manin pa ti el objeto, que pesa mucho , pero no tanto como tu vieja",
             "Uff menos mal que me lo has cogido, y el objeto tambien",
             "Jope, ya le empezaba a tener cariño a ese objeto :(",
-            "Toma, pa que digas que nunca recibes",
-            "Se nota que te gusta recibir eh"
+            "Toma, pa que digas que nunca recibes *gime*",
+            "Se nota que te gusta recibir eh",
+            "Te lo voy a dar todo bro. Eso me dijo ella... espera, asi no era"
         ];
         
         //chistes cuando le pasas un item al payaso
@@ -212,7 +213,8 @@ export default class BootScene extends Phaser.Scene{
             "Tranqui, yo te lo sujeto sin problema",
             "epale, lo pillé",
             "¡Gracias! Me encanta que me des ... objetos claro",
-            "¡Por fin me tocó recibir!"
+            "¡Por fin me tocó recibir!",
+            "Si estos son los regalos que dais, entiendo perfectamente porque seguis solteros"
         ];
 
         //frases cuando el payaso esta vacio y pero no se selecionó ningun item
@@ -220,7 +222,8 @@ export default class BootScene extends Phaser.Scene{
             "Si seleccionas un objeto casi que mejor",
             "Si no me das un objeto no puedo agarrar na, a no ser que quieras que agarre otra cosa...",
             "Sigo estando igual de vacio que cuando ella te dejó, la próxima dame algo venga",
-            "Toma, un cachico más de vacio"
+            "Toma, un cachico más de vacio",
+            "Cuanto es 50 + 17? SIX SEVEEENNN!!!, este chiste esta igual de vacio que mi inventario KLK"
         ];
 
           //frases cuando el payaso no esta vacio y pero no se pudo pillar el item (inventario lleno)
@@ -229,7 +232,8 @@ export default class BootScene extends Phaser.Scene{
             "Sé que dices que los límites están en la mente, pero tu inventario dice lo contrario",
             "Ojala poder dartelo, y el objeto tambien",
             "No creo que debas pillar un objeto más, no eres CJ",
-            "Lo siento, no puedo dar y recibir al mismo tiempo..."
+            "Lo siento, no puedo dar y recibir al mismo tiempo...",
+            "A este paso te dejo lleno bro *risa perturbadora*"
         ];
         
         //posibles última frase del payaso

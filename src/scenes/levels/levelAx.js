@@ -63,11 +63,12 @@ export default class LevelAx extends Phaser.Scene {
         });
 
         //#region Creacion Mapa
-        this.map = this.make.tilemap({ key: 'mapa' });
+        this.map = this.make.tilemap({ key: 'mapaAx' });
         const tileset1 = this.map.addTilesetImage('TileSetPJ', 'tilesPJ');
         const tilesetD = this.map.addTilesetImage('DustwartsTileset', 'tilesD');
         const tilesetM = this.map.addTilesetImage('MagwartsTileset', 'tilesM');
-        this.tilesets = [tileset1, tilesetD, tilesetM];
+        const tilesetDec = this.map.addTilesetImage('decoration', 'tilesDec');
+        this.tilesets = [tileset1, tilesetD, tilesetM, tilesetDec];
 
         const Suelo = this.addMapLayer('suelo',false);
         const Paredes = this.addMapLayer('paredes',true);
@@ -168,6 +169,29 @@ export default class LevelAx extends Phaser.Scene {
             }
         });
         //#endregion
+
+        const recorrido1 = [    
+        { x: 1640, y: 1320 },
+        { x: 1880, y: 1320 },
+        { x: 1880, y: 1560 },
+        { x: 1640, y: 1560 },
+        { x: 1640, y: 1880 },
+        { x: 1880, y: 1880 },
+        { x: 1880, y: 1640 }, 
+        { x: 1640, y: 1640 } ];
+        this.profesor = new Watchman(this,1640, 1320,"Pr",0,this.daphne,recorrido1, "profesor");
+                
+        // Recorrido del sheriff
+        const recorrido2 = [
+        { x: 4920, y: 1880 },
+        { x: 5160, y: 1880 },
+        { x: 5160, y: 1640 },
+        { x: 4920, y: 1640 },
+        { x: 4920, y: 1320 },
+        { x: 5160, y: 1320 },
+        { x: 5160, y: 1560 },
+        { x: 4920, y: 1560 } ];
+        this.sheriff = new Watchman(this,4920, 1880,"S",0,this.percival,recorrido2, "sheriff");
     }
 
     update(t, dt){
@@ -237,7 +261,8 @@ export default class LevelAx extends Phaser.Scene {
         this.load.image('tilesPJ', 'sprites/tileSet/TileSetPJ.png');
         this.load.image('tilesD', 'sprites/tileSet/DustwartsTileset.png');
         this.load.image('tilesM', 'sprites/tileSet/MagwartsTileset.png');
-        this.load.tilemapTiledJSON('mapa', 'sprites/tileSet/LvlAxel.json');
+        this.load.image('tilesDec', 'sprites/tileSet/decoration.png');
+        this.load.tilemapTiledJSON('mapaAx', 'sprites/tileSet/LvlAxel.json');
         this.load.spritesheet('doors','sprites/tileSet/Doors.png',{frameWidth:32, frameHeight:16});
         this.load.image('preassurePlate','sprites/tileSet/PreassurePlate.png');
         //#endregion
