@@ -1,3 +1,5 @@
+import Players from "../../players/players.js";
+
 export default class BreakableObject extends Phaser.Physics.Arcade.Sprite{
     constructor(scene, x, y,x2, y2, texture, percival, daphne){
 
@@ -33,6 +35,8 @@ export default class BreakableObject extends Phaser.Physics.Arcade.Sprite{
         this.scene.input.keyboard.on('keydown',(event)=>{
             if(event.code === 'ShiftLeft'){
                 this.keyPressed = true;
+                let action = { inRange: this.distance < this.breakRange, isDropping: true }; //no se utiliza is droping en percival asiq da igual el valor
+                this.scene.UseAbility("percival",this,action);
             }
         })
 
@@ -87,6 +91,7 @@ export default class BreakableObject extends Phaser.Physics.Arcade.Sprite{
             this.glowTween = null;
             this.alpha = 1;
         }
+        
     }
 
     breakObject() {

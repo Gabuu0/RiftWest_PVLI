@@ -94,7 +94,7 @@ export default class Level1 extends Phaser.Scene{
         
         const Paredes2 = map.createLayer('Paredes(SinColision)', tilesets, -500, -500);
         Paredes2.setScale(5);
-        Paredes2.setDepth(10);   
+        Paredes2.setDepth(3);   
         
         //#endregion
 
@@ -132,6 +132,53 @@ export default class Level1 extends Phaser.Scene{
         
         
         //#endregion
+        //INTERFAZ
+         //MAPS
+         this.daphneMap = this.add.image(580, 150, "daphneMap").setVisible(false);
+         this.daphneMap.setDepth(10);   
+         this.daphneMap.setScrollFactor(0);
+         this.percivalMap = this.add.image(250, 150, "percivalMap").setVisible(false);
+         this.percivalMap.setDepth(10);   
+         this.percivalMap.setScrollFactor(0);
+         //ABILITIES
+         this.percivalAbility = this.add.image(60, 480, "percivalAbilityReady");
+         this.percivalAbility.setScale(0.4);
+         this.percivalAbility.setDepth(4);   
+         this.percivalAbility.setScrollFactor(0);
+         
+         this.daphneAbility = this.add.image(480, 480, "daphneAbilityReady");
+         this.daphneAbility.setScale(0.4);
+         this.daphneAbility.setDepth(4);   
+        this.daphneAbility.setScrollFactor(0);
+         //HEADERS
+         this.percivalHeader = this.add.image(60,50,"percivalHead").setScale(0.4).setDepth(10).setScrollFactor(0);
+         this.daphneHeader = this.add.image(480,50,"daphneHead").setScale(0.4).setDepth(10).setScrollFactor(0);
+
+         this.percivalMapIcon =this.add.image(85, 50, "percivalMapEnabled").setScrollFactor(0).setDepth(10).setScale(0.4);
+
+         this.daphneMapIcon =this.add.image(455, 50, "daphneMapEnabled").setScrollFactor(0).setDepth(10).setScale(0.4);
+
+         
+         this.cooldowns = {
+         percival: 0,
+         daphne: 0
+        };
+
+        this.skillCooldownTime = 3000; // 3 segundos o lo que quieras
+
+        // Mensajes flotantes
+        this.msgPercival = this.add.text(100, 500, "", {
+            fontSize: "16px",
+            color: "hsla(280, 3%, 82%, 1.00)",
+            fontStyle: "bold"
+        }).setScrollFactor(0).setDepth(2);
+
+        this.msgDaphne = this.add.text(220, 500, "", {
+            fontSize: "16px",
+            color: "hsla(280, 3%, 82%, 1.00)",
+            fontStyle: "bold"
+        }).setScrollFactor(0).setDepth(2);
+
         //#region SistemaDialogos
 
         this.dialog = new DialogText(this, {camera: this.percivalCam});
@@ -164,6 +211,19 @@ export default class Level1 extends Phaser.Scene{
         //#region CreacionDialogosPayaso
         this.createClownDialogs();
         //#endregion
+        // Cada cámara ignora el mensaje del otro jugador
+       
+        this.percivalCam.ignore(this.msgDaphne);
+        this.percivalCam.ignore(this.daphneHeader);
+        this.percivalCam.ignore(this.daphneAbility);
+        this.percivalCam.ignore(this.daphneMapIcon);
+        this.percivalCam.ignore(this.daphneMap);
+        
+        this.daphneCam.ignore(this.msgPercival);
+        this.daphneCam.ignore(this.percivalHeader);
+        this.daphneCam.ignore(this.percivalAbility);
+        this.daphneCam.ignore(this.percivalMapIcon);
+        this.daphneCam.ignore(this.percivalMap);
         //sonidos
         this.walkSound = this.sound.add('pasos', { loop: false});
         this.breakSound = this.sound.add('romper');
@@ -279,6 +339,20 @@ export default class Level1 extends Phaser.Scene{
 
         this.load.spritesheet('slot','sprites/images/inventory/inventorySpace.png',{frameWidth: 64, frameHeight:64});
         this.load.image('descriptionBox','sprites/images/inventory/descriptionBox.png');
+        //#region interfaz
+        this.load.image('daphneMapEnabled', 'sprites/images/daphne/mapIcon.png');
+        this.load.image('percivalMapEnabled', 'sprites/images/percival/mapIcon.png');
+        this.load.image('daphneMap', 'sprites/images/daphne/mapLevel1.png');
+        this.load.image('percivalMap', 'sprites/images/percival/mapLevel1.png');
+
+        this.load.image('daphneAbilityReady', 'sprites/images/daphne/abilityEnabled.png');
+        this.load.image('daphneAbilityUsed', 'sprites/images/daphne/abilityDisabled.png');
+        this.load.image('percivalAbilityReady', 'sprites/images/percival/abilityEnabled.png');
+        this.load.image('percivalAbilityUsed', 'sprites/images/percival/abilityDisabled.png');
+
+        this.load.image('daphneHead', 'sprites/images/daphne/head.png');
+        this.load.image('percivalHead', 'sprites/images/percival/head.png');
+
     }
 
     createAnims(){
@@ -438,6 +512,64 @@ export default class Level1 extends Phaser.Scene{
         this.keys.add(new Key(this, 445,3800,'llaveMapa','llaveInventario','keyIdle','Llave inglesa',3).setDepth(5))
     }
 
+    UseAbility(playerName, object, action) {
+        const now = this.time.now;
+
+        const abilityIcon = playerName === "percival" ? this.PercivalAbility : this.daphneAbility;
+        const readyTexture = playerName === "percival" ? "percivalAbilityReady" : "daphneAbilityReady";
+        const usedTexture = playerName === "percival" ? "percivalAbilityUsed" : "daphneAbilityUsed";
+        const msg = playerName === "percival" ? this.msgPercival : this.msgDaphne;
+
+        if (now < this.cooldowns[playerName]) {
+            msg.setText("Habilidad recargando...");
+            this.time.delayedCall(this.skillCooldownTime, () => msg.setText(""));
+            return;
+        }
+
+        if (playerName === "percival") {
+            if (action.inRange) {object.breakObject(); 
+            this.cooldowns[playerName] = now + this.skillCooldownTime;
+            abilityIcon.setTexture(usedTexture);
+            this.time.delayedCall(this.skillCooldownTime, () => abilityIcon.setTexture(readyTexture));
+            }
+            else {
+                    msg.setText("No hay nada que romper.");
+                    this.time.delayedCall(1000, () => msg.setText(""));
+                } 
+        } 
+        else if (playerName === "daphne") {
+            if (action.isDropping) {
+                     object.restartCoolDown(); // esto hace toggle, deja el objeto
+                    this.cooldowns[playerName] = now + this.skillCooldownTime;
+                    abilityIcon.setTexture(usedTexture);
+                    this.time.delayedCall(this.skillCooldownTime, () => abilityIcon.setTexture(readyTexture));
+                }
+            else if(action.inRange){
+                object.restartCoolDown();
+            }
+            else {
+                    // por si acaso: mensaje corto (opcional)
+                    msg.setText("No estás agarrando nada.");
+                    this.time.delayedCall(1000, () => msg.setText(""));
+                }
+            
+        }
+    }
+
+    showMessage(text) {
+        this.messageText.setText(text);
+        this.messageText.setVisible(true);
+
+        this.scene.time.delayedCall(1000, () => {
+            this.messageText.setVisible(false);
+        });
+    }
+
+    showMap(playerName){
+        console.log("HOLAAAAAA");
+        if(this.playerName === "daphne"){ this.daphneMap.setVisible(!this.daphneMap.visible()); }
+        //else { this.percivalMap.setVisible(true); }
+    }
 /**
  * Este metodo se encarga de crear el dialogo del payaso al interactuar con él según los siguientes parámetros:
  * @param {string} player - Personaje que ha interactuado con el payaso 
