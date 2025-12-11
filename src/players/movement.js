@@ -54,8 +54,8 @@ export default class Movement{
         //Si se mueve en vertical
         else if(player.body.velocity.x != 0)
         {
-            if (player.body.velocity.x < 0) player.play(player.animations.right, true);
-            else player.play(player.animations.left, true);
+            if (player.body.velocity.x < 0) player.play(player.animations.left, true);
+            else player.play(player.animations.right, true);
         }
 
         player.body.velocity.normalize().scale(this.speed);

@@ -5,7 +5,7 @@ import InteractableObjects from '../../objects/mapObjects/interactableObjects.js
 import movableObject from '../../objects/mapObjects/movableObject.js';
 import breakableObjects from '../../objects/mapObjects/breakableObjects.js'
 import DialogText from "../../objects/playerObjects/dialogText.js";
-import Watchman from "../../watchman.js";
+import Watchman from "../../objects/mapObjects/watchman.js";
 
 export default class Level1 extends Phaser.Scene{
     constructor(){
@@ -17,13 +17,15 @@ export default class Level1 extends Phaser.Scene{
     }
 
     create(){
+
+
         this.createAnims();
+        this.random = new Phaser.Math.RandomDataGenerator();
 
         this.registry.set('clownObj', {
             objData: {},
             hasObj: false,
         });
-
 
         this.percival = new Players(this,350, 3600,"P",0,"percival");
         this.daphne = new Players(this,2500,3600,"D",0,"daphne");
@@ -33,13 +35,13 @@ export default class Level1 extends Phaser.Scene{
 
         this.percival.setDepth(1);
         this.daphne.setDepth(1);
-/*
-        console.log("Movement:", Movement);
-        console.log("Percival:", this.percival);
-        console.log("Daphne:", this.daphne);
-*/
-        this.scene.launch('InventarioPercival',this.percival);
-        this.scene.launch('InventarioDaphne',this.daphne);
+
+        this.scene.launch('InventarioPercival',{
+            player:this.percival,
+            playerScene: this});
+        this.scene.launch('InventarioDaphne',{
+            player:this.daphne,
+            playerScene: this});
         this.inventario1 = this.scene.get('InventarioPercival');
         this.inventario2 = this.scene.get('InventarioDaphne');
 
@@ -159,12 +161,17 @@ export default class Level1 extends Phaser.Scene{
         { x: 450, y: 3700 } ];
         this.sheriff = new Watchman(this,450, 3700,"S",0,this.percival,recorrido2, "sheriff");
 
+        //#region CreacionDialogosPayaso
+        this.createClownDialogs();
+        //#endregion
         //sonidos
         this.walkSound = this.sound.add('pasos', { loop: false});
         this.breakSound = this.sound.add('romper');
         this.resetSound = this.sound.add('reset',{loop: false, volume: 0.3});
         this.music = this.sound.add('musica', {loop: true, volume:0.7});
         //#endregion
+
+
     }
 
     update(t, dt){
@@ -177,20 +184,17 @@ export default class Level1 extends Phaser.Scene{
     preload(){
 
         //#region Personajes
+        //#region Players
 		this.load.spritesheet("D","sprites/images/daphne/DaphneIdle(x5).png",
               { frameWidth: 160, frameHeight: 160});
 
         this.load.spritesheet("P","sprites/images/percival/PercivalIdle(x5).png",
               { frameWidth: 160, frameHeight: 160});
-        //#endregion
-
-        //#region Tilemaps
-
         this.load.spritesheet("DUp","sprites/images/daphne/Daphne-caminando-arriba(x5).png",
-              { frameWidth: 160, frameHeight: 160});
+            { frameWidth: 160, frameHeight: 160});
 
         this.load.spritesheet("PUp","sprites/images/percival/Percival-caminando-arriba(x5).png",
-              { frameWidth: 160, frameHeight: 160});
+            { frameWidth: 160, frameHeight: 160});
 
         this.load.spritesheet("DDown","sprites/images/daphne/Daphne-caminando-abajo(x5).png",
                 { frameWidth: 160, frameHeight: 160});
@@ -218,10 +222,10 @@ export default class Level1 extends Phaser.Scene{
               { frameWidth: 160, frameHeight: 160});
 
         this.load.spritesheet("SUp","sprites/images/sheriff/Sheriif-up.png",
-              { frameWidth: 160, frameHeight: 160});
+            { frameWidth: 160, frameHeight: 160});
 
         this.load.spritesheet("PrUp","sprites/images/profesor/Profesor-up.png",
-              { frameWidth: 160, frameHeight: 160});
+            { frameWidth: 160, frameHeight: 160});
 
         this.load.spritesheet("SDown","sprites/images/sheriff/Sheriif-down.png",
                 { frameWidth: 160, frameHeight: 160});
@@ -240,7 +244,6 @@ export default class Level1 extends Phaser.Scene{
 
         this.load.spritesheet("PrRight","sprites/images/profesor/Profesor-right.png",
                 { frameWidth: 160, frameHeight: 160});
-        
 
         //Sonidos
         this.load.audio('pasos', 'sounds/pasos.mp3');
@@ -251,6 +254,12 @@ export default class Level1 extends Phaser.Scene{
 
         this.load.image('profesor','sprites/images/profesor.jpg');
         this.load.image('sheriff','sprites/images/sheriff.jpeg');
+        //#endregion
+        //#endregion
+
+        //#region Tilemaps
+
+        
         this.load.image('tilesPJ', 'sprites/tileSet/TileSetPJ.png');
         this.load.image('tilesD', 'sprites/tileSet/DustwartsTileset.png');
         this.load.image('tilesM', 'sprites/tileSet/MagwartsTileset.png');
@@ -427,6 +436,103 @@ export default class Level1 extends Phaser.Scene{
         this.keys.add(new Key(this, 450,3700,'llaveMapa','llaveInventario','keyIdle','Llave de tu vieja',2).setDepth(5))
         this.keys.add(new Key(this, 425,3800,'llaveMapa','llaveInventario','keyIdle','Llavecita de mi cora',3).setDepth(5))
         this.keys.add(new Key(this, 445,3800,'llaveMapa','llaveInventario','keyIdle','Llave inglesa',3).setDepth(5))
+    }
+
+/**
+ * Este metodo se encarga de crear el dialogo del payaso al interactuar con él según los siguientes parámetros:
+ * @param {string} player - Personaje que ha interactuado con el payaso 
+ * @param {boolean} itemReceived - Si el personaje ha recibido un objeto del payaso 
+ * @param {boolean} hadItem - Si el personaje tiene un item seleccionado (en caso de dar un item al payaso)
+ * @param {boolean} clownEmpty - Si el payaso no tiene ningun objeto
+ * 
+ * Se usan los arrays de dialogos creados en {@link createClownDialogs()}
+ */
+    showClownMessage(player,itemReceived,hadItem = true,clownEmpty = false){
+        if(this.dialog.visible){
+            this.dialog.toggleWindow();
+        }
+
+        let ignorePlayer;
+        if(player === "percival"){
+            ignorePlayer = 1;
+        }else{
+            ignorePlayer = 2;
+        }
+         
+        this.dialog.toggleWindow();
+
+        this.setClownMessage(ignorePlayer,itemReceived,hadItem,clownEmpty);
+    }
+/**
+ * Establece el texto del dialogo del payaso al interactuar con él
+ * @param {boolean} itemReceived - Si el personaje ha recibido un objeto del payaso 
+ * @param {boolean} hadItem - Si el personaje tiene un item seleccionado (en caso de dar un item al payaso)
+ * @param {boolean} clownEmpty - Si el payaso no tiene ningun objeto
+ */
+    setClownMessage(playerToIgnore,itemReceived,hadItem,clownEmpty){
+        if(itemReceived && !hadItem && !clownEmpty){
+            this.dialog.setTextArray([
+                [playerToIgnore,this.clownGetItemJokes[this.random.integerInRange(0, this.clownGetItemJokes.length-1)]],
+                [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length)]]
+            ],true);
+        }else if(!itemReceived && hadItem && clownEmpty){
+             this.dialog.setTextArray([
+                [playerToIgnore,this.clownGiveItemJokes[this.random.integerInRange(0, this.clownGiveItemJokes.length-1)]],
+                 [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length)]]
+            ],true);
+        }
+        else if(itemReceived && hadItem && !clownEmpty){
+            this.dialog.setTextArray([
+                [playerToIgnore,this.clownNoObjectTaken[this.random.integerInRange(0, this.clownNoObjectTaken.length-1)]],
+                 [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length)]]
+            ],true);
+        }
+        else if(!itemReceived && !hadItem && clownEmpty){
+            this.dialog.setTextArray([
+                [playerToIgnore,this.clownNoObjectGiven[this.random.integerInRange(0, this.clownNoObjectGiven.length-1)]],
+                 [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length)]]
+            ],true);
+        }
+    }
+
+
+    //crea todos los posbiles dialogos del payaso a la hora de interactuar con él 
+    //al traspasar objetos entre jugadores
+    createClownDialogs(){
+        //chistes cuando pillas un item del payaso
+        this.clownGetItemJokes = [
+            "Manin pa ti el objeto, que pesa mucho , pero no tanto como tu vieja",
+            "Uff menos mal que me lo has cogido, y el objeto tambien",
+            "Jope, ya le empezaba a tener cariño a ese objeto :("
+        ];
+        
+        //chistes cuando le pasas un item al payaso
+        this.clownGiveItemJokes = [
+            "Tranqui, yo te lo sujeto sin problema",
+            "epale, lo pillé",
+            "Jope, ya le empezaba a tener cariño a ese objeto :("
+        ];
+
+        
+        //posibles última frase del payaso
+        this.clownLast = [
+            "chao pescao",
+            "me las piro vampiro"
+        ];
+
+        //frases cuando el payaso esta vacio y pero no se selecionó ningun item
+        this.clownNoObjectGiven = [
+            "a",
+            "b",
+            "c"
+        ];
+
+          //frases cuando el payaso no esta vacio y pero no se pudo pillar el item (inventario lleno)
+        this.clownNoObjectTaken = [
+            "d",
+            "e",
+            "f"
+        ];
     }
 
     updateSounds(){

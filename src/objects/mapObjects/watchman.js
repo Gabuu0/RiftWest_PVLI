@@ -47,7 +47,7 @@ export default class Watchman extends Phaser.GameObjects.PathFollower {
 
         //Movimiento
         this.startFollow({
-            duration: 10000,
+            duration: 30000,
             yoyo: false,
             repeat: -1,
             rotateToPath: false
@@ -148,5 +148,11 @@ export default class Watchman extends Phaser.GameObjects.PathFollower {
 
     triggerSize(size){
         this.trigger.body.setCircle(size);
+        this.trigger.setRadius(size);
+        this.scene.time.delayedCall(12000,this.resetSize,null,this);
+    }
+    resetSize(size){
+        this.trigger.body.setCircle(120);
+        this.trigger.setRadius(120);
     }
 }
