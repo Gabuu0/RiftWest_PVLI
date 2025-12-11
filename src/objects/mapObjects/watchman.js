@@ -12,7 +12,7 @@ export default class Watchman extends Phaser.GameObjects.PathFollower {
 
         //Crea un PathFollower
         super(scene, path, x, y, texture, frame);
-
+        
         this.type = type;
         this.animations = this.getAnimationsByType();
 
@@ -73,7 +73,7 @@ export default class Watchman extends Phaser.GameObjects.PathFollower {
 
     onPlayerEnter(){
         let detectado=false;
-        
+
         if(this.player.x < this.x && this.direccion==1){
             detectado=true;
             }
@@ -88,6 +88,7 @@ export default class Watchman extends Phaser.GameObjects.PathFollower {
         }
 
         if(detectado){
+            this.scene.resetSound.play();
             this.scene.scene.restart();
         }
     }
@@ -125,7 +126,6 @@ export default class Watchman extends Phaser.GameObjects.PathFollower {
                 this.play(this.animations.down, true);
                 break;
         }
-        console.log("KLK");
     }
     
     getAnimationsByType(){

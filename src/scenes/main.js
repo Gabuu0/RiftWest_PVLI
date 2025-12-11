@@ -2,6 +2,9 @@ export default class Menu extends Phaser.Scene {
     constructor() {
         super({ key: "menu" });
     }
+    preload(){
+        this.load.audio('select', 'sounds/select.mp3');
+    }
 
     init(data) {
         this.clownGetItemJokes = data.clownGetItemJokes;
@@ -24,13 +27,14 @@ export default class Menu extends Phaser.Scene {
         });
 
          jugarButton.on('pointerdown', () => {
+             this.sound.play('select');
             this.scene.run('levelJavi',{clownGetItemJokes:this.clownGetItemJokes,
             clownGiveItemJokes:this.clownGiveItemJokes,
             clownNoObjectGiven: this.clownNoObjectGiven,
             clownNoObjectTaken: this.clownNoObjectTaken,
             clownLast:this.clownLast
             });
-              this.scene.sleep('menu');
+            this.scene.sleep('menu');
          });
     }
 }

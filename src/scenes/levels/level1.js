@@ -52,6 +52,7 @@ export default class Level1 extends Phaser.Scene{
 
         this.input.keyboard.on('keydown-ESC', () => {
             console.log('ESC pulsado');
+            this.sound.play('select');
             this.scene.launch('pauseMenu');   // Lanza el menú
             this.scene.pause();              // Pausa la escena del juego
         });
@@ -98,12 +99,14 @@ export default class Level1 extends Phaser.Scene{
         //#endregion
 
         //#region Colisiones
+        
         this.physics.add.collider(this.daphne, Paredes);
         this.physics.add.collider(this.daphne, this.Puertas);
         this.physics.add.overlap(this.daphne, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
         this.physics.add.overlap(this.percival,this.keys,(jugador,llave)=>{
             //se oculta la llave si es posible cogerla
             if(jugador.pickItem(llave)) {
+                this.sound.play('pickItem');
                 this.events.emit('itemPickedP', llave);
                 llave.destroy(); 
             }
@@ -112,6 +115,7 @@ export default class Level1 extends Phaser.Scene{
         this.physics.add.overlap(this.daphne,this.keys,(jugador,llave)=>{
             //se oculta la llave si es posible cogerla
             if(jugador.pickItem(llave)) {
+                this.sound.play('pickItem');
                 this.events.emit('itemPickedD', llave);
                 llave.destroy(); 
             }
@@ -125,6 +129,8 @@ export default class Level1 extends Phaser.Scene{
         this.cajR1 = new breakableObjects(this,475, 3225, 2625, 3225,'cajaRompible',this.percival,this.daphne);
         
         this.physics.add.overlap(this.cajaM1, PlacasDePresion, (movableObject,tile) => {InteractableObjects.activarPlaca(this, movableObject, tile)});
+        
+        
         //#endregion
         //#region SistemaDialogos
 
@@ -155,9 +161,14 @@ export default class Level1 extends Phaser.Scene{
         { x: 450, y: 3700 } ];
         this.sheriff = new Watchman(this,450, 3700,"S",0,this.percival,recorrido2, "sheriff");
 
-            //#region CreacionDialogosPayaso
-            this.createClownDialogs();
-            //#endregion
+        //#region CreacionDialogosPayaso
+        this.createClownDialogs();
+        //#endregion
+        //sonidos
+        this.walkSound = this.sound.add('pasos', { loop: false});
+        this.breakSound = this.sound.add('romper');
+        this.resetSound = this.sound.add('reset',{loop: false, volume: 0.3});
+        this.music = this.sound.add('musica', {loop: true, volume:0.7});
         //#endregion
 
 
@@ -167,6 +178,7 @@ export default class Level1 extends Phaser.Scene{
         if (this.movementController) {
             this.movementController.update();
         }
+        this.updateSounds();
     }
 
     preload(){
@@ -202,13 +214,12 @@ export default class Level1 extends Phaser.Scene{
         this.load.spritesheet("PRight","sprites/images/percival/Percival-caminando-izquierda(x5).png",
                 { frameWidth: 160, frameHeight: 160});
                 
-        //#endregion
-        //#region WatchMan
-        this.load.spritesheet("S","sprites/images/profesor/Profesor-idle.png",
-            { frameWidth: 160, frameHeight: 160});
+        //WatchMan
+        this.load.spritesheet("Pr","sprites/images/profesor/Profesor-idle.png",
+              { frameWidth: 160, frameHeight: 160});
 
-        this.load.spritesheet("Pr","sprites/images/sheriff/Sheriff-idle.png",
-            { frameWidth: 160, frameHeight: 160});
+        this.load.spritesheet("S","sprites/images/sheriff/Sheriif-idle.png",
+              { frameWidth: 160, frameHeight: 160});
 
         this.load.spritesheet("SUp","sprites/images/sheriff/Sheriif-up.png",
             { frameWidth: 160, frameHeight: 160});
@@ -233,6 +244,14 @@ export default class Level1 extends Phaser.Scene{
 
         this.load.spritesheet("PrRight","sprites/images/profesor/Profesor-right.png",
                 { frameWidth: 160, frameHeight: 160});
+
+        //Sonidos
+        this.load.audio('pasos', 'sounds/pasos.mp3');
+        this.load.audio('romper', 'sounds/romper.mp3');
+        this.load.audio('pickItem', 'sounds/pickItem.mp3');
+        this.load.audio('reset', 'sounds/reset.mp3');
+        this.load.audio('musica', 'sounds/musica.mp3');
+
         this.load.image('profesor','sprites/images/profesor.jpg');
         this.load.image('sheriff','sprites/images/sheriff.jpeg');
         //#endregion
@@ -514,7 +533,27 @@ export default class Level1 extends Phaser.Scene{
             "e",
             "f"
         ];
+    }
 
+    updateSounds(){
+        //SONIDO DE PASOS
+        const percivalIsMoving = (this.percival.body.velocity.x !== 0 || this.percival.body.velocity.y !== 0);
+        const daphneIsMoving = (this.daphne.body.velocity.x !== 0 || this.daphne.body.velocity.y !== 0);
+
+         const isMoving = percivalIsMoving || daphneIsMoving;
+
+        if (isMoving && !this.walkSound.isPlaying) {
+        // Al menos un jugador se mueve y el sonido no está sonando.
+             this.walkSound.play();
+         } else if (!isMoving && this.walkSound.isPlaying) {
+        // Ningún jugador se mueve y el sonido está sonando.
+             this.walkSound.pause(); 
+         }
+
+         //MUSICA
+         if(!this.music.isPlaying){
+         this.music.play();
+         }
     }
 
     
