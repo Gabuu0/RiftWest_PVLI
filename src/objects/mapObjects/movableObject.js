@@ -77,7 +77,7 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
 
         //Para dejar/coger el objeto
         this.scene.input.keyboard.on('keydown',(event)=>{
-            if(event.code === 'ShiftRight'){
+            if(event.code === 'ShiftRight' || event.code ==='AltRight'){
                 if(!this.coolDown && this.distance < this.distanceMax){
                     this.restartCoolDown()
                 }

@@ -1,15 +1,17 @@
 import Players from '../../players/players.js'
 import Movement from '../../players/movement.js'
 import Key from "../../objects/mapObjects/key.js";
-import InteractableObjects from '../../objects/mapObjects/interactableObjects.js';
 import movableObject from '../../objects/mapObjects/movableObject.js';
 import breakableObjects from '../../objects/mapObjects/breakableObjects.js'
 import DialogText from "../../objects/playerObjects/dialogText.js";
-import Watchman from "../../watchman.js";
+import LiftingPlatform from '../../objects/mapObjects/liftingPlatform.js';
+import Door from '../../objects/mapObjects/door.js';
+import Lever from '../../objects/mapObjects/lever.js';
+import PreassurePlate from '../../objects/mapObjects/preassurePlate.js';
 
-export default class Level1 extends Phaser.Scene{
+export default class LevelGabi extends Phaser.Scene{
     constructor(){
-        super({key: "level1"});
+        super({key: "levelGabi"});
     }
 
     init(){
@@ -17,9 +19,6 @@ export default class Level1 extends Phaser.Scene{
     }
 
     create(){
-
-
-        this.createAnims();
         this.random = new Phaser.Math.RandomDataGenerator();
 
         this.registry.set('clownObj', {
@@ -27,8 +26,11 @@ export default class Level1 extends Phaser.Scene{
             hasObj: false,
         });
 
-        this.percival = new Players(this,350, 3600,"P",0,"percival");
+        this.percival = new Players(this,1350, 1900,"P",0,"percival");
         this.daphne = new Players(this,2500,3600,"D",0,"daphne");
+        this.players = this.add.group();
+        this.players.add(this.percival);
+        this.players.add(this.daphne);
         
         this.keys = this.add.group();
         this.createItems();
@@ -65,66 +67,153 @@ export default class Level1 extends Phaser.Scene{
         this.percivalCam = this.cameras.main;
         this.percivalCam.setViewport(0,0,540,540);
         this.percivalCam.startFollow(this.percival);
+        //this.percivalCam.setZoom(0.1);
         this.daphneCam = this.cameras.add(540,0,540,540,'DaphneCam');
         this.daphneCam.setViewport(540,0,540,540);
         this.daphneCam.startFollow(this.daphne);
 
         //#region Creacion Mapa
-        const map = this.make.tilemap({ key: 'mapa' });
-        const tileset1 = map.addTilesetImage('tileSet1', 'tilesPJ');
-        const tilesetD = map.addTilesetImage('dustwartsTileset', 'tilesD');
-        const tilesetM = map.addTilesetImage('magwartsTileset', 'tilesM');
-        const tilesets = [tileset1, tilesetD, tilesetM];
-
-        const Suelo = map.createLayer('Suelo', tilesets, -500, -500);
-        Suelo.setScale(5);
-
-        const Paredes = map.createLayer('Paredes', tilesets, -500, -500);
-        Paredes.setCollisionByExclusion([-1]);
-        Paredes.setScale(5);
-
-        this.Puertas = map.createLayer('Puertas', tilesets, -500, -500);
-        this.Puertas.setCollisionByExclusion([-1]);
-        this.Puertas.setScale(5);
-
-        const PlacasDePresion = map.createLayer('PlacasDePresion', tilesets, -500, -500);
-        PlacasDePresion.setCollisionByExclusion([-1]);
-        PlacasDePresion.setScale(5);
         
-        const Paredes2 = map.createLayer('Paredes(SinColision)', tilesets, -500, -500);
-        Paredes2.setScale(5);
-        Paredes2.setDepth(10);   
         
+        this.map = this.make.tilemap({ key: 'mapLevelGabi' });
+        const tileset1 = this.map.addTilesetImage('TileSetPJ', 'tilesPJ');
+        const tilesetD = this.map.addTilesetImage('DustwartsTileset', 'tilesD');
+        const tilesetD2 = this.map.addTilesetImage('Dustwarts', 'tilesD2');
+        const tilesetM = this.map.addTilesetImage('MagwartsTileset', 'tilesM');
+        const tilesetM2 = this.map.addTilesetImage('Magwarts', 'tilesM2');
+        const tileSetDecoration = this.map.addTilesetImage('decoration', 'tilesDecoration');
+        this.tilesets = [tileset1, tilesetD,tilesetD2, tilesetM,tilesetM2,tileSetDecoration];
+
+        const Suelo = this.addMapLayer('suelo',false);
+
+        const Paredes = this.addMapLayer('paredes',true);
+
+        const Paredes2 = this.addMapLayer('paredes(sin_colision)',false);
+        Paredes2.setDepth(3);   
+
+        //#region Creacion de los objetos del mapa (puertas, placas de presion, etc)
+        /**
+         * Se obtienen las layers de los objetos para acceder a los objetos de cada una
+         * en cada layer se busca la propiedad identifier de cada objeto, en el caso de las puertas tambien se busca su tipo 
+         *      -identifier(int): identificador usado para abrir las puertas segun el mismo, las puertas se abriran si se interactua con un objeto con el mismo identificador
+         *      -doorType(int): tipo de puerta usado para saber que frame del spriteSheet de puertas usar
+         * Ademas se agrupa cada tipo de objeto en un grupo y se escala el objeto(tanto el tamaño como la posicion)
+         */
+        const scaling = 5;
+        this.doors = this.add.group();
+            const doorsLayer = this.map.getObjectLayer('puertas');
+            doorsLayer.objects.forEach(obj =>{
+            let id = obj.properties.find(prop => prop.name ==='identifier').value;
+            let doorType = obj.properties.find(prop => prop.name ==='doorType').value;
+            let door = new Door(this, obj.x, obj.y,'doors',doorType,obj.rotation,id);
+            this.scaleObject(door,scaling);
+            if(obj.rotation == 0){
+                door.setOrigin(0,1);
+            }
+            this.doors.add(door);
+        })
+
+        this.preassurePlates = this.add.group();
+        const platesLayer = this.map.getObjectLayer('placas_presion');
+        platesLayer.objects.forEach(obj =>{
+            let id = obj.properties.find(prop => prop.name ==='identifier').value;
+            let plate = new PreassurePlate(this, obj.x, obj.y,'preassurePlate',id);
+            plate.setScale(scaling);
+            this.scaleObject(plate,scaling);
+            plate.setOrigin(0,1);
+            this.preassurePlates.add(plate);
+        });
+
+        this.levers = this.add.group();
+        const leversLayer = this.map.getObjectLayer('palancas');
+        leversLayer.objects.forEach(obj =>{
+            let id = obj.properties.find(prop => prop.name ==='identifier').value;
+            let lever = new Lever(this, obj.x, obj.y,'levers',id);
+            lever.setScale(scaling);
+            this.scaleObject(lever,scaling);
+            lever.setOrigin(0,1);
+            this.levers.add(lever);
+        });
+
+        /**
+         * Las plataformas levadizas tienen el atributo isRaised (boolean) que determina 
+         * si su estado inicial es estar levantada o no
+         */
+        this.liftingPlatforms = this.add.group();
+        const liftingPlatformsLayer = this.map.getObjectLayer('plataforma_levadiza');
+        liftingPlatformsLayer.objects.forEach(obj =>{
+            let id = obj.properties.find(prop => prop.name ==='identifier').value;
+            let raised = obj.properties.find(prop => prop.name ==='isRaised').value;
+            let liftingPlatform = new LiftingPlatform(this, obj.x, obj.y,'liftingPlatform',0,id,raised);
+            liftingPlatform.setScale(scaling);
+            this.scaleObject(liftingPlatform,scaling);
+            liftingPlatform.setOrigin(0,1);
+            this.liftingPlatforms.add(liftingPlatform);
+        });
+
+        // this.endTriggers = [];
+        // const endTLayer = this.map.getObjectLayer('endTriggers');
+        // endTLayer.objects.forEach(obj =>{
+        //     let endT = new EndTrigger(this, obj.x, obj.y,'endTrigger');
+        //     endT.setScale(scaling);
+        //     this.scaleObject(endT,scaling);
+        //     this.endTriggers.push(endT);
+        // });
         //#endregion
 
         //#region Colisiones
-        this.physics.add.collider(this.daphne, Paredes);
-        this.physics.add.collider(this.daphne, this.Puertas);
-        this.physics.add.overlap(this.daphne, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
-        this.physics.add.overlap(this.percival,this.keys,(jugador,llave)=>{
-            //se oculta la llave si es posible cogerla
+        this.physics.add.collider(this.players,Paredes);
+        this.physics.add.collider(this.players,this.doors,(jugador,puerta)=>{
+            //si el jugador tiene un item con el mismo identificador que la puerta esta se destruye
+            if(jugador.haveItem(puerta.identifier)){
+                 this.doors.getChildren().forEach(door =>{
+                    if(door.identifier === puerta.identifier){
+                        door.destroy(true);
+                    }
+                });
+            }
+        });
+
+        this.physics.add.overlap(this.players,this.preassurePlates,(jugador,placa)=>{
+            //se miran las puertas y si alguna tiene el mismo identificador que la placa se abre
+            this.doors.getChildren().forEach(door =>{
+                if(door.identifier === placa.identifier){
+                    door.openDoor();
+                }
+            });
+        });
+
+        this.physics.add.overlap(this.players,this.levers,(jugador,lever)=>{
+            //se miran las puertas y si alguna tiene el mismo identificador que la placa se abre
+            this.doors.getChildren().forEach(door =>{
+                if(door.identifier === lever.identifier){
+                    door.destroy(true);
+                    lever.useLever();
+                }
+            });
+        }); 
+        this.physics.add.collider(this.players,this.knockObjects,(jugador,kObject)=>{
+                kObject.knock();
+            });
+        this.physics.add.overlap(this.players,this.keys,(jugador,llave)=>{
+            //se elimina la llave si es posible cogerla (inventario del jugador no lleno)
             if(jugador.pickItem(llave)) {
                 this.events.emit('itemPickedP', llave);
                 llave.destroy(); 
             }
-        })
-
-        this.physics.add.overlap(this.daphne,this.keys,(jugador,llave)=>{
-            //se oculta la llave si es posible cogerla
-            if(jugador.pickItem(llave)) {
-                this.events.emit('itemPickedD', llave);
-                llave.destroy(); 
+        });
+        this.physics.add.overlap(this.players,this.endTriggers,(jugador, endT)=>{
+            endT.on();
+            if (this.endTriggers.every(t => t.getIsPressed())) {
+                console.log("3Letra, la L");
             }
-        })
+        });
 
-        this.physics.add.collider(this.percival, Paredes);
-        this.physics.add.collider(this.percival, this.Puertas);
-        this.physics.add.overlap(this.percival, PlacasDePresion, (jugador,tile) => {InteractableObjects.activarPlaca(this, jugador, tile)});
 
-        this.cajaM1 = new movableObject(this, 3140, 3100, 980, 3100, "cajaMovible", this.percival, this.daphne, Paredes)
-        this.cajR1 = new breakableObjects(this,475, 3225, 2625, 3225,'cajaRompible',this.percival,this.daphne);
+        // this.cajaM1 = new movableObject(this, 3140, 3100, 980, 3100, "cajaMovible", this.percival, this.daphne, Paredes)
+        // this.cajR1 = new breakableObjects(this,475, 3225, 2625, 3225,'cajaRompible',this.percival,this.daphne);
         
-        this.physics.add.overlap(this.cajaM1, PlacasDePresion, (movableObject,tile) => {InteractableObjects.activarPlaca(this, movableObject, tile)});
+        // this.physics.add.overlap(this.cajaM1, this.preassurePlates, (movableObject,tile) => {InteractableObjects.activarPlaca(this, movableObject, tile)});
         //#endregion
         //#region SistemaDialogos
 
@@ -139,28 +228,7 @@ export default class Level1 extends Phaser.Scene{
             [2, "Hoy serás mi esclava en el cuarto de un motel (Carbon Fiber Music)"]
         ], true);
 
-        // Recorrido del profesor
-        const recorrido1 = [
-        { x: 2600, y: 3600 },
-        { x: 2800, y: 3600 },
-        { x: 2800, y: 3700 },
-        { x: 2600, y: 3700 } ];
-        this.profesor = new Watchman(this,2600, 3700,"Pr",0,this.daphne,recorrido1, "profesor");
-                
-        // Recorrido del sheriff
-        const recorrido2 = [
-        { x: 450, y: 3600 },
-        { x: 650, y: 3600 },
-        { x: 650, y: 3700 },
-        { x: 450, y: 3700 } ];
-        this.sheriff = new Watchman(this,450, 3700,"S",0,this.percival,recorrido2, "sheriff");
-
-            //#region CreacionDialogosPayaso
-            this.createClownDialogs();
-            //#endregion
         //#endregion
-
-
     }
 
     update(t, dt){
@@ -168,248 +236,7 @@ export default class Level1 extends Phaser.Scene{
             this.movementController.update();
         }
     }
-
-    preload(){
-
-        //#region Personajes
-        this.load.spritesheet("D","sprites/images/daphne/DaphneIdle(x5).png",
-              { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("P","sprites/images/percival/PercivalIdle(x5).png",
-              { frameWidth: 160, frameHeight: 160});
-        //#endregion
-
-        //#region Tilemaps
-
-        this.load.spritesheet("DUp","sprites/images/daphne/Daphne-caminando-arriba(x5).png",
-              { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("PUp","sprites/images/percival/Percival-caminando-arriba(x5).png",
-              { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("DDown","sprites/images/daphne/Daphne-caminando-abajo(x5).png",
-                { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("PDown","sprites/images/percival/Percival-caminando-abajo(x5).png",
-                { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("DLeft","sprites/images/daphne/Daphne-caminando-derecha(x5).png",
-                { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("PLeft","sprites/images/percival/Percival-caminando-derecha(x5).png",
-                { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("DRight","sprites/images/daphne/Daphne-caminando-izquierda(x5).png",
-                { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("PRight","sprites/images/percival/Percival-caminando-izquierda(x5).png",
-                { frameWidth: 160, frameHeight: 160});
-        //#endregion
-                
-        //#region WatchMan
-        this.load.spritesheet("S","sprites/images/profesor/Profesor-idle.png",
-              { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("Pr","sprites/images/sheriff/Sheriff-idle.png",
-              { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("SUp","sprites/images/sheriff/Sheriif-up.png",
-              { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("PrUp","sprites/images/profesor/Profesor-up.png",
-              { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("SDown","sprites/images/sheriff/Sheriif-down.png",
-                { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("PrDown","sprites/images/profesor/Profesor-down.png",
-                { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("SLeft","sprites/images/sheriff/Sheriif-left.png",
-                { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("PrLeft","sprites/images/profesor/Profesor-left.png",
-                { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("SRight","sprites/images/sheriff/Sheriif-right.png",
-                { frameWidth: 160, frameHeight: 160});
-
-        this.load.spritesheet("PrRight","sprites/images/profesor/Profesor-right.png",
-                { frameWidth: 160, frameHeight: 160});
         
-        this.load.image('profesor','sprites/images/profesor.jpg');
-        this.load.image('sheriff','sprites/images/sheriff.jpeg');
-        this.load.image('tilesPJ', 'sprites/tileSet/TileSetPJ.png');
-        this.load.image('tilesD', 'sprites/tileSet/DustwartsTileset.png');
-        this.load.image('tilesM', 'sprites/tileSet/MagwartsTileset.png');
-        this.load.tilemapTiledJSON('mapa', 'sprites/tileSet/Mapa.json');
-        //#endregion
-
-        //#region Objetos
-        this.load.image('cajaMovible', 'sprites/images/items/cajaMovible.png');
-        this.load.image('cajaRompible','sprites/images/items/cajaRompible.png');
-        this.load.image('cajaRota','sprites/images/items/cajaRompibleRota.png');
-
-        this.load.spritesheet('llaveMapa','sprites/images/items/keyMap.png',
-              {frameWidth:16, frameHeight:16}
-        );
-        this.load.image('llaveInventario', 'sprites/images/items/keyInventory.png')
-        //#endregion
-
-        this.load.spritesheet('slot','sprites/images/inventory/inventorySpace.png',{frameWidth: 64, frameHeight:64});
-        this.load.image('descriptionBox','sprites/images/inventory/descriptionBox.png');
-    }
-
-    createAnims(){
-        //#region Personajes
-        this.anims.create(
-            {key: "DaphneIdle",
-            frames: this.anims.generateFrameNumbers("D", {frames:[0,1,2,3]}),
-            frameRate: 5,
-            repeat: -1,}
-        );
-        this.anims.create(
-            {key: "PercivalIdle",
-            frames: this.anims.generateFrameNumbers("P", {frames:[0,1,2,3]}),
-            frameRate: 5,
-            repeat: -1,}
-        );
-
-        this.anims.create(
-            {key: "DaphneUp",
-            frames: this.anims.generateFrameNumbers("DUp", {frames:[0,1,2,3]}),
-            frameRate: 5,
-            repeat: -1,}
-        );
-        this.anims.create(
-            {key: "PercivalUp",
-            frames: this.anims.generateFrameNumbers("PUp", {frames:[0,1,2,3]}),
-            frameRate: 5,
-            repeat: -1,}
-        );
-        
-        this.anims.create(
-            {key: "DaphneDown",
-            frames: this.anims.generateFrameNumbers("DDown", {frames:[0,1,2,3]}),
-            frameRate: 5,
-            repeat: -1,}
-        );
-        this.anims.create(
-            {key: "PercivalDown",
-            frames: this.anims.generateFrameNumbers("PDown", {frames:[0,1,2,3]}),
-            frameRate: 5,
-            repeat: -1,}
-        );
-        
-        this.anims.create(
-            {key: "DaphneLeft",
-            frames: this.anims.generateFrameNumbers("DLeft", {frames:[0,1,2,3]}),
-            frameRate: 5,
-            repeat: -1,}
-        );
-        this.anims.create(
-            {key: "PercivalLeft",
-            frames: this.anims.generateFrameNumbers("PLeft", {frames:[0,1,2,3]}),
-            frameRate: 5,
-            repeat: -1,}
-        );
-
-        this.anims.create(
-            {key: "DaphneRight",
-            frames: this.anims.generateFrameNumbers("DRight", {frames:[0,1,2,3]}),
-            frameRate: 5,
-            repeat: -1,}
-        );
-        this.anims.create(
-            {key: "PercivalRight",
-            frames: this.anims.generateFrameNumbers("PRight", {frames:[0,1,2,3]}),
-            frameRate: 5,
-            repeat: -1,}
-        );
-
-        //#region Personajes
-        this.anims.create(
-            {key: "SheriffDown",
-            frames: this.anims.generateFrameNumbers("SDown", {frames:[0,1,2,3]}),
-            frameRate: 5,
-            repeat: -1,}
-        );
-        this.anims.create(
-            {key: "ProfesorDown",
-            frames: this.anims.generateFrameNumbers("PrDown", {frames:[0,1,2,3]}),
-            frameRate: 5,
-            repeat: -1,}
-        );
-
-        this.anims.create(
-            {key: "SheriffUp",
-            frames: this.anims.generateFrameNumbers("SUp", {frames:[0,1,2,3]}),
-            frameRate: 5,
-            repeat: -1,}
-        );
-        this.anims.create(
-            {key: "ProfesorUp",
-            frames: this.anims.generateFrameNumbers("PrUp", {frames:[0,1,2,3]}),
-            frameRate: 5,
-            repeat: -1,}
-        );
-        
-        this.anims.create(
-            {key: "SheriffLeft",
-            frames: this.anims.generateFrameNumbers("SLeft", {frames:[0,1,2,3]}),
-            frameRate: 5,
-            repeat: -1,}
-        );
-        this.anims.create(
-            {key: "ProfesorLeft",
-            frames: this.anims.generateFrameNumbers("PrLeft", {frames:[0,1,2,3]}),
-            frameRate: 5,
-            repeat: -1,}
-        );
-        
-        this.anims.create(
-            {key: "SheriffRight",
-            frames: this.anims.generateFrameNumbers("SRight", {frames:[0,1,2,3]}),
-            frameRate: 5,
-            repeat: -1,}
-        );
-        this.anims.create(
-            {key: "ProfesorRight",
-            frames: this.anims.generateFrameNumbers("PrRight", {frames:[0,1,2,3]}),
-            frameRate: 5,
-            repeat: -1,}
-        );
-
-        //#endregion
-
-        //#region Objetos
-        this.anims.create(
-            {key:'keyIdle',
-                frames: this.anims.generateFrameNumbers('llaveMapa', {frames:[0,1,2,1]}),
-                frameRate: 4,
-                repeat:-1,
-            }
-        );
-        //#endregion
-
-        //#region Inventario
-        this.anims.create(
-            {key: 'SlotSelected',
-            frames: this.anims.generateFrameNumbers('slot', {frames:[1,2]}),
-            frameRate: 2,
-            repeat: -1,}
-        );
-
-        this.anims.create(
-            {key: 'SlotIdle',
-            frames: this.anims.generateFrameNumbers('slot', {frames:[0]}),
-            frameRate: 2,
-            repeat: -1,}
-        );
-        //#endregion
-    }
-
-
     createItems(){
         this.keys.add(new Key(this, 400,3600,'llaveMapa','llaveInventario','keyIdle','Llave to guapa mi bro',1).setDepth(5))
         this.keys.add(new Key(this, 450,3700,'llaveMapa','llaveInventario','keyIdle','Llave de tu vieja',2).setDepth(5))
@@ -417,15 +244,15 @@ export default class Level1 extends Phaser.Scene{
         this.keys.add(new Key(this, 445,3800,'llaveMapa','llaveInventario','keyIdle','Llave inglesa',3).setDepth(5))
     }
 
-/**
- * Este metodo se encarga de crear el dialogo del payaso al interactuar con él según los siguientes parámetros:
- * @param {string} player - Personaje que ha interactuado con el payaso 
- * @param {boolean} itemReceived - Si el personaje ha recibido un objeto del payaso 
- * @param {boolean} hadItem - Si el personaje tiene un item seleccionado (en caso de dar un item al payaso)
- * @param {boolean} clownEmpty - Si el payaso no tiene ningun objeto
- * 
- * Se usan los arrays de dialogos creados en {@link createClownDialogs()}
- */
+    /**
+     * Este metodo se encarga de crear el dialogo del payaso al interactuar con él según los siguientes parámetros:
+     * @param {string} player - Personaje que ha interactuado con el payaso 
+     * @param {boolean} itemReceived - Si el personaje ha recibido un objeto del payaso 
+     * @param {boolean} hadItem - Si el personaje tiene un item seleccionado (en caso de dar un item al payaso)
+     * @param {boolean} clownEmpty - Si el payaso no tiene ningun objeto
+     * 
+     * Se usan los arrays de dialogos creados en {@link createClownDialogs()}
+     */
     showClownMessage(player,itemReceived,hadItem = true,clownEmpty = false){
         if(this.dialog.visible){
             this.dialog.toggleWindow();
@@ -442,12 +269,12 @@ export default class Level1 extends Phaser.Scene{
 
         this.setClownMessage(ignorePlayer,itemReceived,hadItem,clownEmpty);
     }
-/**
- * Establece el texto del dialogo del payaso al interactuar con él
- * @param {boolean} itemReceived - Si el personaje ha recibido un objeto del payaso 
- * @param {boolean} hadItem - Si el personaje tiene un item seleccionado (en caso de dar un item al payaso)
- * @param {boolean} clownEmpty - Si el payaso no tiene ningun objeto
- */
+    /**
+     * Establece el texto del dialogo del payaso al interactuar con él
+     * @param {boolean} itemReceived - Si el personaje ha recibido un objeto del payaso 
+     * @param {boolean} hadItem - Si el personaje tiene un item seleccionado (en caso de dar un item al payaso)
+     * @param {boolean} clownEmpty - Si el payaso no tiene ningun objeto
+     */
     setClownMessage(playerToIgnore,itemReceived,hadItem,clownEmpty){
         if(itemReceived && !hadItem && !clownEmpty){
             this.dialog.setTextArray([
@@ -474,44 +301,19 @@ export default class Level1 extends Phaser.Scene{
         }
     }
 
+    addMapLayer(name,collision){
+        let layer = this.map.createLayer(name, this.tilesets,0,0);
+        layer.setScale(5);
+        if(collision){
+            layer.setCollisionByExclusion([-1]);
+        }
+        return layer;
+    }
 
-    //crea todos los posbiles dialogos del payaso a la hora de interactuar con él 
-    //al traspasar objetos entre jugadores
-    createClownDialogs(){
-        //chistes cuando pillas un item del payaso
-        this.clownGetItemJokes = [
-            "Manin pa ti el objeto, que pesa mucho , pero no tanto como tu vieja",
-            "Uff menos mal que me lo has cogido, y el objeto tambien",
-            "Jope, ya le empezaba a tener cariño a ese objeto :("
-        ];
-        
-        //chistes cuando le pasas un item al payaso
-        this.clownGiveItemJokes = [
-            "Tranqui, yo te lo sujeto sin problema",
-            "epale, lo pillé",
-            "Jope, ya le empezaba a tener cariño a ese objeto :("
-        ];
-
-        
-        //posibles última frase del payaso
-        this.clownLast = [
-            "chao pescao",
-            "me las piro vampiro"
-        ];
-
-        //frases cuando el payaso esta vacio y pero no se selecionó ningun item
-        this.clownNoObjectGiven = [
-            "a",
-            "b",
-            "c"
-        ];
-
-          //frases cuando el payaso no esta vacio y pero no se pudo pillar el item (inventario lleno)
-        this.clownNoObjectTaken = [
-            "d",
-            "e",
-            "f"
-        ];
-
+    scaleObject(object,scaling){
+        object.x *= scaling;
+        object.y *= scaling;
+        object.y += (object.height*scaling);
+        object.setScale(scaling);
     }
 }

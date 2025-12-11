@@ -9,13 +9,8 @@ export default class LiftingPlatform extends Phaser.Physics.Arcade.Sprite {
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
         this.body.setImmovable(true);
-        if(rotationAngle != 0){
-            this.setRotation(Phaser.Math.DegToRad(rotationAngle));
-            this.body.setSize(this.displayHeight,this.displayWidth);
-        }
-        this.isOpen = isOpen;
-        this.originalState = isOpen;
-
+        this.isRaised = isRaised;
+        this.originalState = isRaised;
         this.identifier = identifier;
     }
 

@@ -51,7 +51,7 @@
                  "visible":true,
                  "width":16,
                  "x":1136,
-                 "y":368
+                 "y":352
                 }, 
                 {
                  "gid":255,
@@ -69,7 +69,7 @@
                  "visible":true,
                  "width":16,
                  "x":848,
-                 "y":144
+                 "y":128
                 }, 
                 {
                  "gid":255,
@@ -87,7 +87,7 @@
                  "visible":true,
                  "width":16,
                  "x":1136,
-                 "y":80
+                 "y":64
                 }, 
                 {
                  "gid":255,
@@ -105,7 +105,7 @@
                  "visible":true,
                  "width":16,
                  "x":1264,
-                 "y":160
+                 "y":144
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -134,7 +134,7 @@
                  "visible":true,
                  "width":16,
                  "x":1008,
-                 "y":368
+                 "y":352
                 }, 
                 {
                  "gid":257,
@@ -152,7 +152,7 @@
                  "visible":true,
                  "width":16,
                  "x":1040,
-                 "y":368
+                 "y":352
                 }, 
                 {
                  "gid":257,
@@ -170,7 +170,7 @@
                  "visible":true,
                  "width":16,
                  "x":1072,
-                 "y":368
+                 "y":352
                 }, 
                 {
                  "gid":257,
@@ -187,7 +187,7 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":144,
+                 "x":128,
                  "y":368
                 }, 
                 {
@@ -206,7 +206,7 @@
                  "visible":true,
                  "width":16,
                  "x":816,
-                 "y":320
+                 "y":304
                 }, 
                 {
                  "gid":257,
@@ -224,7 +224,7 @@
                  "visible":true,
                  "width":16,
                  "x":416,
-                 "y":208
+                 "y":192
                 }, 
                 {
                  "gid":257,
@@ -242,7 +242,7 @@
                  "visible":true,
                  "width":16,
                  "x":464,
-                 "y":112
+                 "y":96
                 }, 
                 {
                  "gid":257,
@@ -260,7 +260,7 @@
                  "visible":true,
                  "width":16,
                  "x":432,
-                 "y":112
+                 "y":96
                 }, 
                 {
                  "gid":257,
@@ -278,7 +278,7 @@
                  "visible":true,
                  "width":16,
                  "x":400,
-                 "y":112
+                 "y":96
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -312,7 +312,7 @@
                  "visible":true,
                  "width":32,
                  "x":288,
-                 "y":384
+                 "y":352
                 }, 
                 {
                  "gid":127,
@@ -335,7 +335,7 @@
                  "visible":true,
                  "width":32,
                  "x":320,
-                 "y":384
+                 "y":352
                 }, 
                 {
                  "gid":127,
@@ -358,7 +358,7 @@
                  "visible":true,
                  "width":32,
                  "x":352,
-                 "y":384
+                 "y":352
                 }, 
                 {
                  "gid":127,
@@ -381,7 +381,7 @@
                  "visible":true,
                  "width":32,
                  "x":384,
-                 "y":384
+                 "y":352
                 }, 
                 {
                  "gid":127,
@@ -404,7 +404,7 @@
                  "visible":true,
                  "width":32,
                  "x":384,
-                 "y":352
+                 "y":320
                 }, 
                 {
                  "gid":127,
@@ -427,7 +427,7 @@
                  "visible":true,
                  "width":32,
                  "x":384,
-                 "y":320
+                 "y":288
                 }, 
                 {
                  "gid":127,
@@ -450,7 +450,7 @@
                  "visible":true,
                  "width":32,
                  "x":416,
-                 "y":320
+                 "y":288
                 }, 
                 {
                  "gid":127,
@@ -473,7 +473,7 @@
                  "visible":true,
                  "width":32,
                  "x":448,
-                 "y":320
+                 "y":288
                 }, 
                 {
                  "gid":127,
@@ -496,7 +496,7 @@
                  "visible":true,
                  "width":32,
                  "x":480,
-                 "y":320
+                 "y":288
                 }, 
                 {
                  "gid":127,
@@ -519,7 +519,7 @@
                  "visible":true,
                  "width":32,
                  "x":384,
-                 "y":288
+                 "y":256
                 }, 
                 {
                  "gid":127,
@@ -542,7 +542,7 @@
                  "visible":true,
                  "width":32,
                  "x":384,
-                 "y":256
+                 "y":224
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -576,7 +576,7 @@
                  "visible":true,
                  "width":32,
                  "x":1136,
-                 "y":176
+                 "y":160
                 }, 
                 {
                  "gid":511,
@@ -599,7 +599,7 @@
                  "visible":true,
                  "width":32,
                  "x":1136,
-                 "y":96
+                 "y":80
                 }, 
                 {
                  "gid":511,
@@ -622,7 +622,7 @@
                  "visible":true,
                  "width":32,
                  "x":1184,
-                 "y":144
+                 "y":128
                 }, 
                 {
                  "gid":512,
@@ -644,8 +644,8 @@
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":1168,
-                 "y":96
+                 "x":1176.25,
+                 "y":96.25
                 }, 
                 {
                  "gid":512,
@@ -667,8 +667,8 @@
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":1216,
-                 "y":128
+                 "x":1224.25,
+                 "y":128.25
                 }, 
                 {
                  "gid":512,
@@ -690,8 +690,8 @@
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":1232,
-                 "y":128
+                 "x":1240.25,
+                 "y":128.25
                 }, 
                 {
                  "gid":512,
@@ -713,8 +713,8 @@
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":1168,
-                 "y":128
+                 "x":1176.25,
+                 "y":128.25
                 }, 
                 {
                  "gid":510,
@@ -737,7 +737,7 @@
                  "visible":true,
                  "width":32,
                  "x":384,
-                 "y":224
+                 "y":208
                 }, 
                 {
                  "gid":512,
@@ -759,7 +759,7 @@
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":144,
+                 "x":152,
                  "y":208
                 }, 
                 {
@@ -777,12 +777,17 @@
                          "name":"identifier",
                          "type":"int",
                          "value":1
+                        }, 
+                        {
+                         "name":"rotate",
+                         "type":"bool",
+                         "value":true
                         }],
                  "rotation":90,
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":192,
+                 "x":200.090909090909,
                  "y":336
                 }, 
                 {
@@ -806,7 +811,7 @@
                  "visible":true,
                  "width":32,
                  "x":288,
-                 "y":224
+                 "y":208
                 }, 
                 {
                  "gid":510,
@@ -829,7 +834,7 @@
                  "visible":true,
                  "width":32,
                  "x":448,
-                 "y":176
+                 "y":160
                 }, 
                 {
                  "gid":510,
@@ -852,7 +857,7 @@
                  "visible":true,
                  "width":32,
                  "x":96,
-                 "y":160
+                 "y":144
                 }, 
                 {
                  "gid":512,
@@ -868,14 +873,14 @@
                         {
                          "name":"identifier",
                          "type":"int",
-                         "value":0
+                         "value":12
                         }],
                  "rotation":90,
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":896,
-                 "y":208
+                 "x":904,
+                 "y":208.25
                 }, 
                 {
                  "gid":511,
@@ -920,8 +925,8 @@
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":1120,
-                 "y":336
+                 "x":1128,
+                 "y":336.25
                 }, 
                 {
                  "gid":511,
@@ -944,7 +949,7 @@
                  "visible":true,
                  "width":32,
                  "x":1088,
-                 "y":288
+                 "y":272
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -972,7 +977,7 @@
          "encoding":"base64",
          "height":100,
          "id":6,
-         "name":"paredes(sin_colison)",
+         "name":"paredes(sin_colision)",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
@@ -980,52 +985,146 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":9,
- "nextobjectid":48,
+ "nextlayerid":10,
+ "nextobjectid":50,
  "orientation":"orthogonal",
  "renderorder":"left-up",
  "tiledversion":"1.11.0",
  "tileheight":16,
  "tilesets":[
         {
+         "columns":18,
          "firstgid":1,
-         "source":"..\/..\/..\/..\/Users\/garpb\/Desktop\/LevelsRiftWest\/Dustwarts.tsx"
+         "image":"Dustwarts.png",
+         "imageheight":125,
+         "imagewidth":300,
+         "margin":0,
+         "name":"Dustwarts",
+         "spacing":0,
+         "tilecount":126,
+         "tileheight":16,
+         "tilewidth":16
         }, 
         {
+         "columns":2,
          "firstgid":127,
-         "source":"..\/..\/..\/..\/Users\/garpb\/Desktop\/LevelsRiftWest\/liftingPlatform.tsx"
+         "image":"liftingPlatform.png",
+         "imageheight":32,
+         "imagewidth":64,
+         "margin":0,
+         "name":"liftingPlatform",
+         "objectalignment":"topleft",
+         "spacing":0,
+         "tilecount":2,
+         "tileheight":32,
+         "tilewidth":32
         }, 
         {
+         "columns":18,
          "firstgid":129,
-         "source":"..\/..\/..\/..\/Users\/garpb\/Desktop\/LevelsRiftWest\/Magwarts.tsx"
+         "image":"Magwarts.png",
+         "imageheight":125,
+         "imagewidth":300,
+         "margin":0,
+         "name":"Magwarts",
+         "spacing":0,
+         "tilecount":126,
+         "tileheight":16,
+         "tilewidth":16
         }, 
         {
+         "columns":2,
          "firstgid":255,
-         "source":"..\/..\/..\/..\/Users\/garpb\/Desktop\/LevelsRiftWest\/Levers.tsx"
+         "image":"Levers.png",
+         "imageheight":16,
+         "imagewidth":32,
+         "margin":0,
+         "name":"Levers",
+         "objectalignment":"topleft",
+         "spacing":0,
+         "tilecount":2,
+         "tileheight":16,
+         "tilewidth":16
         }, 
         {
+         "columns":1,
          "firstgid":257,
-         "source":"..\/..\/..\/..\/Users\/garpb\/Desktop\/LevelsRiftWest\/PreassurePlate.tsx"
+         "image":"PreassurePlate.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "margin":0,
+         "name":"PreassurePlate",
+         "objectalignment":"topleft",
+         "spacing":0,
+         "tilecount":1,
+         "tileheight":16,
+         "tilewidth":16
         }, 
         {
+         "columns":18,
          "firstgid":258,
-         "source":"..\/..\/..\/..\/Users\/garpb\/Desktop\/LevelsRiftWest\/DustwartsTileset.tsx"
+         "image":"DustwartsTileset.png",
+         "imageheight":125,
+         "imagewidth":300,
+         "margin":0,
+         "name":"DustwartsTileset",
+         "spacing":0,
+         "tilecount":126,
+         "tileheight":16,
+         "tilewidth":16
         }, 
         {
+         "columns":18,
          "firstgid":384,
-         "source":"..\/..\/..\/..\/Users\/garpb\/Desktop\/LevelsRiftWest\/MagwartsTileset.tsx"
+         "image":"MagwartsTileset.png",
+         "imageheight":125,
+         "imagewidth":300,
+         "margin":0,
+         "name":"MagwartsTileset",
+         "spacing":0,
+         "tilecount":126,
+         "tileheight":16,
+         "tilewidth":16
         }, 
         {
+         "columns":3,
          "firstgid":510,
-         "source":"..\/..\/..\/..\/Users\/garpb\/Desktop\/LevelsRiftWest\/Doors.tsx"
+         "image":"Doors.png",
+         "imageheight":16,
+         "imagewidth":96,
+         "margin":0,
+         "name":"Doors",
+         "objectalignment":"topleft",
+         "spacing":0,
+         "tilecount":3,
+         "tileheight":16,
+         "tilewidth":32
         }, 
         {
+         "columns":48,
          "firstgid":513,
-         "source":"..\/..\/..\/..\/Users\/garpb\/Desktop\/LevelsRiftWest\/decoration.tsx"
+         "image":"decoration.png",
+         "imageheight":512,
+         "imagewidth":768,
+         "margin":0,
+         "name":"decoration",
+         "spacing":0,
+         "tilecount":1536,
+         "tileheight":16,
+         "tilewidth":16
         }, 
         {
+         "columns":10,
          "firstgid":2049,
-         "source":"..\/..\/..\/..\/Users\/garpb\/Desktop\/LevelsRiftWest\/TileSetPJ.tsx"
+         "image":"TileSetPJ.png",
+         "imageheight":160,
+         "imagewidth":160,
+         "margin":0,
+         "name":"TileSetPJ",
+         "spacing":0,
+         "tilecount":100,
+         "tileheight":16,
+         "tilewidth":16
         }],
  "tilewidth":16,
  "type":"map",

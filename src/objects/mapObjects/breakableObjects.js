@@ -27,8 +27,20 @@ export default class BreakableObject extends Phaser.Physics.Arcade.Sprite{
         this.isBroken = false;
         this.breakRange = 90; // distancia para poder romper
 
-        // Asignar tecla SHIFT (para Percival)
-        this.keyShift = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+        //Para detectar si se ha pulsado para romper un objeto
+        this.keyPressed = false;
+
+        this.scene.input.keyboard.on('keydown',(event)=>{
+            if(event.code === 'ShiftLeft'){
+                this.keyPressed = true;
+            }
+        })
+
+        this.scene.input.keyboard.on('keyup',(event)=>{
+            if(event.code === 'ShiftLeft'){
+                this.keyPressed = false;
+            }
+        })
     }
 
     preUpdate(t, dt){
@@ -65,7 +77,7 @@ export default class BreakableObject extends Phaser.Physics.Arcade.Sprite{
             } 
 
             // Si pulsa SHIFT → romper
-            if (Phaser.Input.Keyboard.JustDown(this.keyShift)) {
+            if (this.keyPressed) {
                 this.breakObject();
             }
         } 
