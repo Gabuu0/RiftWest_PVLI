@@ -22,8 +22,8 @@ export default class BreakableObject extends Phaser.Physics.Arcade.Sprite{
         this.caja2.body.immovable = true;
 
         //Colliders
-        scene.physics.add.collider(this, percival);
-        scene.physics.add.collider(this.caja2, daphne);
+        this.scene.physics.add.collider(this, percival);
+        this.scene.physics.add.collider(this.caja2, daphne);
 
         // Estado inicial
         this.isBroken = false;

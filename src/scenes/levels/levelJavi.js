@@ -39,9 +39,15 @@ export default class LevelJavi extends Phaser.Scene{
         this.players = this.add.group();
         this.players.add(this.percival);
         this.players.add(this.daphne);
+             
+        this.cooldowns = {
+         percival: 0,
+         daphne: 0
+        };
+
+        this.skillCooldownTime = 3000; // 3 segundos o lo que quieras
         
-        this.keys = this.add.group();
-        this.createItems();
+       
 
         this.percival.setDepth(1);
         this.daphne.setDepth(1);
@@ -217,21 +223,6 @@ export default class LevelJavi extends Phaser.Scene{
             this.knockObjects.add(kObject);
         });
 
-        /**
-         * Las plataformas levadizas tienen el atributo isRaised (boolean) que determina 
-         * si su estado inicial es estar levantada o no
-         */
-        // this.liftingPlatforms = this.add.group();
-        // const liftingPlatformsLayer = this.map.getObjectLayer('plataforma_levadiza');
-        // liftingPlatformsLayer.objects.forEach(obj =>{
-        //     let id = obj.properties.find(prop => prop.name ==='Identifier').value;
-        //     let raised = obj.properties.find(prop => prop.name ==='isRaised').value;
-        //     let liftingPlatform = new LiftingPlatform(this, obj.x, obj.y,'liftingPlatform',0,id,raised);
-        //     liftingPlatform.setScale(scaling);
-        //     this.scaleObject(liftingPlatform,scaling);
-        //     liftingPlatform.setOrigin(0,1);
-        //     this.liftingPlatforms.add(liftingPlatform);
-        // });
 
         this.endTriggers = [];
         const endTLayer = this.map.getObjectLayer('endTrigger');
@@ -243,10 +234,15 @@ export default class LevelJavi extends Phaser.Scene{
         });
         //#endregion
 
+        this.keys = this.add.group();
+        this.createItems();
+        this.cajaM1 = new movableObject(this, 3800, 2120, 1640, 2120, "cajaMovible", this.percival, this.daphne, Paredes)
+        this.cajaR1 = new breakableObjects(this,1080, 2680, 3240, 2680,'cajaRompible',this.percival,this.daphne);
+        this.cajaR2 = new breakableObjects(this,1080, 2600, 3240, 2600,'cajaRompible',this.percival,this.daphne);
+
         //#region Colisiones
         this.physics.add.collider(this.players,Paredes);
         this.physics.add.collider(this.players,Decoracion);
-        this.physics.add.collider(this.players,this.objetos);
 
         //Colisiones con Puertas
         this.physics.add.collider(this.players,this.doors,(jugador,puerta)=>{
@@ -310,13 +306,8 @@ export default class LevelJavi extends Phaser.Scene{
             }
         });
 
+    
 
-         this.cajaM1 = new movableObject(this, 3800, 2120, 1640, 2120, "cajaMovible", this.percival, this.daphne, Paredes)
-         this.cajaR1 = new breakableObjects(this,3240, 2680, 1080, 2680,'cajaRompible',this.percival,this.daphne);
-         this.cajaR2 = new breakableObjects(this,3240, 2600, 1080, 2600,'cajaRompible',this.percival,this.daphne);
-         //this.objetos.add(this.cajaM1);
-         this.objetos.add(this.cajaR1);
-         this.objetos.add(this.cajaR2);
         //#endregion
         //#region SistemaDialogos
 
@@ -425,6 +416,50 @@ export default class LevelJavi extends Phaser.Scene{
         object.y *= scaling;
         //object.y += (object.height*scaling);
         object.setScale(scaling);
+    }
+
+    UseAbility(playerName, object, action) {
+        const now = this.time.now;
+
+        const abilityIcon = playerName === "percival" ? this.PercivalAbility : this.daphneAbility;
+        const readyTexture = playerName === "percival" ? "percivalAbilityReady" : "daphneAbilityReady";
+        const usedTexture = playerName === "percival" ? "percivalAbilityUsed" : "daphneAbilityUsed";
+        const msg = playerName === "percival" ? this.msgPercival : this.msgDaphne;
+
+        if (now < this.cooldowns[playerName]) {
+            //msg.setText("Habilidad recargando...");
+            this.time.delayedCall(this.skillCooldownTime, () => msg.setText(""));
+            return;
+        }
+
+        if (playerName === "percival") {
+            if (action.inRange) {object.breakObject(); 
+            this.cooldowns[playerName] = now + this.skillCooldownTime;
+            abilityIcon.setTexture(usedTexture);
+            this.time.delayedCall(this.skillCooldownTime, () => abilityIcon.setTexture(readyTexture));
+            }
+            else {
+                    //msg.setText("No hay nada que romper.");
+                    this.time.delayedCall(1000, () => msg.setText(""));
+                } 
+        } 
+        else if (playerName === "daphne") {
+            if (action.isDropping) {
+                    object.restartCoolDown(); // esto hace toggle, deja el objeto
+                    this.cooldowns[playerName] = now + this.skillCooldownTime;
+                    abilityIcon.setTexture(usedTexture);
+                    this.time.delayedCall(this.skillCooldownTime, () => abilityIcon.setTexture(readyTexture));
+                }
+            else if(action.inRange){
+                object.restartCoolDown();
+            }
+            else {
+                    // por si acaso: mensaje corto (opcional)
+                    //msg.setText("No estás agarrando nada.");
+                    this.time.delayedCall(1000, () => msg.setText(""));
+                }
+            
+        }
     }
 
     updateSounds(){
