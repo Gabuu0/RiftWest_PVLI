@@ -1,14 +1,15 @@
 export default class movableObject extends Phaser.Physics.Arcade.Sprite{
-    constructor(scene, x, y, cx, cy, texture, Player1, Player2, layer){
+    constructor(scene, x, y, cx, cy, texture, percival, daphne, layer){
         super(scene, x, y, texture)
         this.scene = scene;
-        this.tam = 5
-        this.haveObject = false
-        this.coolDown = false
-        this.coolDownT = 0
-        this.coolDownTMax = 10
-        this.daphne = Player2
-        this.distanceMax = 90
+        this.tam = 5;
+        this.haveObject = false;
+        this.coolDown = false;
+        this.coolDownT = 0;
+        this.coolDownTMax = 10;
+        this.percival = percival;
+        this.daphne = daphne;
+        this.distanceMax = 90;
         this.distance;
         this.isGlowing = false;
 
@@ -24,8 +25,8 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
         this.body.immovable = true;
 
         //Creo las colisiones
-        this.collision = scene.physics.add.collider(this, Player2)
-        scene.physics.add.collider(this.obCon, Player1)
+        this.collision = scene.physics.add.collider(this, this.daphne)
+        scene.physics.add.collider(this.obCon, this.percival)
         scene.physics.add.collider(this, layer)
         scene.physics.add.collider(this.obCon, layer)
 
@@ -39,8 +40,6 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
             }
         });
 
-        //evento de la habilidad
-        
     }
 
     preUpdate(t, dt) {
@@ -48,15 +47,15 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
         // Calcular centro exacto del cuerpo físico de la caja
         const boxCenterX = this.body.x + this.body.width / 2;
         const boxCenterY = this.body.y + this.body.height / 2;
-        // Calcular centro del personaje Percival
-        const percivalCenterX = this.daphne.body.x + this.daphne.body.width / 2;
-        const percivalCenterY = this.daphne.body.y + this.daphne.body.height / 2;
-        //Calcula la distancia entre la caja y percival
+        // Calcular centro del personaje Daphne
+        const daphneCenterX = this.daphne.body.x + this.daphne.body.width / 2;
+        const daphneCenterY = this.daphne.body.y + this.daphne.body.height / 2;
+        //Calcula la distancia entre la caja y daphne
         this.distance = Phaser.Math.Distance.Between(
             boxCenterX,
             boxCenterY,
-            percivalCenterX,
-            percivalCenterY
+            daphneCenterX,
+            daphneCenterY
         );
 
         if (this.distance < this.distanceMax) {

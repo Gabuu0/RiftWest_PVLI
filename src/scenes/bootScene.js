@@ -8,22 +8,22 @@ export default class BootScene extends Phaser.Scene{
     }
 
     preload(){
-        // var progressBar = this.add.graphics();
-        // var progressBox = this.add.graphics();
-        // progressBox.fillStyle(0x222222, 0.8);
-        // progressBox.fillRect(380, 270, 320, 50);
+        var progressBar = this.add.graphics();
+        var progressBox = this.add.graphics();
+        progressBox.fillStyle(0x222222, 0.8);
+        progressBox.fillRect(380, 270, 320, 50);
 
-        // let loadingTexts = ["Cargando diálogos", "Cargando imágenes","Cargando animaciones","Cargando mapas"];
+        let loadingTexts = ["Cargando diálogos", "Cargando imágenes","Cargando animaciones","Cargando mapas"];
 
-        // var loadingText = this.add.text(this.cameras.main.width/2,240,"Cargando...",{color:'#67676767' ,fontSize:20});
-        // var percentText = this.add.text(this.cameras.main.width/2,285,"0%",{color:'#67676767' ,fontSize:20});
+        var loadingText = this.add.text(450,240,"Cargando...",{color:'#d2d2d267' ,fontSize:20});
+        var percentText = this.add.text(this.cameras.main.width/2-20,285,"0%",{color:'#d2d2d267' ,fontSize:20});
         
         this.load.on('progress', function(value){
-            // loadingText.setText(loadingTexts[value < 0.25 ? 0:value<0.5 ? 1: value< 0.75 ? 2: 3]);
-            // percentText.setText(parseInt(value *100)+'%');
-            // progressBar.clear();
-            // progressBar.fillStyle(0xffffff, 1);
-            // progressBar.fillRect(250, 280, 300 * value, 30);
+            loadingText.setText(loadingTexts[value < 0.25 ? 0:value<0.5 ? 1: value< 0.75 ? 2: 3]);
+            percentText.setText(parseInt(value *100)+'%');
+            progressBar.clear();
+            progressBar.fillStyle(0xffffff, 1);
+            progressBar.fillRect(390, 280, 300 * value, 30);
         });
         this.load.on('complete',()=>{
             this.createClownDialogs();
