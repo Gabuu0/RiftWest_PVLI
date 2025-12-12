@@ -101,6 +101,7 @@ export default class BootScene extends Phaser.Scene{
         this.load.audio('reset', 'sounds/reset.mp3');
         this.load.audio('musicaLevelJavi', 'sounds/musicaLevelJavi.mp3');
         this.load.audio('musicaLevelAx', 'sounds/musicaLevelAx.mp3');
+        this.load.audio('musicaLevelGabi', 'sounds/musicaLevelGabi.mp3');
         this.load.audio('select', 'sounds/select.mp3');
         //#endregion
 

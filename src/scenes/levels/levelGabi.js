@@ -386,6 +386,7 @@ export default class LevelGabi extends Phaser.Scene{
         this.physics.add.overlap(this.players,this.liftingPlatforms,(jugador,platform)=>{
             if(!platform.isRaised){
                 this.resetSound.play();
+                this.music.stop();
                 this.scene.restart({clownGetItemJokes:this.clownGetItemJokes,
                 clownGiveItemJokes:this.clownGiveItemJokes,
                 clownNoObjectGiven: this.clownNoObjectGiven,
@@ -412,7 +413,7 @@ export default class LevelGabi extends Phaser.Scene{
         this.walkSound = this.sound.add('pasos', { loop: false });
         this.breakSound = this.sound.add('romper');
         this.resetSound = this.sound.add('reset', { loop: false, volume: 0.3 });
-        this.music = this.sound.add('musicaLevelJavi', { loop: true, volume: 0.7 });
+        this.music = this.sound.add('musicaLevelGabi', { loop: true, volume: 0.2 });
     }
 
     /**
@@ -438,6 +439,7 @@ export default class LevelGabi extends Phaser.Scene{
         if (this.movementController) {
             this.movementController.update();
         }
+        this.updateSounds();
     }
 
     /**
