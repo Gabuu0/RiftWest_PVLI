@@ -390,11 +390,10 @@ export default class LevelAx extends Phaser.Scene {
             this.dialog.setDepth(10);
     
             this.dialog.setTextArray([
-                [1, "Bryant Myers"],
-                [2, "Hoy de nuevo te voy a ver (Anonimus, this is the remix)"],
-                [0, "Si llaman, pichea el cel (Anuel, Almighty)"],
-                [1, "Estamos fumando marihuana (Maybach Música)"],
-                [2, "Hoy serás mi esclava en el cuarto de un motel (Carbon Fiber Music)"]
+                [1, "Otro piso más… ¿y tú sigues siendo tan difícil de alcanzar?"],
+                [2, "Dejate de tonterias Percival, puto mago torpe."],
+                [2, "Escucho al Director de fondo, sera mejor que le esquivemos"],
+                [1, "Lo que tu digas, pero date prisa que yo habia quedado para cenar y jugar al fifa."]
             ], true);
         }
     
