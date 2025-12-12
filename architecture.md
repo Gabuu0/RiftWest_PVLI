@@ -112,5 +112,22 @@ Módulo donde se almacenan los efectos de sonido y música del juego.
 
 Librería del motor Phaser, utilizada para la construcción del juego.
 
-## Creacion de mapas
+### Capas de tiles
+- **Capa de suelo:** No presenta colisiones, y sirve únicamente como fondo del nivel.  
+- **Capa de paredes:** Contiene los tiles con los que los personajes colisionan, definiendo los límites del mapa.  
+- **Capa de paredes sin colisión:** Incluye elementos visuales que se superponen a los personajes, generando el efecto de que estos se encuentran “detrás” de ciertos objetos.
+
+### Capas de objetos
+- Los objetos se organizan en capas para facilitar la creación del mapa.  
+- Esto permite que el juego lea automáticamente la posición de los objetos desde los archivos `.json`, evitando tener que colocarlos manualmente mediante código.
+- Además, en Tiled asignamos un **identifier** único a cada puerta, placa, palanca u otro objeto interactivo.  
+  Esto permite que, cuando por ejemplo se active una placa de presión el juego busque automáticamente todas las puertas que compartan el mismo identificador, de modo que se abran correctamente.  
+  De esta manera, se mantiene una relación directa y organizada entre cada activador y los objetos que controla.
+
+- Las puertas también cuentan con un atributo llamado **doorType**, que determina qué sprite de puerta se utilizará en el juego.
+
+
+![Captura de puertas](imagesGDD/capturas/captura5.png)
+![Captura de placas](imagesGDD/capturas/captura6.png)
+
 
