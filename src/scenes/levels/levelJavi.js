@@ -132,7 +132,7 @@ export default class LevelJavi extends Phaser.Scene{
         this.daphneCam = this.cameras.add(540, 0, 540, 540, 'DaphneCam');
         this.daphneCam.setViewport(540, 0, 540, 540);
         this.daphneCam.startFollow(this.daphne);
-        this.daphneCam.setBounds(2680,1170,1730,2450);
+        this.daphneCam.setBounds(2600,1170,1810,2450);
     }
 
     /**
