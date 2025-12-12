@@ -26,247 +26,102 @@ export default class LevelJavi extends Phaser.Scene{
     }
 
     create(){
-        this.random = new Phaser.Math.RandomDataGenerator();
+        this.setInputs();
 
+        //random que se utiliza para elegir los textos del payaso
+        this.random = new Phaser.Math.RandomDataGenerator();
+        
+        //se resetea el registro del payaso al crear el nivel para evitar que pueda tener objetos de otros niveles
         this.registry.set('clownObj', {
             objData: {},
             hasObj: false,
         });
 
-        this.percival = new Players(this,930, 3400,"P",0,"percival");
-        //2500,1000 pos algunas cajas
-        this.daphne = new Players(this,3100,3400,"D",0,"daphne");
-        this.players = this.add.group();
-        this.players.add(this.percival);
-        this.players.add(this.daphne);
+        this.createPlayers();
         
         this.createCameras();
         this.createUI();
         this.setCamerasIgnores();
 
+        //#region AbilitiesCooldowns
+        //se resetean los cooldowns de las habilidades de los players
         this.cooldowns = {
          percival: 0,
          daphne: 0
         };
-
-        this.skillCooldownTime = 3000; // 3 segundos o lo que quieras
+        //cooldown de ambas habilidades
+        this.skillCooldownTime = 3000; 
+        //#endregion
         
-       
-
-        this.percival.setDepth(1);
-        this.daphne.setDepth(1);
-
-        this.scene.launch('InventarioPercival',{
-            player:this.percival,
-            playerScene: this});
-        this.scene.launch('InventarioDaphne',{
-            player:this.daphne,
-            playerScene: this});
+        this.createInventoryScenes();
         this.getScenes();
 
-
-        this.movementController = new Movement(this, this.percival, this.daphne);
-
-        this.input.keyboard.enabled = true;
-
-        this.input.keyboard.on('keydown-ESC', () => {
-            console.log('ESC pulsado');
-            this.scene.launch('pauseMenu');   // Lanza el menú
-            this.pauseMenu.setLevel(this.scene.key);
-            this.scene.pause();              // Pausa la escena del juego
-        });
-
-        this.input.keyboard.on('keydown', (event) => {
-        // Evita que el navegador use las teclas (por ejemplo, mover scroll o cursor)
-        event.preventDefault();
-
-         });
-
-
         //#region Creacion Mapa
-        
-        
         this.map = this.make.tilemap({ key: 'mapLevelJavi' });
         const tileset1 = this.map.addTilesetImage('tileSet1', 'tilesPJ');
         const tilesetD = this.map.addTilesetImage('dustwartsTileset', 'tilesD');
-        //const tilesetD2 = this.map.addTilesetImage('Dustwarts', 'tilesD2');
         const tilesetM = this.map.addTilesetImage('magwartsTileset', 'tilesM');
-        //const tilesetM2 = this.map.addTilesetImage('Magwarts', 'tilesM2');
         const tileSetDecoration = this.map.addTilesetImage('Decoration', 'tilesDecoration');
         this.tilesets = [tileset1, tilesetD, tilesetM, tileSetDecoration];
 
         const Suelo = this.addMapLayer('suelo',false);
-
         const Paredes = this.addMapLayer('paredes',true);
-
         const Paredes2 = this.addMapLayer('paredes(SinColision)',false);
         const Decoracion = this.addMapLayer('decoracion',true);
         Paredes2.setDepth(3);   
-
+        //#endregion
        
-
-        this.objetos = this.add.group();
-
-
-        //#region Crear Vigilante
-        const sheriff1PathPoints = [
-            { x: 920, y: 2680 },
-            { x: 920, y: 2360 },
-            { x: 1480, y: 2360 },
-            { x: 1480, y: 2040 },
-            { x: 1480, y: 2360 },
-            { x: 920, y: 2360 },
-
-        ];
-
-        const sheriff2PathPoints = [
-            { x: 1800, y: 3000 },
-            { x: 1800, y: 2360 },
-            { x: 1800, y: 2120 }
-        ];
-
-        const teacher1PathPoints = [
-            { x: 3960, y: 3000 },
-            { x: 3960, y: 2560 },
-            { x: 3960, y: 2360 },
-            { x: 3960, y: 2120 },
-            { x: 3960, y: 2360 },
-            { x: 3960, y: 2560 },
-        ];
-        // Crea el vigilante y lo sigue
-        this.Sheriff1 = new Watchman(
-            this,                  
-            sheriff1PathPoints[0].x, 
-            sheriff1PathPoints[0].y, 
-            'sheriffSprite',      
-            0,                 
-            this.percival,      
-            sheriff1PathPoints,    
-            "sheriff"        
-        );
-        this.Sheriff2 = new Watchman(
-            this,                  
-            sheriff2PathPoints[0].x, 
-            sheriff2PathPoints[0].y, 
-            'sheriffSprite',      
-            0,                 
-            this.percival,      
-            sheriff2PathPoints,    
-            "sheriff"        
-        );
-        this.Teacher1 = new Watchman(
-            this,                  
-            teacher1PathPoints[0].x, 
-            teacher1PathPoints[0].y, 
-            'profesorSprite',      
-            0,                 
-            this.daphne,      
-            teacher1PathPoints,    
-            "profesor"        
-        );
-        //#endregion
-
         this.createTileMapObjects();
-        //#endregion
 
-        this.keys = this.add.group();
-        this.createItems();
-        this.cajaM1 = new movableObject(this, 3800, 2120, 1640, 2120, "cajaMovible", this.percival, this.daphne, Paredes)
-        this.cajaR1 = new breakableObjects(this,1080, 2680, 3240, 2680,'cajaRompible',this.percival,this.daphne);
-        this.cajaR2 = new breakableObjects(this,1080, 2600, 3240, 2600,'cajaRompible',this.percival,this.daphne);
+        this.createWatchmans();
 
-        //#region Colisiones
-        this.physics.add.collider(this.players,Paredes);
-        this.physics.add.collider(this.players,Decoracion);
+        this.createItems(Paredes);
 
-        //Colisiones con Puertas
-        this.physics.add.collider(this.players,this.doors,(jugador,puerta)=>{
-            //si el jugador tiene un item con el mismo identificador que la puerta esta se destruye
-            if(jugador.haveItem(puerta.identifier)){
-                 this.doors.getChildren().forEach(door =>{
-                    if(door.identifier === puerta.identifier){
-                        door.destroy(true);
-                    }
-                });
-            }
-        });
-        
-        //Colisiones con Placas de Presion
-        this.physics.add.overlap(this.players,this.preassurePlates,(jugador,placa)=>{
-            //se miran las puertas y si alguna tiene el mismo identificador que la placa se abre
-            this.doors.getChildren().forEach(door =>{
-                if(door.identifier === placa.identifier){
-                    door.openDoor();
-                }
-            });
-        });
-        
-        //Colisiones con Palancas
-        this.physics.add.overlap(this.players,this.levers,(jugador,lever)=>{
-            //se miran las puertas y si alguna tiene el mismo identificador que la placa se abre
-            this.doors.getChildren().forEach(door =>{
-                if(door.identifier === lever.identifier){
-                    door.destroy(true);
-                    lever.useLever();
-                    this.Sheriff1.triggerSize(160);
-                    this.Sheriff2.triggerSize(160);
-                    this.Teacher1.triggerSize(160);
-                }
-            });
-        }); 
+        this.createCollisions(Paredes, Decoracion);
 
-        //Colisiones con Objetos Tirables
-        this.physics.add.collider(this.players,this.knockObjects,(jugador,kObject)=>{
-                kObject.knock();
-                this.Sheriff1.triggerSize(160);
-                this.Sheriff2.triggerSize(160);
-                this.Teacher1.triggerSize(160);
+        this.createDialog();
+
+        this.createSounds();
+    }
+    //#region Metodos llamados en el create
+     /**
+     * Establece los inputs que va a escuchar la escen
+     */
+    setInputs() {
+        this.input.keyboard.enabled = true;
+
+        this.input.keyboard.on('keydown-ESC', () => {
+            console.log('ESC pulsado');
+            this.scene.launch('pauseMenu'); // Lanza el menú
+            this.pauseMenu.setLevel(this.scene.key);
+            this.scene.pause(); // Pausa la escena del juego
         });
 
-        //Colisiones con LLaves
-        this.physics.add.overlap(this.players,this.keys,(jugador,llave)=>{
-            //se elimina la llave si es posible cogerla (inventario del jugador no lleno)
-            if(jugador.pickItem(llave)) {
-                this.events.emit('itemPickedP', llave);
-                llave.destroy(); 
-            }
+        this.input.keyboard.on('keydown', (event) => {
+            // Evita que el navegador use las teclas (por ejemplo, mover scroll o cursor)
+            event.preventDefault();
+
         });
-
-        //Colisiones con los triggers de Final de Nivel
-        this.physics.add.overlap(this.players,this.endTriggers,(jugador, endT)=>{
-            endT.on();
-            if (this.endTriggers.every(t => t.getIsPressed())) {
-                this.scene.stop();
-                this.scene.start('levelGabi');            
-            }
-        });
-
-    
-
-        //#endregion
-        //#region SistemaDialogos
-
-        this.dialog = new DialogText(this, {camera: this.percivalCam});
-        this.dialog.setDepth(10);
-        
-        this.dialog.setTextArray([
-            [1, "Bryant Myers"],
-            [2, "Hoy de nuevo te voy a ver (Anonimus, this is the remix)"],
-            [0, "Si llaman, pichea el cel (Anuel, Almighty)"],
-            [1, "Estamos fumando marihuana (Maybach Música)"],
-            [2, "Hoy serás mi esclava en el cuarto de un motel (Carbon Fiber Music)"]
-        ], true);
-
-        //#endregion
-
-        //#region Sonidos
-        this.walkSound = this.sound.add('pasos', { loop: false});
-        this.breakSound = this.sound.add('romper');
-        this.resetSound = this.sound.add('reset',{loop: false, volume: 0.3});
-        this.music = this.sound.add('musicaLevelJavi', {loop: true, volume:0.7});
-        //#endregion
     }
 
+    /**
+     * Crea los jugadores, los añade a un grupo y crea el movimiento de ambos
+     */
+    createPlayers() {
+        this.percival = new Players(this, 930, 3400, "P", 0, "percival");
+        this.daphne = new Players(this, 3100, 3400, "D", 0, "daphne");
+        this.players = this.add.group();
+        this.players.add(this.percival);
+        this.players.add(this.daphne);
+        this.percival.setDepth(1);
+        this.daphne.setDepth(1);
+
+        this.movementController = new Movement(this, this.percival, this.daphne);
+    }
+
+    /**
+     * Crea las camaras de los jugadores
+     */
     createCameras() {
         this.percivalCam = this.cameras.main;
         this.percivalCam.setViewport(0, 0, 540, 540);
@@ -274,6 +129,82 @@ export default class LevelJavi extends Phaser.Scene{
         this.daphneCam = this.cameras.add(540, 0, 540, 540, 'DaphneCam');
         this.daphneCam.setViewport(540, 0, 540, 540);
         this.daphneCam.startFollow(this.daphne);
+    }
+
+    /**
+     * Se crean todos los elementos de la UI de los jugadores (imagenes de las habilidades, mensajes, ect)
+     */
+    createUI() {
+        // Mensajes flotantes
+        this.msgPercival = this.add.text(100, 500, "", {
+            fontSize: "16px",
+            color: "hsla(280, 3%, 82%, 1.00)",
+            fontStyle: "bold"
+        }).setScrollFactor(0).setDepth(2);
+
+        this.msgDaphne = this.add.text(220, 500, "", {
+            fontSize: "16px",
+            color: "hsla(280, 3%, 82%, 1.00)",
+            fontStyle: "bold"
+        }).setScrollFactor(0).setDepth(2);
+
+        //MAPS
+        this.daphneMap = this.add.image(580, 150, "daphneMap").setVisible(false);
+        this.daphneMap.setDepth(10);
+        this.daphneMap.setScrollFactor(0);
+        this.percivalMap = this.add.image(250, 150, "percivalMap").setVisible(false);
+        this.percivalMap.setDepth(10);
+        this.percivalMap.setScrollFactor(0);
+        //ABILITIES
+        this.percivalAbility = this.add.image(60, 480, "percivalAbilityReady");
+        this.percivalAbility.setScale(0.4);
+        this.percivalAbility.setDepth(4);
+        this.percivalAbility.setScrollFactor(0);
+
+        this.daphneAbility = this.add.image(480, 480, "daphneAbilityReady");
+        this.daphneAbility.setScale(0.4);
+        this.daphneAbility.setDepth(4);
+        this.daphneAbility.setScrollFactor(0);
+        //HEADERS
+        this.percivalHeader = this.add.image(60, 50, "percivalHead").setScale(0.4).setDepth(10).setScrollFactor(0);
+        this.daphneHeader = this.add.image(480, 50, "daphneHead").setScale(0.4).setDepth(10).setScrollFactor(0);
+
+        this.percivalMapIcon = this.add.image(85, 50, "percivalMapEnabled").setScrollFactor(0).setDepth(10).setScale(0.4);
+        this.daphneMapIcon = this.add.image(455, 50, "daphneMapEnabled").setScrollFactor(0).setDepth(10).setScale(0.4);
+    }
+
+    /**
+     * Se establecen los ignore de las camaras, en general la camara de cada jugador ignora la HUD de la del otro
+     */
+    setCamerasIgnores() {
+        this.percivalCam.ignore(this.msgDaphne);
+        this.percivalCam.ignore(this.daphneHeader);
+        this.percivalCam.ignore(this.daphneAbility);
+        this.percivalCam.ignore(this.daphneMapIcon);
+        this.percivalCam.ignore(this.daphneMap);
+
+        this.daphneCam.ignore(this.msgPercival);
+        this.daphneCam.ignore(this.percivalHeader);
+        this.daphneCam.ignore(this.percivalAbility);
+        this.daphneCam.ignore(this.percivalMapIcon);
+        this.daphneCam.ignore(this.percivalMap);
+    }
+   
+    /**
+     * Crea/lanza las escenas de inventarios y les pasa los personajes de cada una
+     */
+    createInventoryScenes() {
+        this.scene.launch('InventarioPercival', {
+            player: this.percival,
+            playerScene: this
+        });
+        this.scene.launch('InventarioDaphne', {
+            player: this.daphne,
+            playerScene: this
+        });
+
+        this.scene.sleep('InventarioPercival');
+        this.scene.sleep('InventarioDaphne');
     }
 
     /**
@@ -285,13 +216,13 @@ export default class LevelJavi extends Phaser.Scene{
         this.pauseMenu = this.scene.get('pauseMenu');
     }
 
-        /**
-         * Se obtienen las layers de los objetos para acceder a los objetos de cada una
-         * en cada layer se busca la propiedad identifier de cada objeto, en el caso de las puertas tambien se busca su tipo 
-         *      -identifier(int): identificador usado para abrir las puertas segun el mismo, las puertas se abriran si se interactua con un objeto con el mismo identificador
-         *      -doorType(int): tipo de puerta usado para saber que frame del spriteSheet de puertas usar
-         * Ademas se agrupa cada tipo de objeto en un grupo y se escala el objeto(tanto el tamaño como la posicion)
-         */
+    /**
+     * Se obtienen las layers de los objetos para acceder a los objetos de cada una
+     * en cada layer se busca la propiedad identifier de cada objeto, en el caso de las puertas tambien se busca su tipo 
+     *      -identifier(int): identificador usado para abrir las puertas segun el mismo, las puertas se abriran si se interactua con un objeto con el mismo identificador
+     *      -doorType(int): tipo de puerta usado para saber que frame del spriteSheet de puertas usar
+     * Ademas se agrupa cada tipo de objeto en un grupo y se escala el objeto(tanto el tamaño como la posicion)
+     */
     createTileMapObjects() {
         const scaling = 5;
         this.doors = this.add.group();
@@ -349,65 +280,194 @@ export default class LevelJavi extends Phaser.Scene{
             this.endTriggers.push(endT);
         });
     }
-    //Se crean todos los elementos de la UI de los jugadores (imagenes de las habilidades, mensajes, ect)
-    createUI() {
-        // Mensajes flotantes
-        this.msgPercival = this.add.text(100, 500, "", {
-            fontSize: "16px",
-            color: "hsla(280, 3%, 82%, 1.00)",
-            fontStyle: "bold"
-        }).setScrollFactor(0).setDepth(2);
 
-        this.msgDaphne = this.add.text(220, 500, "", {
-            fontSize: "16px",
-            color: "hsla(280, 3%, 82%, 1.00)",
-            fontStyle: "bold"
-        }).setScrollFactor(0).setDepth(2);
-
-        //MAPS
-        this.daphneMap = this.add.image(580, 150, "daphneMap").setVisible(false);
-        this.daphneMap.setDepth(10);
-        this.daphneMap.setScrollFactor(0);
-        this.percivalMap = this.add.image(250, 150, "percivalMap").setVisible(false);
-        this.percivalMap.setDepth(10);
-        this.percivalMap.setScrollFactor(0);
-        //ABILITIES
-        this.percivalAbility = this.add.image(60, 480, "percivalAbilityReady");
-        this.percivalAbility.setScale(0.4);
-        this.percivalAbility.setDepth(4);
-        this.percivalAbility.setScrollFactor(0);
-
-        this.daphneAbility = this.add.image(480, 480, "daphneAbilityReady");
-        this.daphneAbility.setScale(0.4);
-        this.daphneAbility.setDepth(4);
-        this.daphneAbility.setScrollFactor(0);
-        //HEADERS
-        this.percivalHeader = this.add.image(60, 50, "percivalHead").setScale(0.4).setDepth(10).setScrollFactor(0);
-        this.daphneHeader = this.add.image(480, 50, "daphneHead").setScale(0.4).setDepth(10).setScrollFactor(0);
-
-        this.percivalMapIcon = this.add.image(85, 50, "percivalMapEnabled").setScrollFactor(0).setDepth(10).setScale(0.4);
-
-        this.daphneMapIcon = this.add.image(455, 50, "daphneMapEnabled").setScrollFactor(0).setDepth(10).setScale(0.4);
-
-
-
-    }
     /**
-     * Se establecen los ignore de las camaras, en general la camara de cada jugador ignora la HUD de la del otro
+     * Crea todos los vigilantes con sus respectivos paths
      */
-    setCamerasIgnores() {
-        this.percivalCam.ignore(this.msgDaphne);
-        this.percivalCam.ignore(this.daphneHeader);
-        this.percivalCam.ignore(this.daphneAbility);
-        this.percivalCam.ignore(this.daphneMapIcon);
-        this.percivalCam.ignore(this.daphneMap);
+    createWatchmans() {
+        const { sheriff1PathPoints, sheriff2PathPoints, teacher1PathPoints } = createWatchmansPaths();
+        this.watchmans = this.add.group();
+        // Crea el vigilante y lo sigue
+        this.Sheriff1 = new Watchman(
+            this,
+            sheriff1PathPoints[0].x,
+            sheriff1PathPoints[0].y,
+            'sheriffSprite',
+            0,
+            this.percival,
+            sheriff1PathPoints,
+            "sheriff"
+        );
 
-        this.daphneCam.ignore(this.msgPercival);
-        this.daphneCam.ignore(this.percivalHeader);
-        this.daphneCam.ignore(this.percivalAbility);
-        this.daphneCam.ignore(this.percivalMapIcon);
-        this.daphneCam.ignore(this.percivalMap);
+        this.Sheriff2 = new Watchman(
+            this,
+            sheriff2PathPoints[0].x,
+            sheriff2PathPoints[0].y,
+            'sheriffSprite',
+            0,
+            this.percival,
+            sheriff2PathPoints,
+            "sheriff"
+        );
+        this.Teacher1 = new Watchman(
+            this,
+            teacher1PathPoints[0].x,
+            teacher1PathPoints[0].y,
+            'profesorSprite',
+            0,
+            this.daphne,
+            teacher1PathPoints,
+            "profesor"
+        );
+
+        this.watchmans.add(this.Sheriff1);
+        this.watchmans.add(this.Sheriff2);
+        this.watchmans.add(this.Teacher1);
+        
+        function createWatchmansPaths() {
+            const sheriff1PathPoints = [
+                { x: 920, y: 2680 },
+                { x: 920, y: 2360 },
+                { x: 1480, y: 2360 },
+                { x: 1480, y: 2040 },
+                { x: 1480, y: 2360 },
+                { x: 920, y: 2360 },
+            ];
+
+            const sheriff2PathPoints = [
+                { x: 1800, y: 3000 },
+                { x: 1800, y: 2360 },
+                { x: 1800, y: 2120 }
+            ];
+
+            const teacher1PathPoints = [
+                { x: 3960, y: 3000 },
+                { x: 3960, y: 2560 },
+                { x: 3960, y: 2360 },
+                { x: 3960, y: 2120 },
+                { x: 3960, y: 2360 },
+                { x: 3960, y: 2560 },
+            ];
+            return { sheriff1PathPoints, sheriff2PathPoints, teacher1PathPoints };
+        }
     }
+
+    /**
+     * Crea todos los objetos del mapa que no estan en el tilemap
+     * @param {*} Paredes 
+     */
+    createItems(Paredes){
+        this.keys = this.add.group();
+        this.llavePasillo = this.keys.add(new Key(this, 1800,3000,'llaveMapa','llaveInventario','keyIdle','LLave del pasillo',2).setDepth(5));
+            //this.scaleObject(this.llavePasillo,5);
+        this.llaveComedor = this.keys.add(new Key(this, 3960,1600,'llaveMapa','llaveInventario','keyIdle','LLave del comedor',7).setDepth(5));
+        this.cajaM1 = new movableObject(this, 3800, 2120, 1640, 2120, "cajaMovible", this.percival, this.daphne, Paredes)
+        this.cajaR1 = new breakableObjects(this,1080, 2680, 3240, 2680,'cajaRompible',this.percival,this.daphne);
+        this.cajaR2 = new breakableObjects(this,1080, 2600, 3240, 2600,'cajaRompible',this.percival,this.daphne);
+    }
+
+    /**
+     * Este metodo establece todas las colisiones necesarias entre objetos 
+     * Se le pasan las layers con las que se pueda colisionar (mirar en la 
+     * @param {TilemapLayer} Paredes 
+     * @param {TilemapLayer} Decoracion 
+     */
+    createCollisions(Paredes, Decoracion) {
+        this.physics.add.collider(this.players, Paredes);
+        this.physics.add.collider(this.players, Decoracion);
+
+        //Colisiones con Puertas
+        this.physics.add.collider(this.players, this.doors, (jugador, puerta) => {
+            //si el jugador tiene un item con el mismo identificador que la puerta esta se destruye
+            if (jugador.haveItem(puerta.identifier)) {
+                this.doors.getChildren().forEach(door => {
+                    if (door.identifier === puerta.identifier) {
+                        door.destroy(true);
+                    }
+                });
+            }
+        });
+
+        //Colisiones con Placas de Presion
+        this.physics.add.overlap(this.players, this.preassurePlates, (jugador, placa) => {
+            //se miran las puertas y si alguna tiene el mismo identificador que la placa se abre
+            this.doors.getChildren().forEach(door => {
+                if (door.identifier === placa.identifier) {
+                    door.openDoor();
+                }
+            });
+        });
+
+        //Colisiones con Palancas
+        this.physics.add.overlap(this.players, this.levers, (jugador, lever) => {
+            //se miran las puertas y si alguna tiene el mismo identificador que la palanca se abre
+            this.doors.getChildren().forEach(door => {
+                if (door.identifier === lever.identifier) {
+                    door.destroy(true);
+                    lever.useLever();
+                    //se recorren todos los vigilantes y se les aumenta su collider
+                    this.watchmans.getChildren().forEach(watchman => {
+                    watchman.triggerSize(160);
+                    });
+                }
+            });
+        });
+
+        //Colisiones con Objetos Tirables
+        this.physics.add.collider(this.players, this.knockObjects, (jugador, kObject) => {
+            kObject.knock();
+            //se recorren todos los vigilantes y se les aumenta su collider
+            this.watchmans.getChildren().forEach(watchman => {
+            watchman.triggerSize(160);
+            });
+        });
+
+        //Colisiones con LLaves
+        this.physics.add.overlap(this.players, this.keys, (jugador, llave) => {
+            //se elimina la llave si es posible cogerla (inventario del jugador no lleno)
+            if (jugador.pickItem(llave)) {
+                this.events.emit('itemPickedP', llave);
+                llave.destroy();
+            }
+        });
+
+        //Colisiones con los triggers de Final de Nivel
+        this.physics.add.overlap(this.players, this.endTriggers, (jugador, endT) => {
+            endT.on();
+            if (this.endTriggers.every(t => t.getIsPressed())) {
+                this.scene.stop();
+                this.scene.start('levelGabi');
+            }
+        });
+    }
+
+    /**
+     * Este metodo crea el texto de dialogo el cual se usara posteriormente para mostrar los mensajes del payaso
+     */
+    createDialog() {
+        this.dialog = new DialogText(this, { camera: this.percivalCam });
+        this.dialog.setDepth(10);
+
+        this.dialog.setTextArray([
+            [1, "Bryant Myers"],
+            [2, "Hoy de nuevo te voy a ver (Anonimus, this is the remix)"],
+            [0, "Si llaman, pichea el cel (Anuel, Almighty)"],
+            [1, "Estamos fumando marihuana (Maybach Música)"],
+            [2, "Hoy serás mi esclava en el cuarto de un motel (Carbon Fiber Music)"]
+        ], true);
+    }
+
+    /**
+     * Crea todos los sonidos que se van a usar 
+     */
+    createSounds() {
+        this.walkSound = this.sound.add('pasos', { loop: false });
+        this.breakSound = this.sound.add('romper');
+        this.resetSound = this.sound.add('reset', { loop: false, volume: 0.3 });
+        this.music = this.sound.add('musicaLevelJavi', { loop: true, volume: 0.7 });
+    }
+    //#endregion
+    
 
     update(t, dt){
         if (this.movementController) {
@@ -415,12 +475,7 @@ export default class LevelJavi extends Phaser.Scene{
         }
         this.updateSounds();
     }
-        
-    createItems(){
-        this.llavePasillo = this.keys.add(new Key(this, 1800,3000,'llaveMapa','llaveInventario','keyIdle','LLave del pasillo',2).setDepth(5))
-            //this.scaleObject(this.llavePasillo,5);
-        this.llaveComedor = this.keys.add(new Key(this, 3960,1600,'llaveMapa','llaveInventario','keyIdle','LLave del comedor',7).setDepth(5))
-    }
+    
 
     /**
      * Este metodo se encarga de crear el dialogo del payaso al interactuar con él según los siguientes parámetros:
@@ -478,7 +533,13 @@ export default class LevelJavi extends Phaser.Scene{
             ],true);
         }
     }
-
+ 
+    /**
+     * Añade al mapa la layer dada y establece si esta tiene colision o no
+     * @param {string} name - Key de la layer que se quiere añadir
+     * @param {boolean} collision - Si tiene colision o no la layer
+     * @returns 
+     */
     addMapLayer(name,collision){
         let layer = this.map.createLayer(name, this.tilesets,0,0);
         layer.setScale(5);
