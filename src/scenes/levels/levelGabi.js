@@ -400,7 +400,7 @@ export default class LevelGabi extends Phaser.Scene{
             endT.on();
             if (this.endTriggers.every(t => t.getIsPressed())) {
                 this.scene.stop();
-                this.scene.start('levelGabi');
+                this.scene.start('levelJavi');
             }
         });
     }
