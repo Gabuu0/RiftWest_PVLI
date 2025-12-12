@@ -34,8 +34,12 @@ export default class PauseMenu extends Phaser.Scene {
         container.add(texto);
 
         //Función para el sonido de seleccionar
-        const playSelectSound = () => {
+        const sounds = () => {
             this.sound.play('select');
+            const levelScene = this.scene.get(this.level);
+            if (levelScene && levelScene.music && levelScene.music.isPlaying) {
+                levelScene.music.stop(); 
+            }
         };
 
         // Botón Reanudar
@@ -95,7 +99,7 @@ export default class PauseMenu extends Phaser.Scene {
 
         // Interaccion con boton de reanudar
         continueButton.on('pointerdown', () => {
-            playSelectSound();
+            sounds();
             cerrarMenu(() => {
                 this.scene.stop();
                 this.scene.resume(this.level);
@@ -106,7 +110,7 @@ export default class PauseMenu extends Phaser.Scene {
 
         // Interaccion con boton de inicio
         menuButton.on('pointerdown', () => {
-            playSelectSound();
+            sounds();
             cerrarMenu(() => {
                 this.scene.stop(this.level);
                 this.scene.stop('InventarioPercival');
@@ -118,7 +122,7 @@ export default class PauseMenu extends Phaser.Scene {
 
         // Interaccion con boton de reinicio
         restartButton.on('pointerdown', () => {
-            playSelectSound();
+            sounds();
             cerrarMenu(() => {
                 this.scene.stop();
                 this.scene.stop(this.level); 
@@ -128,7 +132,7 @@ export default class PauseMenu extends Phaser.Scene {
 
         // Tecla ESC para cerrar menu
         this.input.keyboard.on('keydown-ESC', () => {
-            playSelectSound();
+            sounds();
             cerrarMenu(() => {
                 this.scene.stop();
                 this.scene.resume(this.level);
