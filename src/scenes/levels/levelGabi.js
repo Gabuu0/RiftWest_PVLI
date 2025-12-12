@@ -296,7 +296,7 @@ export default class LevelGabi extends Phaser.Scene{
     createItems(Paredes){
         this.keys = this.add.group();
         this.llaveHabitacion = this.keys.add(new Key(this, 5250,700,'llaveMapa','llaveInventario','keyIdle','LLave de la habitacion',12).setDepth(5));
-        this.llaveHabitacion = this.keys.add(new Key(this, 2640,1500,'llaveMapa','llaveInventario','keyIdle','LLave de ',12).setDepth(5));
+        this.llaveHabitacion = this.keys.add(new Key(this, 2640,1500,'llaveMapa','llaveInventario','keyIdle','LLave sala de emergencia',14).setDepth(5));
 
         this.movableBoxes = this.add.group();
         this.cajaMovible1 = new movableObject(this, 6030, 1200, 2500, 960, "cajaMovible", this.percival, this.daphne, Paredes)
