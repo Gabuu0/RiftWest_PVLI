@@ -125,9 +125,11 @@ export default class LevelAx extends Phaser.Scene {
         this.percivalCam = this.cameras.main;
         this.percivalCam.setViewport(0, 0, 540, 540);
         this.percivalCam.startFollow(this.percival);
+        this.percivalCam.setBounds(290,370,1650,1700);
         this.daphneCam = this.cameras.add(540, 0, 540, 540, 'DaphneCam');
         this.daphneCam.setViewport(540, 0, 540, 540);
         this.daphneCam.startFollow(this.daphne);
+        this.daphneCam.setBounds(3540,370,1650,1700);
     }
 
     /**

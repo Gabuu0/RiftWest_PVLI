@@ -127,9 +127,11 @@ export default class LevelGabi extends Phaser.Scene{
         this.percivalCam = this.cameras.main;
         this.percivalCam.setViewport(0, 0, 540, 540);
         this.percivalCam.startFollow(this.percival);
+        this.percivalCam.setBounds(130,50,2610,1950);
         this.daphneCam = this.cameras.add(540, 0, 540, 540, 'DaphneCam');
         this.daphneCam.setViewport(540, 0, 540, 540);
         this.daphneCam.startFollow(this.daphne);
+        this.daphneCam.setBounds(3160,50,3300,1950);
     }
 
     //Se crean todos los elementos de la UI de los jugadores (imagenes de las habilidades, mensajes, ect)
@@ -293,7 +295,8 @@ export default class LevelGabi extends Phaser.Scene{
      */
     createItems(Paredes){
         this.keys = this.add.group();
-        this.llaveHabitacion = this.keys.add(new Key(this, 5250,750,'llaveMapa','llaveInventario','keyIdle','LLave de la habitacion',12).setDepth(5));
+        this.llaveHabitacion = this.keys.add(new Key(this, 5250,700,'llaveMapa','llaveInventario','keyIdle','LLave de la habitacion',12).setDepth(5));
+        this.llaveHabitacion = this.keys.add(new Key(this, 2640,1500,'llaveMapa','llaveInventario','keyIdle','LLave de ',12).setDepth(5));
 
         this.movableBoxes = this.add.group();
         this.cajaMovible1 = new movableObject(this, 6030, 1200, 2500, 960, "cajaMovible", this.percival, this.daphne, Paredes)
