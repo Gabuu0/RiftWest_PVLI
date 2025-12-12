@@ -83,146 +83,146 @@ export default class LevelAx extends Phaser.Scene {
 
 
     //#region Metodos llamados en el create
-         /**
-         * Establece los inputs que va a escuchar la escen
-         */
-        setInputs() {
-            this.input.keyboard.enabled = true;
-    
-            this.input.keyboard.on('keydown-ESC', () => {
-                console.log('ESC pulsado');
-                this.scene.launch('pauseMenu'); // Lanza el menú
-                this.pauseMenu.setLevel(this.scene.key);
-                this.scene.pause(); // Pausa la escena del juego
-            });
-    
-            this.input.keyboard.on('keydown', (event) => {
-                // Evita que el navegador use las teclas (por ejemplo, mover scroll o cursor)
-                event.preventDefault();
-    
-            });
-        }
-    
         /**
-         * Crea los jugadores, los añade a un grupo y crea el movimiento de ambos
-         */
-        createPlayers() {
-            this.percival = new Players(this, 1240, 1800, "P", 0, "percival");
-            this.daphne = new Players(this, 4520, 1800, "D", 0, "daphne");
-            this.players = this.add.group();
-            this.players.add(this.percival);
-            this.players.add(this.daphne);
-            this.percival.setDepth(1);
-            this.daphne.setDepth(1);
+     * Establece los inputs que va a escuchar la escen
+     */
+    setInputs() {
+        this.input.keyboard.enabled = true;
+
+        this.input.keyboard.on('keydown-ESC', () => {
+            console.log('ESC pulsado');
+            this.scene.launch('pauseMenu'); // Lanza el menú
+            this.pauseMenu.setLevel(this.scene.key);
+            this.scene.pause(); // Pausa la escena del juego
+        });
+
+        this.input.keyboard.on('keydown', (event) => {
+            // Evita que el navegador use las teclas (por ejemplo, mover scroll o cursor)
+            event.preventDefault();
+
+        });
+    }
+
+    /**
+     * Crea los jugadores, los añade a un grupo y crea el movimiento de ambos
+     */
+    createPlayers() {
+        this.percival = new Players(this, 1240, 1800, "P", 0, "percival");
+        this.daphne = new Players(this, 4520, 1800, "D", 0, "daphne");
+        this.players = this.add.group();
+        this.players.add(this.percival);
+        this.players.add(this.daphne);
+        this.percival.setDepth(1);
+        this.daphne.setDepth(1);
+
+        this.movementController = new Movement(this, this.percival, this.daphne);
+    }
+
+    /**
+     * Crea las camaras de los jugadores
+     */
+    createCameras() {
+        this.percivalCam = this.cameras.main;
+        this.percivalCam.setViewport(0, 0, 540, 540);
+        this.percivalCam.startFollow(this.percival);
+        this.daphneCam = this.cameras.add(540, 0, 540, 540, 'DaphneCam');
+        this.daphneCam.setViewport(540, 0, 540, 540);
+        this.daphneCam.startFollow(this.daphne);
+    }
+
+    /**
+     * Se crean todos los elementos de la UI de los jugadores (imagenes de las habilidades, mensajes, ect)
+     */
+    createUI() {
+        // Mensajes flotantes
+        this.msgPercival = this.add.text(100, 500, "", {
+            fontSize: "16px",
+            color: "hsla(280, 3%, 82%, 1.00)",
+            fontStyle: "bold"
+        }).setScrollFactor(0).setDepth(2);
+
+        this.msgDaphne = this.add.text(220, 500, "", {
+            fontSize: "16px",
+            color: "hsla(280, 3%, 82%, 1.00)",
+            fontStyle: "bold"
+        }).setScrollFactor(0).setDepth(2);
+
+        //MAPS
+        this.daphneMap = this.add.image(580, 150, "daphneMap").setVisible(false);
+        this.daphneMap.setDepth(10);
+        this.daphneMap.setScrollFactor(0);
+        this.percivalMap = this.add.image(250, 150, "percivalMap").setVisible(false);
+        this.percivalMap.setDepth(10);
+        this.percivalMap.setScrollFactor(0);
+        //ABILITIES
+        this.percivalAbility = this.add.image(60, 480, "percivalAbilityReady");
+        this.percivalAbility.setScale(0.4);
+        this.percivalAbility.setDepth(4);
+        this.percivalAbility.setScrollFactor(0);
+
+        this.daphneAbility = this.add.image(480, 480, "daphneAbilityReady");
+        this.daphneAbility.setScale(0.4);
+        this.daphneAbility.setDepth(4);
+        this.daphneAbility.setScrollFactor(0);
+        //HEADERS
+        this.percivalHeader = this.add.image(60, 50, "percivalHead").setScale(0.4).setDepth(10).setScrollFactor(0);
+        this.daphneHeader = this.add.image(480, 50, "daphneHead").setScale(0.4).setDepth(10).setScrollFactor(0);
+
+        this.percivalMapIcon = this.add.image(85, 50, "percivalMapEnabled").setScrollFactor(0).setDepth(10).setScale(0.4);
+        this.daphneMapIcon = this.add.image(455, 50, "daphneMapEnabled").setScrollFactor(0).setDepth(10).setScale(0.4);
+    }
+
+    /**
+     * Se establecen los ignore de las camaras, en general la camara de cada jugador ignora la HUD de la del otro
+     */
+    setCamerasIgnores() {
+        this.percivalCam.ignore(this.msgDaphne);
+        this.percivalCam.ignore(this.daphneHeader);
+        this.percivalCam.ignore(this.daphneAbility);
+        this.percivalCam.ignore(this.daphneMapIcon);
+        this.percivalCam.ignore(this.daphneMap);
+
+        this.daphneCam.ignore(this.msgPercival);
+        this.daphneCam.ignore(this.percivalHeader);
+        this.daphneCam.ignore(this.percivalAbility);
+        this.daphneCam.ignore(this.percivalMapIcon);
+        this.daphneCam.ignore(this.percivalMap);
+    }
     
-            this.movementController = new Movement(this, this.percival, this.daphne);
-        }
+    /**
+     * Crea/lanza las escenas de inventarios y les pasa los personajes de cada una
+     */
+    createInventoryScenes() {
+        this.scene.launch('InventarioPercival', {
+            player: this.percival,
+            playerScene: this
+        });
+        this.scene.launch('InventarioDaphne', {
+            player: this.daphne,
+            playerScene: this
+        });
+
+        this.scene.sleep('InventarioPercival');
+        this.scene.sleep('InventarioDaphne');
+    }
+
+    /**
+     *Obtiene las escenas de las cuales es necesario llamar métodos en algun momento 
+        */
+    getScenes() {
+        this.inventario1 = this.scene.get('InventarioPercival');
+        this.inventario2 = this.scene.get('InventarioDaphne');
+        this.pauseMenu = this.scene.get('pauseMenu');
+    }
     
-        /**
-         * Crea las camaras de los jugadores
-         */
-        createCameras() {
-            this.percivalCam = this.cameras.main;
-            this.percivalCam.setViewport(0, 0, 540, 540);
-            this.percivalCam.startFollow(this.percival);
-            this.daphneCam = this.cameras.add(540, 0, 540, 540, 'DaphneCam');
-            this.daphneCam.setViewport(540, 0, 540, 540);
-            this.daphneCam.startFollow(this.daphne);
-        }
-    
-        /**
-         * Se crean todos los elementos de la UI de los jugadores (imagenes de las habilidades, mensajes, ect)
-         */
-        createUI() {
-            // Mensajes flotantes
-            this.msgPercival = this.add.text(100, 500, "", {
-                fontSize: "16px",
-                color: "hsla(280, 3%, 82%, 1.00)",
-                fontStyle: "bold"
-            }).setScrollFactor(0).setDepth(2);
-    
-            this.msgDaphne = this.add.text(220, 500, "", {
-                fontSize: "16px",
-                color: "hsla(280, 3%, 82%, 1.00)",
-                fontStyle: "bold"
-            }).setScrollFactor(0).setDepth(2);
-    
-            //MAPS
-            this.daphneMap = this.add.image(580, 150, "daphneMap").setVisible(false);
-            this.daphneMap.setDepth(10);
-            this.daphneMap.setScrollFactor(0);
-            this.percivalMap = this.add.image(250, 150, "percivalMap").setVisible(false);
-            this.percivalMap.setDepth(10);
-            this.percivalMap.setScrollFactor(0);
-            //ABILITIES
-            this.percivalAbility = this.add.image(60, 480, "percivalAbilityReady");
-            this.percivalAbility.setScale(0.4);
-            this.percivalAbility.setDepth(4);
-            this.percivalAbility.setScrollFactor(0);
-    
-            this.daphneAbility = this.add.image(480, 480, "daphneAbilityReady");
-            this.daphneAbility.setScale(0.4);
-            this.daphneAbility.setDepth(4);
-            this.daphneAbility.setScrollFactor(0);
-            //HEADERS
-            this.percivalHeader = this.add.image(60, 50, "percivalHead").setScale(0.4).setDepth(10).setScrollFactor(0);
-            this.daphneHeader = this.add.image(480, 50, "daphneHead").setScale(0.4).setDepth(10).setScrollFactor(0);
-    
-            this.percivalMapIcon = this.add.image(85, 50, "percivalMapEnabled").setScrollFactor(0).setDepth(10).setScale(0.4);
-            this.daphneMapIcon = this.add.image(455, 50, "daphneMapEnabled").setScrollFactor(0).setDepth(10).setScale(0.4);
-        }
-    
-        /**
-         * Se establecen los ignore de las camaras, en general la camara de cada jugador ignora la HUD de la del otro
-         */
-        setCamerasIgnores() {
-            this.percivalCam.ignore(this.msgDaphne);
-            this.percivalCam.ignore(this.daphneHeader);
-            this.percivalCam.ignore(this.daphneAbility);
-            this.percivalCam.ignore(this.daphneMapIcon);
-            this.percivalCam.ignore(this.daphneMap);
-    
-            this.daphneCam.ignore(this.msgPercival);
-            this.daphneCam.ignore(this.percivalHeader);
-            this.daphneCam.ignore(this.percivalAbility);
-            this.daphneCam.ignore(this.percivalMapIcon);
-            this.daphneCam.ignore(this.percivalMap);
-        }
-       
-        /**
-         * Crea/lanza las escenas de inventarios y les pasa los personajes de cada una
-         */
-        createInventoryScenes() {
-            this.scene.launch('InventarioPercival', {
-                player: this.percival,
-                playerScene: this
-            });
-            this.scene.launch('InventarioDaphne', {
-                player: this.daphne,
-                playerScene: this
-            });
-    
-            this.scene.sleep('InventarioPercival');
-            this.scene.sleep('InventarioDaphne');
-        }
-    
-        /**
-         *Obtiene las escenas de las cuales es necesario llamar métodos en algun momento 
-         */
-        getScenes() {
-            this.inventario1 = this.scene.get('InventarioPercival');
-            this.inventario2 = this.scene.get('InventarioDaphne');
-            this.pauseMenu = this.scene.get('pauseMenu');
-        }
-    
-        /**
-         * Se obtienen las layers de los objetos para acceder a los objetos de cada una
-         * en cada layer se busca la propiedad identifier de cada objeto, en el caso de las puertas tambien se busca su tipo 
-         *      -identifier(int): identificador usado para abrir las puertas segun el mismo, las puertas se abriran si se interactua con un objeto con el mismo identificador
-         *      -doorType(int): tipo de puerta usado para saber que frame del spriteSheet de puertas usar
-         * Ademas se agrupa cada tipo de objeto en un grupo y se escala el objeto(tanto el tamaño como la posicion)
-         */
-        createTileMapObjects() {
+    /**
+     * Se obtienen las layers de los objetos para acceder a los objetos de cada una
+     * en cada layer se busca la propiedad identifier de cada objeto, en el caso de las puertas tambien se busca su tipo 
+     *      -identifier(int): identificador usado para abrir las puertas segun el mismo, las puertas se abriran si se interactua con un objeto con el mismo identificador
+     *      -doorType(int): tipo de puerta usado para saber que frame del spriteSheet de puertas usar
+     * Ademas se agrupa cada tipo de objeto en un grupo y se escala el objeto(tanto el tamaño como la posicion)
+     */
+    createTileMapObjects() {
     const scaling = 5;
     this.doors = this.add.group();
     
@@ -285,14 +285,14 @@ export default class LevelAx extends Phaser.Scene {
             const {teacherPathPoints,sheriffPathPoints } = createWatchmansPaths();
             this.watchmans = this.add.group();
             // Crea el vigilante y lo sigue
-            this.sheriff = new Watchman(this,4920, 1880,"S",0,this.percival,sheriffPathPoints, "sheriff");
-            this.profesor = new Watchman(this,1640, 1320,"Pr",0,this.daphne,teacherPathPoints, "profesor");
+            this.profesor = new Watchman(this,4920, 1880,"S",0,this.daphne,teacherPathPoints, "profesor");
+            this.sheriff = new Watchman(this,1640, 1320,"Pr",0,this.percival,sheriffPathPoints, "sheriff");
     
             this.watchmans.add(this.sheriff);
             this.watchmans.add(this.profesor);
             
             function createWatchmansPaths() {
-                const teacherPathPoints = [    
+                const sheriffPathPoints = [    
                 { x: 1640, y: 1320 },
                 { x: 1880, y: 1320 },
                 { x: 1880, y: 1560 },
@@ -302,7 +302,7 @@ export default class LevelAx extends Phaser.Scene {
                 { x: 1880, y: 1640 }, 
                 { x: 1640, y: 1640 } ];
     
-                const sheriffPathPoints = [
+                const teacherPathPoints = [
                 { x: 4920, y: 1880 },
                 { x: 5160, y: 1880 },
                 { x: 5160, y: 1640 },

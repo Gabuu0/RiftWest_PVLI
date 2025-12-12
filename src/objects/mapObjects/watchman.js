@@ -121,19 +121,19 @@ export default class Watchman extends Phaser.GameObjects.PathFollower {
     playAnimations(){
         switch(this.direccion) {
             case 1: // Derecha
-                this.play(this.animations.left, true);
-                break;
-
-            case 2: // Abajo
-                this.play(this.animations.up, true);
-                break;
-
-            case 3: // Izquierda
                 this.play(this.animations.right, true);
                 break;
 
-            case 4: // Arriba
+            case 2: // Abajo
                 this.play(this.animations.down, true);
+                break;
+
+            case 3: // Izquierda
+                this.play(this.animations.left, true);
+                break;
+
+            case 4: // Arriba
+                this.play(this.animations.up, true);
                 break;
         }
     }
