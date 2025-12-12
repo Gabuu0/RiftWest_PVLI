@@ -66,8 +66,10 @@ export default class LevelJavi extends Phaser.Scene{
 
         const Suelo = this.addMapLayer('suelo',false);
         const Paredes = this.addMapLayer('paredes',true);
+        Paredes.setDepth(0.6);
         const Paredes2 = this.addMapLayer('paredes(SinColision)',false);
         const Decoracion = this.addMapLayer('decoracion',true);
+        Decoracion.setDepth(0.6);
         Paredes2.setDepth(3);   
         //#endregion
        
@@ -232,6 +234,7 @@ export default class LevelJavi extends Phaser.Scene{
             let doorType = obj.properties.find(prop => prop.name === 'doorType').value;
             let door = new Door(this, obj.x, obj.y, 'doors', doorType, obj.rotation, id);
             this.scaleObject(door, scaling);
+            door.setDepth(0.7);
             //se mueve el origin en el caso de las puertas puestas en vertical porque sino aparecen descolocadas
             if (obj.rotation == 0) {
                 door.setOrigin(0, 1);
@@ -360,7 +363,6 @@ export default class LevelJavi extends Phaser.Scene{
     createItems(Paredes){
         this.keys = this.add.group();
         this.llavePasillo = this.keys.add(new Key(this, 1800,3000,'llaveMapa','llaveInventario','keyIdle','LLave del pasillo',2).setDepth(5));
-            //this.scaleObject(this.llavePasillo,5);
         this.llaveComedor = this.keys.add(new Key(this, 3960,1600,'llaveMapa','llaveInventario','keyIdle','LLave del comedor',7).setDepth(5));
         this.cajaM1 = new movableObject(this, 3800, 2120, 1640, 2120, "cajaMovible", this.percival, this.daphne, Paredes)
         this.cajaR1 = new breakableObjects(this,1080, 2680, 3240, 2680,'cajaRompible',this.percival,this.daphne);

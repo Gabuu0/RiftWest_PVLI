@@ -18,7 +18,7 @@ export default class Watchman extends Phaser.GameObjects.PathFollower {
 
         this.scene = scene;
         this.player = player;
-
+        this.setDepth(10)
         scene.add.existing(this);
         
         scene.physics.add.existing(this);
@@ -28,7 +28,8 @@ export default class Watchman extends Phaser.GameObjects.PathFollower {
 
         scene.physics.add.collider(this, this.player);
 
-        this.trigger= scene.add.circle(this.x, this.y, 120);
+        this.trigger = scene.add.circle(this.x, this.y, 120, 0x4d0000, 0.3);
+        this.trigger.setDepth(0.5)
         scene.physics.add.existing(this.trigger);
 
         this.trigger.body.setCircle(120);
