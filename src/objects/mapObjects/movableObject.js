@@ -117,7 +117,9 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
     }
 
     destroy(){
-        this.scene.input.keyboard.off('keydown', this._keydownHandler);
+        if (this.scene && this.scene.input && this.scene.input.keyboard) {
+            this.scene.input.keyboard.off('keydown', this._keydownHandler);
+        }
         super.destroy();
     }
 }

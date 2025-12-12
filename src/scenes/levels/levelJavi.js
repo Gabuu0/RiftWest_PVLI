@@ -515,24 +515,24 @@ export default class LevelJavi extends Phaser.Scene{
         if(itemReceived && !hadItem && !clownEmpty){
             this.dialog.setTextArray([
                 [playerToIgnore,this.clownGetItemJokes[this.random.integerInRange(0, this.clownGetItemJokes.length-1)]],
-                [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length)]]
+                [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length-1)]]
             ],true);
         }else if(!itemReceived && hadItem && clownEmpty){
              this.dialog.setTextArray([
                 [playerToIgnore,this.clownGiveItemJokes[this.random.integerInRange(0, this.clownGiveItemJokes.length-1)]],
-                 [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length)]]
+                 [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length-1)]]
             ],true);
         }
         else if(itemReceived && hadItem && !clownEmpty){
             this.dialog.setTextArray([
                 [playerToIgnore,this.clownNoObjectTaken[this.random.integerInRange(0, this.clownNoObjectTaken.length-1)]],
-                 [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length)]]
+                 [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length-1)]]
             ],true);
         }
         else if(!itemReceived && !hadItem && clownEmpty){
             this.dialog.setTextArray([
                 [playerToIgnore,this.clownNoObjectGiven[this.random.integerInRange(0, this.clownNoObjectGiven.length-1)]],
-                 [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length)]]
+                 [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length-1)]]
             ],true);
         }
     }
