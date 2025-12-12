@@ -36,6 +36,8 @@ export default class BootScene extends Phaser.Scene{
             this.scene.sleep('boot');
         });
 
+        this.load.image('GameLogo', 'assets/sprites/logos/logoJuego.png');
+
         this.characterSprites = [];
         this.load.spritesheet('Daphne','assets/sprites/images/daphne/Daphne.png',{frameWidth:160, frameHeight:160});
         this.characterSprites.push('Daphne');
