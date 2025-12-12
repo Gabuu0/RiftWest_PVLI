@@ -256,7 +256,7 @@ export default class Level1 extends Phaser.Scene{
     UseAbility(playerName, object, action) {
         const now = this.time.now;
 
-        const abilityIcon = playerName === "percival" ? this.PercivalAbility : this.daphneAbility;
+        const abilityIcon = playerName === "percival" ? this.percivalAbility : this.daphneAbility;
         const readyTexture = playerName === "percival" ? "percivalAbilityReady" : "daphneAbilityReady";
         const usedTexture = playerName === "percival" ? "percivalAbilityUsed" : "daphneAbilityUsed";
         const msg = playerName === "percival" ? this.msgPercival : this.msgDaphne;

@@ -39,7 +39,11 @@ export default class LevelJavi extends Phaser.Scene{
         this.players = this.add.group();
         this.players.add(this.percival);
         this.players.add(this.daphne);
-             
+        
+        this.createCameras();
+        this.createUI();
+        this.setCamerasIgnores();
+
         this.cooldowns = {
          percival: 0,
          daphne: 0
@@ -58,9 +62,7 @@ export default class LevelJavi extends Phaser.Scene{
         this.scene.launch('InventarioDaphne',{
             player:this.daphne,
             playerScene: this});
-        this.inventario1 = this.scene.get('InventarioPercival');
-        this.inventario2 = this.scene.get('InventarioDaphne');
-        this.pauseMenu = this.scene.get('pauseMenu');
+        this.getScenes();
 
 
         this.movementController = new Movement(this, this.percival, this.daphne);
@@ -80,13 +82,6 @@ export default class LevelJavi extends Phaser.Scene{
 
          });
 
-        this.percivalCam = this.cameras.main;
-        this.percivalCam.setViewport(0,0,540,540);
-        this.percivalCam.startFollow(this.percival);
-        //this.percivalCam.setZoom(0.1);
-        this.daphneCam = this.cameras.add(540,0,540,540,'DaphneCam');
-        this.daphneCam.setViewport(540,0,540,540);
-        this.daphneCam.startFollow(this.daphne);
 
         //#region Creacion Mapa
         
@@ -108,14 +103,7 @@ export default class LevelJavi extends Phaser.Scene{
         const Decoracion = this.addMapLayer('decoracion',true);
         Paredes2.setDepth(3);   
 
-        //#region Creacion de los objetos del mapa (puertas, placas de presion, etc)
-        /**
-         * Se obtienen las layers de los objetos para acceder a los objetos de cada una
-         * en cada layer se busca la propiedad identifier de cada objeto, en el caso de las puertas tambien se busca su tipo 
-         *      -identifier(int): identificador usado para abrir las puertas segun el mismo, las puertas se abriran si se interactua con un objeto con el mismo identificador
-         *      -doorType(int): tipo de puerta usado para saber que frame del spriteSheet de puertas usar
-         * Ademas se agrupa cada tipo de objeto en un grupo y se escala el objeto(tanto el tamaño como la posicion)
-         */
+       
 
         this.objetos = this.add.group();
 
@@ -178,60 +166,7 @@ export default class LevelJavi extends Phaser.Scene{
         );
         //#endregion
 
-        const scaling = 5;
-        this.doors = this.add.group();
-            const doorsLayer = this.map.getObjectLayer('puertas');
-            doorsLayer.objects.forEach(obj =>{
-            let id = obj.properties.find(prop => prop.name ==='Identifier').value;
-            let doorType = obj.properties.find(prop => prop.name ==='doorType').value;
-            let door = new Door(this, obj.x, obj.y,'doors',doorType,obj.rotation,id);
-            this.scaleObject(door,scaling);
-            if(obj.rotation == 0){
-                door.setOrigin(0,1);
-            }
-            this.doors.add(door);
-        })
-
-        this.preassurePlates = this.add.group();
-        const platesLayer = this.map.getObjectLayer('placas_presion');
-        platesLayer.objects.forEach(obj =>{
-            let id = obj.properties.find(prop => prop.name ==='Identifier').value;
-            let plate = new PreassurePlate(this, obj.x, obj.y,'preassurePlate',id);
-            plate.setScale(scaling);
-            this.scaleObject(plate,scaling);
-            plate.setOrigin(0,1);
-            this.preassurePlates.add(plate);
-        });
-
-        this.levers = this.add.group();
-        const leversLayer = this.map.getObjectLayer('levers');
-        leversLayer.objects.forEach(obj =>{
-            let id = obj.properties.find(prop => prop.name ==='Identifier').value;
-            let lever = new Lever(this, obj.x, obj.y,'levers',id);
-            lever.setScale(scaling);
-            this.scaleObject(lever,scaling);
-            lever.setOrigin(0,1);
-            this.levers.add(lever);
-        });
-
-        this.knockObjects = this.add.group();
-        const knockObject = this.map.getObjectLayer('tirables');
-        knockObject.objects.forEach(obj =>{
-            let kObject = new KnockableObject(this, obj.x+10, obj.y,'knockableObject');
-            kObject.setScale(scaling);
-            this.scaleObject(kObject,scaling);
-            this.knockObjects.add(kObject);
-        });
-
-
-        this.endTriggers = [];
-        const endTLayer = this.map.getObjectLayer('endTrigger');
-        endTLayer.objects.forEach(obj =>{
-            let endT = new EndTrigger(this, obj.x, obj.y,'preassurePlate');
-            endT.setScale(scaling);
-            this.scaleObject(endT,scaling);
-            this.endTriggers.push(endT);
-        });
+        this.createTileMapObjects();
         //#endregion
 
         this.keys = this.add.group();
@@ -332,6 +267,148 @@ export default class LevelJavi extends Phaser.Scene{
         //#endregion
     }
 
+    createCameras() {
+        this.percivalCam = this.cameras.main;
+        this.percivalCam.setViewport(0, 0, 540, 540);
+        this.percivalCam.startFollow(this.percival);
+        this.daphneCam = this.cameras.add(540, 0, 540, 540, 'DaphneCam');
+        this.daphneCam.setViewport(540, 0, 540, 540);
+        this.daphneCam.startFollow(this.daphne);
+    }
+
+    /**
+     *Obtiene las escenas de las cuales es necesario llamar métodos en algun momento 
+     */
+    getScenes() {
+        this.inventario1 = this.scene.get('InventarioPercival');
+        this.inventario2 = this.scene.get('InventarioDaphne');
+        this.pauseMenu = this.scene.get('pauseMenu');
+    }
+
+        /**
+         * Se obtienen las layers de los objetos para acceder a los objetos de cada una
+         * en cada layer se busca la propiedad identifier de cada objeto, en el caso de las puertas tambien se busca su tipo 
+         *      -identifier(int): identificador usado para abrir las puertas segun el mismo, las puertas se abriran si se interactua con un objeto con el mismo identificador
+         *      -doorType(int): tipo de puerta usado para saber que frame del spriteSheet de puertas usar
+         * Ademas se agrupa cada tipo de objeto en un grupo y se escala el objeto(tanto el tamaño como la posicion)
+         */
+    createTileMapObjects() {
+        const scaling = 5;
+        this.doors = this.add.group();
+        const doorsLayer = this.map.getObjectLayer('puertas');
+        doorsLayer.objects.forEach(obj => {
+            let id = obj.properties.find(prop => prop.name === 'Identifier').value;
+            let doorType = obj.properties.find(prop => prop.name === 'doorType').value;
+            let door = new Door(this, obj.x, obj.y, 'doors', doorType, obj.rotation, id);
+            this.scaleObject(door, scaling);
+            //se mueve el origin en el caso de las puertas puestas en vertical porque sino aparecen descolocadas
+            if (obj.rotation == 0) {
+                door.setOrigin(0, 1);
+            }
+            this.doors.add(door);
+        });
+
+        this.preassurePlates = this.add.group();
+        const platesLayer = this.map.getObjectLayer('placas_presion');
+        platesLayer.objects.forEach(obj => {
+            let id = obj.properties.find(prop => prop.name === 'Identifier').value;
+            let plate = new PreassurePlate(this, obj.x, obj.y, 'preassurePlate', id);
+            plate.setScale(scaling);
+            this.scaleObject(plate, scaling);
+            plate.setOrigin(0, 1);
+            this.preassurePlates.add(plate);
+        });
+
+        this.levers = this.add.group();
+        const leversLayer = this.map.getObjectLayer('levers');
+        leversLayer.objects.forEach(obj => {
+            let id = obj.properties.find(prop => prop.name === 'Identifier').value;
+            let lever = new Lever(this, obj.x, obj.y, 'levers', id);
+            lever.setScale(scaling);
+            this.scaleObject(lever, scaling);
+            lever.setOrigin(0, 1);
+            this.levers.add(lever);
+        });
+
+        this.knockObjects = this.add.group();
+        const knockObject = this.map.getObjectLayer('tirables');
+        knockObject.objects.forEach(obj => {
+            let kObject = new KnockableObject(this, obj.x + 10, obj.y, 'knockableObject');
+            kObject.setScale(scaling);
+            this.scaleObject(kObject, scaling);
+            this.knockObjects.add(kObject);
+        });
+
+
+        this.endTriggers = [];
+        const endTLayer = this.map.getObjectLayer('endTrigger');
+        endTLayer.objects.forEach(obj => {
+            let endT = new EndTrigger(this, obj.x, obj.y, 'preassurePlate');
+            endT.setScale(scaling);
+            this.scaleObject(endT, scaling);
+            this.endTriggers.push(endT);
+        });
+    }
+    //Se crean todos los elementos de la UI de los jugadores (imagenes de las habilidades, mensajes, ect)
+    createUI() {
+        // Mensajes flotantes
+        this.msgPercival = this.add.text(100, 500, "", {
+            fontSize: "16px",
+            color: "hsla(280, 3%, 82%, 1.00)",
+            fontStyle: "bold"
+        }).setScrollFactor(0).setDepth(2);
+
+        this.msgDaphne = this.add.text(220, 500, "", {
+            fontSize: "16px",
+            color: "hsla(280, 3%, 82%, 1.00)",
+            fontStyle: "bold"
+        }).setScrollFactor(0).setDepth(2);
+
+        //MAPS
+        this.daphneMap = this.add.image(580, 150, "daphneMap").setVisible(false);
+        this.daphneMap.setDepth(10);
+        this.daphneMap.setScrollFactor(0);
+        this.percivalMap = this.add.image(250, 150, "percivalMap").setVisible(false);
+        this.percivalMap.setDepth(10);
+        this.percivalMap.setScrollFactor(0);
+        //ABILITIES
+        this.percivalAbility = this.add.image(60, 480, "percivalAbilityReady");
+        this.percivalAbility.setScale(0.4);
+        this.percivalAbility.setDepth(4);
+        this.percivalAbility.setScrollFactor(0);
+
+        this.daphneAbility = this.add.image(480, 480, "daphneAbilityReady");
+        this.daphneAbility.setScale(0.4);
+        this.daphneAbility.setDepth(4);
+        this.daphneAbility.setScrollFactor(0);
+        //HEADERS
+        this.percivalHeader = this.add.image(60, 50, "percivalHead").setScale(0.4).setDepth(10).setScrollFactor(0);
+        this.daphneHeader = this.add.image(480, 50, "daphneHead").setScale(0.4).setDepth(10).setScrollFactor(0);
+
+        this.percivalMapIcon = this.add.image(85, 50, "percivalMapEnabled").setScrollFactor(0).setDepth(10).setScale(0.4);
+
+        this.daphneMapIcon = this.add.image(455, 50, "daphneMapEnabled").setScrollFactor(0).setDepth(10).setScale(0.4);
+
+
+
+    }
+    /**
+     * Se establecen los ignore de las camaras, en general la camara de cada jugador ignora la HUD de la del otro
+     */
+    setCamerasIgnores() {
+        this.percivalCam.ignore(this.msgDaphne);
+        this.percivalCam.ignore(this.daphneHeader);
+        this.percivalCam.ignore(this.daphneAbility);
+        this.percivalCam.ignore(this.daphneMapIcon);
+        this.percivalCam.ignore(this.daphneMap);
+
+        this.daphneCam.ignore(this.msgPercival);
+        this.daphneCam.ignore(this.percivalHeader);
+        this.daphneCam.ignore(this.percivalAbility);
+        this.daphneCam.ignore(this.percivalMapIcon);
+        this.daphneCam.ignore(this.percivalMap);
+    }
+
     update(t, dt){
         if (this.movementController) {
             this.movementController.update();
@@ -421,13 +498,14 @@ export default class LevelJavi extends Phaser.Scene{
     UseAbility(playerName, object, action) {
         const now = this.time.now;
 
-        const abilityIcon = playerName === "percival" ? this.PercivalAbility : this.daphneAbility;
+        const abilityIcon = playerName === "percival" ? this.percivalAbility : this.daphneAbility;
         const readyTexture = playerName === "percival" ? "percivalAbilityReady" : "daphneAbilityReady";
         const usedTexture = playerName === "percival" ? "percivalAbilityUsed" : "daphneAbilityUsed";
         const msg = playerName === "percival" ? this.msgPercival : this.msgDaphne;
 
         if (now < this.cooldowns[playerName]) {
-            //msg.setText("Habilidad recargando...");
+            msg.setText("Habilidad recargando...");
+            console.log();
             this.time.delayedCall(this.skillCooldownTime, () => msg.setText(""));
             return;
         }
@@ -439,7 +517,7 @@ export default class LevelJavi extends Phaser.Scene{
             this.time.delayedCall(this.skillCooldownTime, () => abilityIcon.setTexture(readyTexture));
             }
             else {
-                    //msg.setText("No hay nada que romper.");
+                    msg.setText("No hay nada que romper.");
                     this.time.delayedCall(1000, () => msg.setText(""));
                 } 
         } 
@@ -455,7 +533,7 @@ export default class LevelJavi extends Phaser.Scene{
             }
             else {
                     // por si acaso: mensaje corto (opcional)
-                    //msg.setText("No estás agarrando nada.");
+                    msg.setText("No estás agarrando nada.");
                     this.time.delayedCall(1000, () => msg.setText(""));
                 }
             

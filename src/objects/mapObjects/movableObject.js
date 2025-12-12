@@ -30,7 +30,7 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
         scene.physics.add.collider(this, layer)
         scene.physics.add.collider(this.obCon, layer)
 
-        scene.input.keyboard.on('keydown', (event) => {
+        this._keydownHandler = (event) =>{
             if (event.code === 'ShiftRight') {
                 let action = { 
                     inRange: this.distance < this.distanceMax, 
@@ -38,8 +38,9 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
                 };
                 this.scene.UseAbility("daphne",this,action);
             }
-        });
+        };
 
+        this.scene.input.keyboard.on('keydown', this._keydownHandler);
     }
 
     preUpdate(t, dt) {
@@ -100,6 +101,9 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
             this.body.velocity.x = this.daphne.body.velocity.x
             this.body.velocity.y = this.daphne.body.velocity.y
         }
+        else{
+            this.body.setVelocity(0);
+        }
         //El objeto de la dimension de percival, siempre sige al de la dimension de daphne
         this.obCon.body.velocity.x = this.body.velocity.x
         this.obCon.body.velocity.y = this.body.velocity.y
@@ -110,6 +114,11 @@ export default class movableObject extends Phaser.Physics.Arcade.Sprite{
         this.haveObject = !this.haveObject
         this.coolDownT = this.coolDownTMax
         this.coolDown = true
+    }
+
+    destroy(){
+        this.scene.input.keyboard.off('keydown', this._keydownHandler);
+        super.destroy();
     }
 }
 
