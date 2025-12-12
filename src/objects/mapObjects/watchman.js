@@ -72,20 +72,26 @@ export default class Watchman extends Phaser.GameObjects.PathFollower {
         this.trigger.y=this.y;
     }
 
-    onPlayerEnter(){
-        let detectado=false;
+    // watchman.js, método onPlayerEnter() CORREGIDO
 
-        if(this.player.x < this.x && this.direccion==1){
-            detectado=true;
-            }
-        else if(this.player.x > this.x && this.direccion==3){
-            detectado=true;
+    onPlayerEnter(){
+        let detectado = false;
+
+        // 1. Si el vigilante va a la DERECHA (1), el jugador debe estar a la derecha (this.player.x > this.x)
+        if(this.player.x > this.x && this.direccion == 1){ 
+            detectado = true;
         }
-        else if(this.player.y < this.y && this.direccion==2){
-            detectado=true;
+        // 2. Si el vigilante va hacia ABAJO (2), el jugador debe estar abajo (this.player.y > this.y)
+        else if(this.player.y > this.y && this.direccion == 2){ 
+            detectado = true;
         }
-        else if(this.player.y > this.y && this.direccion==4){
-            detectado=true;
+        // 3. Si el vigilante va a la IZQUIERDA (3), el jugador debe estar a la izquierda (this.player.x < this.x)
+        else if(this.player.x < this.x && this.direccion == 3){ 
+            detectado = true;
+        }
+        // 4. Si el vigilante va hacia ARRIBA (4), el jugador debe estar arriba (this.player.y < this.y)
+        else if(this.player.y < this.y && this.direccion == 4){ 
+            detectado = true;
         }
 
         if(detectado){
@@ -95,17 +101,20 @@ export default class Watchman extends Phaser.GameObjects.PathFollower {
     }
 
     updateDireccion(){
-        const realX=this.anteriorX-this.x;
-        const realY=this.anteriorY-this.y;
+        // Calcular cuánto cambió la posición (Actual - Anterior)
+        const realX = this.x - this.anteriorX; 
+        const realY = this.y - this.anteriorY;
 
-        //Comprueba si se mueve en horizontal o vertical
+        // Comprueba si se mueve en horizontal o vertical
         if (Math.abs(realX) > Math.abs(realY)) {
-            if (realX>0) this.direccion=1; //Va a la derecha
-            if (realX<0) this.direccion=3; //Va la izquierda
+            // Movimiento Horizontal
+            if (realX > 0) this.direccion = 1; // realX positivo -> Moviéndose a la DERECHA
+            if (realX < 0) this.direccion = 3; // realX negativo -> Moviéndose a la IZQUIERDA
         }
-        else{
-            if(realY>0) this.direccion=2; //Va hacia abajo
-            if(realY<0) this.direccion=4; //Va hacia arriba
+        else if (Math.abs(realY) > 0) { // Solo comprueba Y si el movimiento horizontal no es mayor
+            // Movimiento Vertical
+            if(realY > 0) this.direccion = 2; // realY positivo (eje y va hacia abajo) -> Moviéndose hacia ABAJO
+            if(realY < 0) this.direccion = 4; // realY negativo -> Moviéndose hacia ARRIBA
         }
     }
 

@@ -223,42 +223,59 @@ export default class LevelAx extends Phaser.Scene {
          * Ademas se agrupa cada tipo de objeto en un grupo y se escala el objeto(tanto el tamaño como la posicion)
          */
         createTileMapObjects() {
-            const scaling = 5;
-            this.doors = this.add.group();
-            const doorsLayer = this.map.getObjectLayer('puertas');
-            doorsLayer.objects.forEach(obj => {
-                let id = obj.properties.find(prop => prop.name === 'Identifier').value;
-                let doorType = obj.properties.find(prop => prop.name === 'doorType').value;
-                let door = new Door(this, obj.x, obj.y, 'doors', doorType, obj.rotation, id);
-                this.scaleObject(door, scaling);
-                //se mueve el origin en el caso de las puertas puestas en vertical porque sino aparecen descolocadas
-                if (obj.rotation == 0) {
-                    door.setOrigin(0, 1);
-                }
-                this.doors.add(door);
-            });
+    const scaling = 5;
+    this.doors = this.add.group();
     
-            this.preassurePlates = this.add.group();
-            const platesLayer = this.map.getObjectLayer('placas_presion');
-            platesLayer.objects.forEach(obj => {
-                let id = obj.properties.find(prop => prop.name === 'Identifier').value;
-                let plate = new PreassurePlate(this, obj.x, obj.y, 'preassurePlate', id);
-                plate.setScale(scaling);
-                this.scaleObject(plate, scaling);
-                plate.setOrigin(0, 1);
-                this.preassurePlates.add(plate);
-            });
+    // 1. Capa de Puertas
+    const doorsLayer = this.map.getObjectLayer('puertas');
+    if (doorsLayer && doorsLayer.objects) { // ¡Comprobación de seguridad!
+        doorsLayer.objects.forEach(obj => {
+            const idProp = obj.properties.find(prop => prop.name === 'identifier');
+            const typeProp = obj.properties.find(prop => prop.name === 'doorType');
+            
+            let id = idProp ? idProp.value : 0;
+            let doorType = typeProp ? typeProp.value : 0;
+            
+            let door = new Door(this, obj.x, obj.y, 'doors', doorType, obj.rotation, id);
+            this.scaleObject(door, scaling);
+            if (obj.rotation == 0) {
+                door.setOrigin(0, 1);
+            }
+            this.doors.add(door);
+        });
+    }
+
+    this.preassurePlates = this.add.group();
     
-            this.endTriggers = [];
-            const endTLayer = this.map.getObjectLayer('endTrigger');
-            endTLayer.objects.forEach(obj => {
-                let endT = new EndTrigger(this, obj.x, obj.y, 'preassurePlate');
-                endT.setScale(scaling);
-                this.scaleObject(endT, scaling);
-                endT.setOrigin(0, 1);
-                this.endTriggers.push(endT);
-            });
-        }
+    // 2. Capa de Placas de Presión
+    const platesLayer = this.map.getObjectLayer('placas_presion');
+    if (platesLayer && platesLayer.objects) { // ¡Comprobación de seguridad!
+        platesLayer.objects.forEach(obj => {
+            const idProp = obj.properties.find(prop => prop.name === 'identifier');
+            let id = idProp ? idProp.value : 0;
+            
+            let plate = new PreassurePlate(this, obj.x, obj.y, 'preassurePlate', id);
+            plate.setScale(scaling);
+            this.scaleObject(plate, scaling);
+            plate.setOrigin(0, 1);
+            this.preassurePlates.add(plate);
+        });
+    }
+
+    this.endTriggers = [];
+    
+    // 3. Capa de EndTriggers
+    const endTLayer = this.map.getObjectLayer('endTrigger');
+    if (endTLayer && endTLayer.objects) { // ¡Comprobación de seguridad!
+        endTLayer.objects.forEach(obj => {
+            let endT = new EndTrigger(this, obj.x, obj.y, 'preassurePlate');
+            endT.setScale(scaling);
+            this.scaleObject(endT, scaling);
+            endT.setOrigin(0, 1);
+            this.endTriggers.push(endT);
+        });
+    }
+}
     
         /**
          * Crea todos los vigilantes con sus respectivos paths
@@ -275,7 +292,7 @@ export default class LevelAx extends Phaser.Scene {
             this.watchmans.add(this.profesor);
             
             function createWatchmansPaths() {
-                const recorrido1 = [    
+                const teacherPathPoints = [    
                 { x: 1640, y: 1320 },
                 { x: 1880, y: 1320 },
                 { x: 1880, y: 1560 },
@@ -285,7 +302,7 @@ export default class LevelAx extends Phaser.Scene {
                 { x: 1880, y: 1640 }, 
                 { x: 1640, y: 1640 } ];
     
-                const recorrido2 = [
+                const sheriffPathPoints = [
                 { x: 4920, y: 1880 },
                 { x: 5160, y: 1880 },
                 { x: 5160, y: 1640 },
@@ -296,7 +313,7 @@ export default class LevelAx extends Phaser.Scene {
                 { x: 4920, y: 1560 } ];
     
                 
-                return { recorrido1, recorrido2 };
+                return { teacherPathPoints, sheriffPathPoints };
             }
         }
     
