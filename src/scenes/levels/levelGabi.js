@@ -109,8 +109,8 @@ export default class LevelGabi extends Phaser.Scene{
          * Crea los jugadores, los añade a un grupo y crea el movimiento de ambos
          */
     createPlayers() {
-            this.percival = new Players(this, 930, 3400, "P", 0, "percival");
-            this.daphne = new Players(this, 3100, 3400, "D", 0, "daphne");
+            this.percival = new Players(this, 200, 1000, "P", 0, "percival");
+            this.daphne = new Players(this, 3250, 1000, "D", 0, "daphne");
             this.players = this.add.group();
             this.players.add(this.percival);
             this.players.add(this.daphne);
@@ -227,7 +227,7 @@ export default class LevelGabi extends Phaser.Scene{
         this.doors = this.add.group();
         const doorsLayer = this.map.getObjectLayer('puertas');
         doorsLayer.objects.forEach(obj => {
-            let id = obj.properties.find(prop => prop.name === 'Identifier').value;
+            let id = obj.properties.find(prop => prop.name === 'identifier').value;
             let doorType = obj.properties.find(prop => prop.name === 'doorType').value;
             let door = new Door(this, obj.x, obj.y, 'doors', doorType, obj.rotation, id);
             this.scaleObject(door, scaling);
@@ -241,7 +241,7 @@ export default class LevelGabi extends Phaser.Scene{
         this.preassurePlates = this.add.group();
         const platesLayer = this.map.getObjectLayer('placas_presion');
         platesLayer.objects.forEach(obj => {
-            let id = obj.properties.find(prop => prop.name === 'Identifier').value;
+            let id = obj.properties.find(prop => prop.name === 'identifier').value;
             let plate = new PreassurePlate(this, obj.x, obj.y, 'preassurePlate', id);
             plate.setScale(scaling);
             this.scaleObject(plate, scaling);
@@ -250,9 +250,9 @@ export default class LevelGabi extends Phaser.Scene{
         });
 
         this.levers = this.add.group();
-        const leversLayer = this.map.getObjectLayer('levers');
+        const leversLayer = this.map.getObjectLayer('palancas');
         leversLayer.objects.forEach(obj => {
-            let id = obj.properties.find(prop => prop.name === 'Identifier').value;
+            let id = obj.properties.find(prop => prop.name === 'identifier').value;
             let lever = new Lever(this, obj.x, obj.y, 'levers', id);
             lever.setScale(scaling);
             this.scaleObject(lever, scaling);
@@ -281,6 +281,7 @@ export default class LevelGabi extends Phaser.Scene{
         endTLayer.objects.forEach(obj => {
             let endT = new EndTrigger(this, obj.x, obj.y, 'preassurePlate');
             endT.setScale(scaling);
+            endT.setOrigin(0, 1);
             this.scaleObject(endT, scaling);
             this.endTriggers.push(endT);
         });
@@ -292,12 +293,16 @@ export default class LevelGabi extends Phaser.Scene{
      */
     createItems(Paredes){
         this.keys = this.add.group();
-        this.llavePasillo = this.keys.add(new Key(this, 1800,3000,'llaveMapa','llaveInventario','keyIdle','LLave del pasillo',2).setDepth(5));
-            //this.scaleObject(this.llavePasillo,5);
-        this.llaveComedor = this.keys.add(new Key(this, 3960,1600,'llaveMapa','llaveInventario','keyIdle','LLave del comedor',7).setDepth(5));
-        this.cajaM1 = new movableObject(this, 3800, 2120, 1640, 2120, "cajaMovible", this.percival, this.daphne, Paredes)
-        this.cajaR1 = new breakableObjects(this,1080, 2680, 3240, 2680,'cajaRompible',this.percival,this.daphne);
-        this.cajaR2 = new breakableObjects(this,1080, 2600, 3240, 2600,'cajaRompible',this.percival,this.daphne);
+        this.llaveHabitacion = this.keys.add(new Key(this, 5250,750,'llaveMapa','llaveInventario','keyIdle','LLave de la habitacion',2).setDepth(5));
+
+        this.movableBoxes = this.add.group();
+        this.cajaMovible1 = new movableObject(this, 6030, 1200, 2500, 960, "cajaMovible", this.percival, this.daphne, Paredes)
+        this.movableBoxes.add(this.cajaMovible1);
+        this.cajaMovible2 = new movableObject(this, 5500, 1840, 10000, 10000, "cajaMovible", this.percival, this.daphne, Paredes)
+        this.movableBoxes.add(this.cajaMovible2);
+        this.cajaRompible1 = new breakableObjects(this,2400, 920, 5940, 1160,'cajaRompible',this.percival,this.daphne);
+        this.cajaRompible2 = new breakableObjects(this,2400, 1000, 5940, 1240,'cajaRompible',this.percival,this.daphne);
+        this.cajaRompible3 = new breakableObjects(this,1200, 1080, 4280, 1000,'cajaRompible',this.percival,this.daphne);
     }
 
     /**
@@ -324,12 +329,33 @@ export default class LevelGabi extends Phaser.Scene{
 
         //Colisiones con Placas de Presion
         this.physics.add.overlap(this.players, this.preassurePlates, (jugador, placa) => {
+            //se miran las puertas y plataformas, si alguna tiene el mismo identificador que la placa se abre/activa
+            this.doors.getChildren().forEach(door => {
+                if (door.identifier === placa.identifier) {
+                    door.openDoor();
+                }
+            });
+            this.liftingPlatforms.getChildren().forEach(platform => {
+                if (platform.identifier === placa.identifier) {
+                    platform.activatePlatform();
+                }
+            });
+        });
+
+        this.physics.add.overlap(this.movableBoxes,this.preassurePlates,(box,placa)=>{
             //se miran las puertas y si alguna tiene el mismo identificador que la placa se abre
             this.doors.getChildren().forEach(door => {
                 if (door.identifier === placa.identifier) {
                     door.openDoor();
                 }
             });
+
+            this.liftingPlatforms.getChildren().forEach(platform => {
+                if (platform.identifier === placa.identifier) {
+                    platform.activatePlatform();
+                }
+            });
+
         });
 
         //Colisiones con Palancas
@@ -341,6 +367,8 @@ export default class LevelGabi extends Phaser.Scene{
                     lever.useLever();
                 }
             });
+
+           
         });
 
         //Colisiones con LLaves
@@ -349,6 +377,19 @@ export default class LevelGabi extends Phaser.Scene{
             if (jugador.pickItem(llave)) {
                 this.events.emit('itemPickedP', llave);
                 llave.destroy();
+            }
+        });
+
+        //Colisiones con Plataformas levadizas
+        this.physics.add.overlap(this.players,this.liftingPlatforms,(jugador,platform)=>{
+            if(!platform.isRaised){
+                this.resetSound.play();
+                this.scene.restart({clownGetItemJokes:this.clownGetItemJokes,
+                clownGiveItemJokes:this.clownGiveItemJokes,
+                clownNoObjectGiven: this.clownNoObjectGiven,
+                clownNoObjectTaken: this.clownNoObjectTaken,
+                clownLast:this.clownLast
+                });
             }
         });
 
@@ -369,7 +410,7 @@ export default class LevelGabi extends Phaser.Scene{
         this.walkSound = this.sound.add('pasos', { loop: false });
         this.breakSound = this.sound.add('romper');
         this.resetSound = this.sound.add('reset', { loop: false, volume: 0.3 });
-        this.music = this.sound.add('musica', { loop: true, volume: 0.7 });
+        this.music = this.sound.add('musicaLevelJavi', { loop: true, volume: 0.7 });
     }
 
     /**

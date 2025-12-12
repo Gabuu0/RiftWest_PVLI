@@ -277,6 +277,7 @@ export default class LevelJavi extends Phaser.Scene{
             let endT = new EndTrigger(this, obj.x, obj.y, 'preassurePlate');
             endT.setScale(scaling);
             this.scaleObject(endT, scaling);
+            endT.setOrigin(0, 1);
             this.endTriggers.push(endT);
         });
     }
