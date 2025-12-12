@@ -263,7 +263,7 @@ export default class LevelJavi extends Phaser.Scene{
         this.walkSound = this.sound.add('pasos', { loop: false});
         this.breakSound = this.sound.add('romper');
         this.resetSound = this.sound.add('reset',{loop: false, volume: 0.3});
-        this.music = this.sound.add('musica', {loop: true, volume:0.7});
+        this.music = this.sound.add('musicaLevelJavi', {loop: true, volume:0.7});
         //#endregion
     }
 

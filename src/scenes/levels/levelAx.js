@@ -51,6 +51,12 @@ export default class LevelAx extends Phaser.Scene {
 
         this.input.keyboard.on('keydown-ESC', () => {
             console.log('ESC pulsado');
+            const pauseMenu = this.scene.get('pauseMenu');
+    
+            if (pauseMenu) {
+                pauseMenu.setLevel(this.scene.key);
+            }
+
             this.scene.launch('pauseMenu');   // Lanza el menú
             this.scene.pause();              // Pausa la escena del juego
         });
@@ -190,12 +196,21 @@ export default class LevelAx extends Phaser.Scene {
         { x: 5160, y: 1560 },
         { x: 4920, y: 1560 } ];
         this.sheriff = new Watchman(this,4920, 1880,"S",0,this.percival,recorrido2, "sheriff");
+
+        
+        //#region Sonidos
+        this.walkSound = this.sound.add('pasos', { loop: false});
+        this.breakSound = this.sound.add('romper');
+        this.resetSound = this.sound.add('reset',{loop: false, volume: 0.3});
+        this.music = this.sound.add('musicaLevelAx', {loop: true, volume:0.5});
+        //#endregion
     }
 
     update(t, dt){
         if (this.movementController) {
             this.movementController.update();
         }
+        this.updateSounds();
     }
     
     addMapLayer(name,collision){
@@ -212,5 +227,26 @@ export default class LevelAx extends Phaser.Scene {
         object.y *= scaling;
         object.y += (object.height*scaling);
         object.setScale(scaling);
+    }
+
+    
+    updateSounds(){
+        //SONIDO DE PASOS
+        const percivalIsMoving = (this.percival.body.velocity.x !== 0 || this.percival.body.velocity.y !== 0);
+        const daphneIsMoving = (this.daphne.body.velocity.x !== 0 || this.daphne.body.velocity.y !== 0);
+        const isMoving = percivalIsMoving || daphneIsMoving;
+
+        if (isMoving && !this.walkSound.isPlaying) {
+            // Al menos un jugador se mueve y el sonido no está sonando.
+            this.walkSound.play();
+         } else if (!isMoving && this.walkSound.isPlaying) {
+            // Ningún jugador se mueve y el sonido está sonando.
+            this.walkSound.pause(); 
+         }
+
+         //MUSICA
+         if(!this.music.isPlaying){
+         this.music.play();
+         }
     }
 }

@@ -19,7 +19,7 @@ export default class Level1 extends Phaser.Scene{
     create(){
 
 
-        this.createAnims();
+        //this.createAnims();
         this.random = new Phaser.Math.RandomDataGenerator();
 
         this.registry.set('clownObj', {
