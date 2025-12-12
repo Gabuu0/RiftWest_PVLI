@@ -27,7 +27,7 @@ export default class Menu extends Phaser.Scene {
 
          jugarButton.on('pointerdown', () => {
              this.sound.play('select');
-            this.scene.run('levelAx',{clownGetItemJokes:this.clownGetItemJokes,
+            this.scene.run('levelGabi',{clownGetItemJokes:this.clownGetItemJokes,
             clownGiveItemJokes:this.clownGiveItemJokes,
             clownNoObjectGiven: this.clownNoObjectGiven,
             clownNoObjectTaken: this.clownNoObjectTaken,

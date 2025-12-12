@@ -293,7 +293,7 @@ export default class LevelGabi extends Phaser.Scene{
      */
     createItems(Paredes){
         this.keys = this.add.group();
-        this.llaveHabitacion = this.keys.add(new Key(this, 5250,750,'llaveMapa','llaveInventario','keyIdle','LLave de la habitacion',2).setDepth(5));
+        this.llaveHabitacion = this.keys.add(new Key(this, 5250,750,'llaveMapa','llaveInventario','keyIdle','LLave de la habitacion',12).setDepth(5));
 
         this.movableBoxes = this.add.group();
         this.cajaMovible1 = new movableObject(this, 6030, 1200, 2500, 960, "cajaMovible", this.percival, this.daphne, Paredes)
@@ -303,6 +303,8 @@ export default class LevelGabi extends Phaser.Scene{
         this.cajaRompible1 = new breakableObjects(this,2400, 920, 5940, 1160,'cajaRompible',this.percival,this.daphne);
         this.cajaRompible2 = new breakableObjects(this,2400, 1000, 5940, 1240,'cajaRompible',this.percival,this.daphne);
         this.cajaRompible3 = new breakableObjects(this,1200, 1080, 4280, 1000,'cajaRompible',this.percival,this.daphne);
+        this.cajaRompible4 = new breakableObjects(this,1800, 600, 5400, 680,'cajaRompible',this.percival,this.daphne);
+        this.cajaRompible5 = new breakableObjects(this,1800, 520, 5400, 760,'cajaRompible',this.percival,this.daphne);
     }
 
     /**
@@ -472,24 +474,24 @@ export default class LevelGabi extends Phaser.Scene{
         if(itemReceived && !hadItem && !clownEmpty){
             this.dialog.setTextArray([
                 [playerToIgnore,this.clownGetItemJokes[this.random.integerInRange(0, this.clownGetItemJokes.length-1)]],
-                [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length)]]
+                [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length-1)]]
             ],true);
         }else if(!itemReceived && hadItem && clownEmpty){
              this.dialog.setTextArray([
                 [playerToIgnore,this.clownGiveItemJokes[this.random.integerInRange(0, this.clownGiveItemJokes.length-1)]],
-                 [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length)]]
+                 [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length-1)]]
             ],true);
         }
         else if(itemReceived && hadItem && !clownEmpty){
             this.dialog.setTextArray([
                 [playerToIgnore,this.clownNoObjectTaken[this.random.integerInRange(0, this.clownNoObjectTaken.length-1)]],
-                 [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length)]]
+                 [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length-1)]]
             ],true);
         }
         else if(!itemReceived && !hadItem && clownEmpty){
             this.dialog.setTextArray([
                 [playerToIgnore,this.clownNoObjectGiven[this.random.integerInRange(0, this.clownNoObjectGiven.length-1)]],
-                 [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length)]]
+                 [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length-1)]]
             ],true);
         }
     }
