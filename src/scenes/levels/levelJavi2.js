@@ -374,9 +374,11 @@ export default class LevelJavi2 extends Phaser.Scene{
      */
     createItems(Paredes){
         this.keys = this.add.group();
+        this.movableBoxes = this.add.group();
         this.llavePasillo = this.keys.add(new Key(this, 1800,3000,'llaveMapa','llaveInventario','keyIdle','LLave del pasillo',2).setDepth(5));
         this.llaveComedor = this.keys.add(new Key(this, 3960,1600,'llaveMapa','llaveInventario','keyIdle','LLave del comedor',7).setDepth(5));
         this.cajaM1 = new movableObject(this, 3800, 2120, 1640, 2120, "cajaMovible", this.percival, this.daphne, Paredes)
+        this.movableBoxes.add(this.cajaM1);
         this.cajaR1 = new breakableObjects(this,1080, 2680, 3240, 2680,'cajaRompible',this.percival,this.daphne);
         this.cajaR2 = new breakableObjects(this,1080, 2600, 3240, 2600,'cajaRompible',this.percival,this.daphne);
     }
@@ -425,7 +427,29 @@ export default class LevelJavi2 extends Phaser.Scene{
                     watchman.triggerSize(160);
                     });
                 }
+
+                this.liftingPlatforms.getChildren().forEach(platform => {
+                if (platform.identifier === placa.identifier) {
+                    platform.activatePlatform();
+                }
             });
+            });
+        });
+
+        this.physics.add.overlap(this.movableBoxes,this.preassurePlates,(box,placa)=>{
+            //se miran las puertas y si alguna tiene el mismo identificador que la placa se abre
+            this.doors.getChildren().forEach(door => {
+                if (door.identifier === placa.identifier) {
+                    door.openDoor();
+                }
+            });
+
+            this.liftingPlatforms.getChildren().forEach(platform => {
+                if (platform.identifier === placa.identifier) {
+                    platform.activatePlatform();
+                }
+            });
+
         });
 
         //Colisiones con Objetos Tirables

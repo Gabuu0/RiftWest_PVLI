@@ -53,7 +53,7 @@
                         {
                          "name":"Identifier",
                          "type":"int",
-                         "value":0
+                         "value":3
                         }, 
                         {
                          "name":"isRaised",
@@ -114,6 +114,17 @@
                  "y":736
                 }],
          "opacity":1,
+         "properties":[
+                {
+                 "name":"Identifier",
+                 "type":"int",
+                 "value":0
+                }, 
+                {
+                 "name":"israised",
+                 "type":"bool",
+                 "value":false
+                }],
          "type":"objectgroup",
          "visible":true,
          "x":0,
@@ -214,8 +225,8 @@
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":256,
-                 "y":928
+                 "x":545,
+                 "y":663
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -423,29 +434,6 @@
                  "y":512
                 }, 
                 {
-                 "gid":47,
-                 "height":16,
-                 "id":70,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"Identifier",
-                         "type":"int",
-                         "value":3
-                        }, 
-                        {
-                         "name":"doorType",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":90,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":320,
-                 "y":576
-                }, 
-                {
                  "gid":38,
                  "height":16,
                  "id":76,
@@ -605,6 +593,29 @@
                  "width":32,
                  "x":592,
                  "y":720
+                }, 
+                {
+                 "gid":67,
+                 "height":16,
+                 "id":119,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"Identifier",
+                         "type":"int",
+                         "value":1
+                        }, 
+                        {
+                         "name":"doorType",
+                         "type":"int",
+                         "value":1
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":176,
+                 "y":496
                 }],
          "opacity":1,
          "properties":[
@@ -652,7 +663,7 @@
          "y":0
         }],
  "nextlayerid":17,
- "nextobjectid":119,
+ "nextobjectid":120,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
