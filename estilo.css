@@ -24,7 +24,7 @@ h4 {
     font-weight: bold;
     position: relative;
     top: -30px;
-    margin-left: 25%;
+    margin-left: 15%;
 }
 .h6 {
     color: black;
@@ -32,14 +32,14 @@ h4 {
     font-weight: bold;
     position: relative;
     top: -30px;
-    margin-left: 25%;
+    margin-left: 15%;
 }
 .h7 {
-    color: #c29311;
+    color: rgb(167, 138, 61);
     font-size: 30px;
     font-weight: bold;
     position: relative;
-    top: -230px;
+    top: -320px;
     margin-left: 60%;
 }
 .h8 {
@@ -47,7 +47,7 @@ h4 {
     font-size: 20px;
     font-weight: bold;
     position: relative;
-    top: -230px;
+    top: -320px;
     margin-left: 60%;
 }
 body {
