@@ -452,11 +452,11 @@ export default class LevelJavi extends Phaser.Scene{
         this.dialog.setDepth(10);
 
         this.dialog.setTextArray([
-            [1, "Bryant Myers"],
-            [2, "Hoy de nuevo te voy a ver (Anonimus, this is the remix)"],
-            [0, "Si llaman, pichea el cel (Anuel, Almighty)"],
-            [1, "Estamos fumando marihuana (Maybach Música)"],
-            [2, "Hoy serás mi esclava en el cuarto de un motel (Carbon Fiber Music)"]
+            [1, "Daphne, se ha hecho de noche... que miedo"],
+            [2, "Si.. aqui tambien, escucho pasos. Debe de ser un profesor vigilando que estemos todos dormidos."],
+            [1, "Yo escucho a varios sheriff merodeando."],
+            [1, "Sera mejor esquivarlos si queremos avanzar."],
+            [0, "EVITA HACER RUIDO -> JARRONES"]
         ], true);
     }
 
