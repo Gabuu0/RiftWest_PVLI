@@ -117,31 +117,32 @@ export default class BootScene extends Phaser.Scene{
              this.createCharacterAnims(character);
         });
 
-        //#region Objetos
-        this.anims.create(
+        if (!this.anims.exists('keyIdle')){
+            this.anims.create(
             {key:'keyIdle',
                 frames: this.anims.generateFrameNumbers('llaveMapa', {frames:[0,1,2,1]}),
                 frameRate: 4,
                 repeat:-1,
             }
-        );
-        //#endregion
+        );}
 
-        //#region Inventario
-        this.anims.create(
+        if (!this.anims.exists('SlotSelected')){
+            this.anims.create(
             {key: 'SlotSelected',
             frames: this.anims.generateFrameNumbers('slot', {frames:[1,2]}),
             frameRate: 2,
             repeat: -1,}
-        );
+        );}
 
-        this.anims.create(
+    
+        if (!this.anims.exists('SlotIdle')){
+             this.anims.create(
             {key: 'SlotIdle',
             frames: this.anims.generateFrameNumbers('slot', {frames:[0]}),
             frameRate: 2,
             repeat: -1,}
-        );
-        //#endregion
+        );}
+        
     }
 
     /**
@@ -155,43 +156,51 @@ export default class BootScene extends Phaser.Scene{
         let keyUpAnim = characterSprite + 'Up';
         let keyRightAnim = characterSprite + 'Right';
         let keyLeftAnim = characterSprite + 'Left';
-        this.anims.create(
+
+        if (!this.anims.exists(keyIdleAnim)){
+            this.anims.create(
             {key: keyIdleAnim,
             frames:this.anims.generateFrameNumbers(characterSprite,{frames:[0,1,2,3]}),
             frameRate:5,
             repeat:-1
             }
-        );
-        this.anims.create(
+        );}
+
+        if (!this.anims.exists(keyDownAnim)){
+            this.anims.create(
             {key: keyDownAnim,
             frames:this.anims.generateFrameNumbers(characterSprite,{frames:[4,5,6,7]}),
             frameRate:5,
             repeat:-1
             }
-        );
-        this.anims.create(
+        );}
+
+        if (!this.anims.exists(keyUpAnim)){
+            this.anims.create(
             {key: keyUpAnim,
             frames:this.anims.generateFrameNumbers(characterSprite,{frames:[8,9,10,11]}),
             frameRate:5,
             repeat:-1
             }
-        );
+        );}
 
-        this.anims.create(
+        if (!this.anims.exists(keyRightAnim)){
+            this.anims.create(
             {key: keyRightAnim,
             frames:this.anims.generateFrameNumbers(characterSprite,{frames:[12,13,14,15]}),
             frameRate:5,
             repeat:-1
             }
-        );
+        );}
 
-        this.anims.create(
+        if (!this.anims.exists(keyLeftAnim)){
+            this.anims.create(
             {key: keyLeftAnim,
             frames:this.anims.generateFrameNumbers(characterSprite,{frames:[16,17,18,19]}),
             frameRate:5,
             repeat:-1
             }
-        );
+        );}
     }
 
     /**

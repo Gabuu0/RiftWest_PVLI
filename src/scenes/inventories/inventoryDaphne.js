@@ -26,13 +26,13 @@ export default class InventoryDaphne extends Phaser.Scene{
 
         //Gestion del movimiento por el inventario: 1 para subir 2 para bajar
         this.input.keyboard.on('keydown', (event)=>{
-            if(event.code === 'Numpad1'){
+            if(event.code === 'Digit9'){
                 if(this.slotSelected > 0){
                     this.inventorySlots[this.slotSelected].setIsSelected();
                     this.inventorySlots[--this.slotSelected].setIsSelected();
                 }
             }
-            else if(event.code === 'Numpad3'){
+            else if(event.code === 'Digit0'){
                if(this.slotSelected < this.inventorySlots.length-1){
                     this.inventorySlots[this.slotSelected].setIsSelected();
                     this.inventorySlots[++this.slotSelected].setIsSelected();
