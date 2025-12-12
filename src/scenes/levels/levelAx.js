@@ -257,7 +257,6 @@ export default class LevelAx extends Phaser.Scene {
             let plate = new PreassurePlate(this, obj.x, obj.y, 'preassurePlate', id);
             plate.setScale(scaling);
             this.scaleObject(plate, scaling);
-            plate.setOrigin(0, 1);
             this.preassurePlates.add(plate);
         });
     }
