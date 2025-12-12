@@ -413,6 +413,11 @@ export default class LevelJavi2 extends Phaser.Scene{
                     door.openDoor();
                 }
             });
+            this.liftingPlatforms.getChildren().forEach(platform => {
+                if (platform.identifier === placa.identifier) {
+                    platform.activatePlatform();
+                }
+            });
         });
 
         //Colisiones con Palancas
@@ -427,12 +432,6 @@ export default class LevelJavi2 extends Phaser.Scene{
                     watchman.triggerSize(160);
                     });
                 }
-
-                this.liftingPlatforms.getChildren().forEach(platform => {
-                if (platform.identifier === placa.identifier) {
-                    platform.activatePlatform();
-                }
-            });
             });
         });
 
