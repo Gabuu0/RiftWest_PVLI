@@ -362,9 +362,11 @@ export default class LevelJavi extends Phaser.Scene{
      */
     createItems(Paredes){
         this.keys = this.add.group();
+        this.movableBoxes = this.add.group();
         this.llavePasillo = this.keys.add(new Key(this, 1800,3000,'llaveMapa','llaveInventario','keyIdle','LLave del pasillo',2).setDepth(5));
         this.llaveComedor = this.keys.add(new Key(this, 3960,1600,'llaveMapa','llaveInventario','keyIdle','LLave del comedor',7).setDepth(5));
         this.cajaM1 = new movableObject(this, 3800, 2120, 1640, 2120, "cajaMovible", this.percival, this.daphne, Paredes)
+        this.movableBoxes.add(this.cajaM1);
         this.cajaR1 = new breakableObjects(this,1080, 2680, 3240, 2680,'cajaRompible',this.percival,this.daphne);
         this.cajaR2 = new breakableObjects(this,1080, 2600, 3240, 2600,'cajaRompible',this.percival,this.daphne);
     }
@@ -425,6 +427,15 @@ export default class LevelJavi extends Phaser.Scene{
             });
         });
 
+        this.physics.add.overlap(this.movableBoxes,this.preassurePlates,(box,placa)=>{
+        //se miran las puertas y si alguna tiene el mismo identificador que la placa se abre
+            this.doors.getChildren().forEach(door => {
+                if (door.identifier === placa.identifier) {
+                    door.openDoor();
+                }
+            });
+
+        });
         //Colisiones con LLaves
         this.physics.add.overlap(this.players, this.keys, (jugador, llave) => {
             //se elimina la llave si es posible cogerla (inventario del jugador no lleno)
@@ -439,7 +450,7 @@ export default class LevelJavi extends Phaser.Scene{
             endT.on();
             if (this.endTriggers.every(t => t.getIsPressed())) {
                 this.scene.stop();
-                this.scene.start('levelGabi');
+                this.scene.start('levelAx');
             }
         });
     }
