@@ -37,72 +37,72 @@ export default class BootScene extends Phaser.Scene{
         });
 
         this.characterSprites = [];
-        this.load.spritesheet('Daphne','sprites/images/daphne/Daphne.png',{frameWidth:160, frameHeight:160});
+        this.load.spritesheet('Daphne','assets/sprites/images/daphne/Daphne.png',{frameWidth:160, frameHeight:160});
         this.characterSprites.push('Daphne');
-        this.load.spritesheet('Percival','sprites/images/percival/Percival.png',{frameWidth:160, frameHeight:160});
+        this.load.spritesheet('Percival','assets/sprites/images/percival/Percival.png',{frameWidth:160, frameHeight:160});
         this.characterSprites.push('Percival');
-        this.load.spritesheet('Profesor','sprites/images/profesor/Profesor.png',{frameWidth:160, frameHeight:160});
+        this.load.spritesheet('Profesor','assets/sprites/images/profesor/Profesor.png',{frameWidth:160, frameHeight:160});
         this.characterSprites.push('Profesor');
-        this.load.spritesheet('Sheriff','sprites/images/sheriff/Sheriff.png',{frameWidth:160, frameHeight:160});
+        this.load.spritesheet('Sheriff','assets/sprites/images/sheriff/Sheriff.png',{frameWidth:160, frameHeight:160});
         this.characterSprites.push('Sheriff');
 
         //#region Tilemaps
-        this.load.image('tilesPJ', 'sprites/tileSet/TileSetPJ.png');
-        this.load.image('tilesD', 'sprites/tileSet/DustwartsTileset.png');
-        this.load.image('tilesD2', 'sprites/tileSet/Dustwarts.png');
-        this.load.image('tilesM', 'sprites/tileSet/MagwartsTileset.png');
-        this.load.image('tilesM2', 'sprites/tileSet/Magwarts.png');
-        this.load.image('tilesDecoration','sprites/tileSet/decoration.png');
-        this.load.tilemapTiledJSON('mapLevelAxel', 'sprites/tileSet/LvlAxel.json');
-        this.load.tilemapTiledJSON('mapLevelJavi', 'sprites/tileSet/LevelJavi.json');
-        this.load.tilemapTiledJSON('mapLevelJavi2', 'sprites/tileSet/LevelJavi2.json');
-        this.load.tilemapTiledJSON('mapLevelGabi', 'sprites/tileSet/LevelGabi.json');
-        this.load.tilemapTiledJSON('mapa', 'sprites/tileSet/PruebaPuertas.json');
-        this.load.spritesheet('doors','sprites/tileSet/Doors.png',{frameWidth:32, frameHeight:16});
-        this.load.spritesheet('levers','sprites/tileSet/Levers.png',{frameWidth:16, frameHeight:16});
-        this.load.spritesheet('knockableObject','sprites/tileSet/KnockableObject.png',{frameWidth:13, frameHeight:19});
-        this.load.image('preassurePlate','sprites/tileSet/PreassurePlate.png');
-        this.load.spritesheet('liftingPlatform','sprites/tileSet/liftingPlatform.png',{frameWidth:32,frameHeight:32});
+        this.load.image('tilesPJ', 'assets/sprites/tileSet/TileSetPJ.png');
+        this.load.image('tilesD', 'assets/sprites/tileSet/DustwartsTileset.png');
+        this.load.image('tilesD2', 'assets/sprites/tileSet/Dustwarts.png');
+        this.load.image('tilesM', 'assets/sprites/tileSet/MagwartsTileset.png');
+        this.load.image('tilesM2', 'assets/sprites/tileSet/Magwarts.png');
+        this.load.image('tilesDecoration','assets/sprites/tileSet/decoration.png');
+        this.load.tilemapTiledJSON('mapLevelAxel', 'assets/sprites/tileSet/LvlAxel.json');
+        this.load.tilemapTiledJSON('mapLevelJavi', 'assets/sprites/tileSet/LevelJavi.json');
+        this.load.tilemapTiledJSON('mapLevelJavi2', 'assets/sprites/tileSet/LevelJavi2.json');
+        this.load.tilemapTiledJSON('mapLevelGabi', 'assets/sprites/tileSet/LevelGabi.json');
+        this.load.tilemapTiledJSON('mapa', 'assets/sprites/tileSet/PruebaPuertas.json');
+        this.load.spritesheet('doors','assets/sprites/tileSet/Doors.png',{frameWidth:32, frameHeight:16});
+        this.load.spritesheet('levers','assets/sprites/tileSet/Levers.png',{frameWidth:16, frameHeight:16});
+        this.load.spritesheet('knockableObject','assets/sprites/tileSet/KnockableObject.png',{frameWidth:13, frameHeight:19});
+        this.load.image('preassurePlate','assets/sprites/tileSet/PreassurePlate.png');
+        this.load.spritesheet('liftingPlatform','assets/sprites/tileSet/liftingPlatform.png',{frameWidth:32,frameHeight:32});
         //#endregion
 
         //#region Objetos
-        this.load.image('cajaMovible', 'sprites/images/items/cajaMovible.png');
-        this.load.image('cajaRompible','sprites/images/items/cajaRompible.png');
-        this.load.image('cajaRota','sprites/images/items/cajaRompibleRota.png');
+        this.load.image('cajaMovible', 'assets/sprites/images/items/cajaMovible.png');
+        this.load.image('cajaRompible','assets/sprites/images/items/cajaRompible.png');
+        this.load.image('cajaRota','assets/sprites/images/items/cajaRompibleRota.png');
 
-        this.load.spritesheet('llaveMapa','sprites/images/items/keyMap.png',
+        this.load.spritesheet('llaveMapa','assets/sprites/images/items/keyMap.png',
               {frameWidth:16, frameHeight:16}
         );
-        this.load.image('llaveInventario', 'sprites/images/items/keyInventory.png')
+        this.load.image('llaveInventario', 'assets/sprites/images/items/keyInventory.png')
         //#endregion
 
         //#region Interfaz
-        this.load.spritesheet('slot','sprites/images/inventory/inventorySpace.png',{frameWidth: 64, frameHeight:64});
-        this.load.image('descriptionBox','sprites/images/inventory/descriptionBox.png');
+        this.load.spritesheet('slot','assets/sprites/images/inventory/inventorySpace.png',{frameWidth: 64, frameHeight:64});
+        this.load.image('descriptionBox','assets/sprites/images/inventory/descriptionBox.png');
 
-        this.load.image('daphneMapEnabled', 'sprites/images/daphne/mapIcon.png');
-        this.load.image('percivalMapEnabled', 'sprites/images/percival/mapIcon.png');
-        this.load.image('daphneMap', 'sprites/images/daphne/mapLevel1.png');
-        this.load.image('percivalMap', 'sprites/images/percival/mapLevel1.png');
+        this.load.image('daphneMapEnabled', 'assets/sprites/images/daphne/mapIcon.png');
+        this.load.image('percivalMapEnabled', 'assets/sprites/images/percival/mapIcon.png');
+        this.load.image('daphneMap', 'assets/sprites/images/daphne/mapLevel1.png');
+        this.load.image('percivalMap', 'assets/sprites/images/percival/mapLevel1.png');
 
-        this.load.image('daphneAbilityReady', 'sprites/images/daphne/abilityEnabled.png');
-        this.load.image('daphneAbilityUsed', 'sprites/images/daphne/abilityDisabled.png');
-        this.load.image('percivalAbilityReady', 'sprites/images/percival/abilityEnabled.png');
-        this.load.image('percivalAbilityUsed', 'sprites/images/percival/abilityDisabled.png');
+        this.load.image('daphneAbilityReady', 'assets/sprites/images/daphne/abilityEnabled.png');
+        this.load.image('daphneAbilityUsed', 'assets/sprites/images/daphne/abilityDisabled.png');
+        this.load.image('percivalAbilityReady', 'assets/sprites/images/percival/abilityEnabled.png');
+        this.load.image('percivalAbilityUsed', 'assets/sprites/images/percival/abilityDisabled.png');
 
-        this.load.image('daphneHead', 'sprites/images/daphne/head.png');
-        this.load.image('percivalHead', 'sprites/images/percival/head.png');
+        this.load.image('daphneHead', 'assets/sprites/images/daphne/head.png');
+        this.load.image('percivalHead', 'assets/sprites/images/percival/head.png');
         //#endregion
 
         //#region Sonidos
-        this.load.audio('pasos', 'sounds/pasos.mp3');
-        this.load.audio('romper', 'sounds/romper.mp3');
-        this.load.audio('pickItem', 'sounds/pickItem.mp3');
-        this.load.audio('reset', 'sounds/reset.mp3');
-        this.load.audio('musicaLevelJavi', 'sounds/musicaLevelJavi.mp3');
-        this.load.audio('musicaLevelAx', 'sounds/musicaLevelAx.mp3');
-        this.load.audio('musicaLevelGabi', 'sounds/musicaLevelGabi.mp3');
-        this.load.audio('select', 'sounds/select.mp3');
+        this.load.audio('pasos', 'assets/sounds/pasos.mp3');
+        this.load.audio('romper', 'assets/sounds/romper.mp3');
+        this.load.audio('pickItem', 'assets/sounds/pickItem.mp3');
+        this.load.audio('reset', 'assets/sounds/reset.mp3');
+        this.load.audio('musicaLevelJavi', 'assets/sounds/musicaLevelJavi.mp3');
+        this.load.audio('musicaLevelAx', 'assets/sounds/musicaLevelAx.mp3');
+        this.load.audio('musicaLevelGabi', 'assets/sounds/musicaLevelGabi.mp3');
+        this.load.audio('select', 'assets/sounds/select.mp3');
         //#endregion
 
     }
