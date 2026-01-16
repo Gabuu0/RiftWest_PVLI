@@ -452,7 +452,14 @@ export default class LevelJavi extends Phaser.Scene{
             endT.on();
             if (this.endTriggers.every(t => t.getIsPressed())) {
                 this.scene.stop();
-                this.scene.start('levelAx');
+                //se inicia el siguiente nivel, se le pasan todos los dialogos de payaso(SIEMPRE PASAR LOS DIALOGOS)
+                this.scene.start('levelAx',{
+                    clownGetItemJokes: this.clownGetItemJokes,
+                    clownGiveItemJokes: this.clownGiveItemJokes,
+                    clownNoObjectGiven: this.clownNoObjectGiven,
+                    clownNoObjectTaken: this.clownNoObjectTaken,
+                    clownLast: this.clownLast,
+                });
             }
         });
     }
