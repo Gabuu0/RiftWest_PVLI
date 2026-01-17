@@ -266,7 +266,7 @@ export default class LevelAx extends Phaser.Scene {
     this.endTriggers = [];
     
     // 3. Capa de EndTriggers
-    const endTLayer = this.map.getObjectLayer('endTrigger');
+    const endTLayer = this.map.getObjectLayer('end_trigger');
     if (endTLayer && endTLayer.objects) { // ¡Comprobación de seguridad!
         endTLayer.objects.forEach(obj => {
             let endT = new EndTrigger(this, obj.x, obj.y, 'preassurePlate');
@@ -382,7 +382,13 @@ export default class LevelAx extends Phaser.Scene {
             this.physics.add.overlap(this.players,this.endTriggers,(jugador, endT)=>{
                 endT.on();
                 if (this.endTriggers.every(t => t.getIsPressed())) {
-                    console.log("3Letra, la L");
+                    this.scene.start('levelGabi',{
+                        clownGetItemJokes: this.clownGetItemJokes,
+                        clownGiveItemJokes: this.clownGiveItemJokes,
+                        clownNoObjectGiven: this.clownNoObjectGiven,
+                        clownNoObjectTaken: this.clownNoObjectTaken,
+                        clownLast: this.clownLast,
+                    });
                 }
             });
         }
