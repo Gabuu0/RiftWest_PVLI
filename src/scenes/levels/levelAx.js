@@ -329,6 +329,7 @@ export default class LevelAx extends Phaser.Scene {
             this.keys.add(new Key(this, 1800,1880,'llaveMapa','llaveInventario','keyIdle','Llave sala principal-trastero',0).setDepth(5))
             this.keys.add(new Key(this, 5080,1880,'llaveMapa','llaveInventario','keyIdle','Llave sala principal-pasillos',1).setDepth(5))
 
+
             this.cajaM1 = new movableObject(this, 4280, 1240, 1000, 1240, "cajaMovible", this.percival, this.daphne, Paredes)
             this.cajaM2 = new movableObject(this, 4920, 1240, 1640, 1240, "cajaMovible", this.percival, this.daphne, Paredes)
             this.cajaM3 = new movableObject(this, 3960, 1720, 600, 1720, "cajaMovible", this.percival, this.daphne, Paredes)
@@ -341,6 +342,8 @@ export default class LevelAx extends Phaser.Scene {
             this.cajR4 = new breakableObjects(this, 1480, 920, 4840, 920,'cajaRompible',this.percival,this.daphne);
             this.cajR5 = new breakableObjects(this, 680, 520, 3960, 520,'cajaRompible',this.percival,this.daphne);
             this.cajR6 = new breakableObjects(this, 840, 1080, 4120, 1000,'cajaRompible',this.percival,this.daphne);
+
+            
         }
     
         /**
