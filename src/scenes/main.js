@@ -18,7 +18,7 @@ export default class Menu extends Phaser.Scene {
         const jugarButton = this.add.text(450, 330, 'JUGAR', { fontSize: '48px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather'})
         .setInteractive().setOrigin(0,0);
 
-        jugarButton.on('pointerover', () => {
+        jugarButton.on('pointerover', () => { 
             jugarButton.setStyle({ fill: 'rgb(255, 255, 143)' });
         });
 
@@ -28,7 +28,7 @@ export default class Menu extends Phaser.Scene {
 
          jugarButton.on('pointerdown', () => {
              this.sound.play('select');
-            this.scene.run('levelJavi',{clownGetItemJokes:this.clownGetItemJokes,
+            this.scene.run('levelSelector',{clownGetItemJokes:this.clownGetItemJokes,
             clownGiveItemJokes:this.clownGiveItemJokes,
             clownNoObjectGiven: this.clownNoObjectGiven,
             clownNoObjectTaken: this.clownNoObjectTaken,

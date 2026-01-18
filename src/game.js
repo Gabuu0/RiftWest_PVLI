@@ -9,6 +9,7 @@ import PauseMenu from "./scenes/pauseMenu.js";
 import LevelAx from "./scenes/levels/levelAx.js";
 import BootScene from "./scenes/bootScene.js";
 import LevelPruebas from "./scenes/levels/levelPruebas.js";
+import LevelSelector from "./scenes/levelSelector.js";
 
 const config = {
 	type: Phaser.CANVAS,
@@ -18,7 +19,7 @@ const config = {
 	scale: {
 	autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
 	},
-	scene: [BootScene,Menu, LevelJavi, LevelJavi2, LevelGabi, LevelPruebas,Level1,LevelAx,InventoryDaphne,InventoryPercival, PauseMenu],
+	scene: [BootScene, LevelSelector, Menu, LevelJavi, LevelJavi2, LevelGabi, LevelPruebas,Level1,LevelAx,InventoryDaphne,InventoryPercival, PauseMenu],
 	physics: {
         default: "arcade",
         arcade: {
