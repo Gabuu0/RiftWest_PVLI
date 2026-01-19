@@ -116,7 +116,7 @@ export default class PauseMenu extends Phaser.Scene {
                 this.scene.stop('InventarioPercival');
                 this.scene.stop('InventarioDaphne');
                 this.scene.stop();
-                this.scene.start('levelSelector');
+                this.scene.start('menu');
             });
         });
 

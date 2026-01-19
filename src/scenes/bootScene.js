@@ -94,6 +94,8 @@ export default class BootScene extends Phaser.Scene{
 
         this.load.image('daphneHead', 'assets/sprites/images/daphne/head.png');
         this.load.image('percivalHead', 'assets/sprites/images/percival/head.png');
+
+        this.load.image('textPanel','assets/sprites/images/UI/PanelNivelBloqueado.png')
         //#endregion
 
         //#region Sonidos
@@ -109,9 +111,16 @@ export default class BootScene extends Phaser.Scene{
 
     }
     create(){
-         this.registry.set('clownObj', {
+        this.registry.set('clownObj', {
             objData: {},
             hasObj: false,
+        });
+
+        //se establece que solo el primer nivel es accesible
+        this.registry.set('levels', {
+            level1: true,
+            level2: false,
+            level3: false,
         });
         this.createAnims();
     }

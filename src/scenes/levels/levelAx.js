@@ -342,8 +342,6 @@ export default class LevelAx extends Phaser.Scene {
             this.cajR4 = new breakableObjects(this, 1480, 920, 4840, 920,'cajaRompible',this.percival,this.daphne);
             this.cajR5 = new breakableObjects(this, 680, 520, 3960, 520,'cajaRompible',this.percival,this.daphne);
             this.cajR6 = new breakableObjects(this, 840, 1080, 4120, 1000,'cajaRompible',this.percival,this.daphne);
-
-            
         }
     
         /**
