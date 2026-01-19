@@ -483,7 +483,7 @@ export default class LevelGabi extends Phaser.Scene{
     setClownMessage(playerToIgnore,itemReceived,hadItem,clownEmpty){
         if(itemReceived && !hadItem && !clownEmpty){
             this.dialog.setTextArray([
-                [playerToIgnore,this.clownJokes.getItem[this.random.integerInRange(0, this.this.clownJokes.getItem.length-1)]],
+                [playerToIgnore,this.clownJokes.getItem[this.random.integerInRange(0, this.clownJokes.getItem.length-1)]],
                 [playerToIgnore,this.clownJokes.last[this.random.integerInRange(0, this.clownJokes.last.length-1)]]
             ],true);
         }else if(!itemReceived && hadItem && clownEmpty){

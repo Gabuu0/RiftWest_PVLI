@@ -46,11 +46,11 @@ export default class InventoryPercival extends Phaser.Scene{
                 let clown = this.registry.get('clownObj');
                 if(clown.hasObj){
                     if(this.player.pickItem(clown.objData)){
-                        this.activeScene.showClownMessage(this.player.type,true,false,false);
                         this.registry.set('clownObj',{
                             objData: {},
                             hasObj: false,
                         })
+                        this.activeScene.showClownMessage(this.player.type,true,false,false);
                     }
                     else{
                         this.activeScene.showClownMessage(this.player.type,true,);
@@ -65,7 +65,6 @@ export default class InventoryPercival extends Phaser.Scene{
                         objData: this.inventorySlots[this.slotSelected].list[1].itemData,
                         hasObj:true
                     });
-                    console.log(this.activeScene);
                     this.player.removeItem(this.inventorySlots[this.slotSelected].list[1].identifier);
                     this.inventorySlots[this.slotSelected].list[1].destroy(true);
                     this.activeScene.showClownMessage(this.player.type,false,true,true);
