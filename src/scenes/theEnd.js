@@ -36,7 +36,7 @@ export default class TheEnd extends Phaser.Scene {
         const icon = this.add.image(-170, -90, "GameCharacters").setScale(0.8);
         container.add(icon);
 
-        const description = this.add.text(0, -10, '!!Acabas de completar la demo de RIFT WEST.\nMuchas gracias por jugar.', {
+        const description = this.add.text(0, -10, 'Acabas de completar la demo de RIFT WEST.\nMuchas gracias por jugar.', {
             fontSize: '18px',
             fill: 'rgba(255, 255, 255, 1)',
             fontFamily: 'Merriweather'
