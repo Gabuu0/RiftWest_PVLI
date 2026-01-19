@@ -28,6 +28,9 @@ export default class LevelAx extends Phaser.Scene {
 
         this.setInputs();
         
+        //se obtienen los dialogos del payaso
+        this.clownJokes =  this.registry.get('clownJokes');
+
         //random que se utiliza para elegir los textos del payaso
         this.random = new Phaser.Math.RandomDataGenerator();
 
@@ -461,25 +464,25 @@ export default class LevelAx extends Phaser.Scene {
     setClownMessage(playerToIgnore,itemReceived,hadItem,clownEmpty){
         if(itemReceived && !hadItem && !clownEmpty){
             this.dialog.setTextArray([
-                [playerToIgnore,this.clownGetItemJokes[this.random.integerInRange(0, this.clownGetItemJokes.length-1)]],
-                [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length-1)]]
+                [playerToIgnore,this.clownJokes.getItem[this.random.integerInRange(0, this.this.clownJokes.getItem.length-1)]],
+                [playerToIgnore,this.clownJokes.last[this.random.integerInRange(0, this.clownJokes.last.length-1)]]
             ],true);
         }else if(!itemReceived && hadItem && clownEmpty){
              this.dialog.setTextArray([
-                [playerToIgnore,this.clownGiveItemJokes[this.random.integerInRange(0, this.clownGiveItemJokes.length-1)]],
-                 [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length-1)]]
+                [playerToIgnore,this.clownJokes.giveItem[this.random.integerInRange(0, this.clownJokes.giveItem.length-1)]],
+                 [playerToIgnore,this.clownJokes.last[this.random.integerInRange(0, this.clownJokes.last.length-1)]]
             ],true);
         }
         else if(itemReceived && hadItem && !clownEmpty){
             this.dialog.setTextArray([
-                [playerToIgnore,this.clownNoObjectTaken[this.random.integerInRange(0, this.clownNoObjectTaken.length-1)]],
-                 [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length-1)]]
+                [playerToIgnore,this.clownJokes.noItemTaken[this.random.integerInRange(0, this.clownJokes.noItemTaken.length-1)]],
+                 [playerToIgnore,this.clownJokes.last[this.random.integerInRange(0, this.clownJokes.last.length-1)]]
             ],true);
         }
         else if(!itemReceived && !hadItem && clownEmpty){
             this.dialog.setTextArray([
-                [playerToIgnore,this.clownNoObjectGiven[this.random.integerInRange(0, this.clownNoObjectGiven.length-1)]],
-                 [playerToIgnore,this.clownLast[this.random.integerInRange(0, this.clownLast.length-1)]]
+                [playerToIgnore,this.clownJokes.noItemGiven[this.random.integerInRange(0, this.clownJokes.noItemGiven.length-1)]],
+                 [playerToIgnore,this.clownJokes.last[this.random.integerInRange(0, this.clownJokes.last.length-1)]]
             ],true);
         }
     }

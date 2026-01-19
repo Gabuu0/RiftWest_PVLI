@@ -27,12 +27,7 @@ export default class BootScene extends Phaser.Scene{
         });
         this.load.on('complete',()=>{
             this.createClownDialogs();
-            this.scene.run('menu',{clownGetItemJokes:this.clownGetItemJokes,
-            clownGiveItemJokes:this.clownGiveItemJokes,
-            clownNoObjectGiven: this.clownNoObjectGiven,
-            clownNoObjectTaken: this.clownNoObjectTaken,
-            clownLast:this.clownLast
-            });
+            this.scene.run('menu');
             this.scene.sleep('boot');
         });
 
@@ -119,7 +114,7 @@ export default class BootScene extends Phaser.Scene{
         //se establece que solo el primer nivel es accesible
         this.registry.set('levels', {
             level1: true,
-            level2: false,
+            level2: true,
             level3: false,
         });
         this.createAnims();
@@ -221,50 +216,49 @@ export default class BootScene extends Phaser.Scene{
      * con él al traspasar objetos entre jugadores
      */
     createClownDialogs(){
-        //chistes cuando pillas un item del payaso
-        this.clownGetItemJokes = [
+        this.registry.set('clownJokes',{
+
+            //chistes cuando pillas un item del payaso
+            getItem:[
             "Manin pa ti el objeto, que pesa mucho , pero no tanto como tu vieja",
             "Uff menos mal que me lo has cogido, y el objeto tambien",
             "Jope, ya le empezaba a tener cariño a ese objeto :(",
             "Toma, pa que digas que nunca recibes *gime*",
             "Se nota que te gusta recibir eh",
-            "Te lo voy a dar todo bro. Eso me dijo ella... espera, asi no era"
-        ];
-        
-        //chistes cuando le pasas un item al payaso
-        this.clownGiveItemJokes = [
+            "Te lo voy a dar todo bro. Eso me dijo ella... espera, asi no era"],
+            
+            //chistes cuando le pasas un item al payaso
+            giveItem:[
             "Tranqui, yo te lo sujeto sin problema",
             "epale, lo pillé",
             "¡Gracias! Me encanta que me des ... objetos claro",
             "¡Por fin me tocó recibir!",
-            "Si estos son los regalos que dais, entiendo perfectamente porque seguis solteros"
-        ];
-
-        //frases cuando el payaso esta vacio y pero no se selecionó ningun item
-        this.clownNoObjectGiven = [
-            "Si seleccionas un objeto casi que mejor",
+            "Si estos son los regalos que dais, entiendo perfectamente porque seguis solteros"],
+            
+            //frases cuando el payaso esta vacio y pero no se selecionó ningun item
+            noItemGiven:[
+            "Si seleccionas un objeto casi que mejor manin",
             "Si no me das un objeto no puedo agarrar na, a no ser que quieras que agarre otra cosa...",
             "Sigo estando igual de vacio que cuando ella te dejó, la próxima dame algo venga",
             "Toma, un cachico más de vacio",
-            "Cuanto es 50 + 17? SIX SEVEEENNN!!!, este chiste esta igual de vacio que mi inventario KLK"
-        ];
+            "Cuanto es 50 + 17? SIX SEVEEENNN!!!, este chiste esta igual de vacio que mi inventario KLK"],
 
-          //frases cuando el payaso no esta vacio y pero no se pudo pillar el item (inventario lleno)
-        this.clownNoObjectTaken = [
+            //frases cuando el payaso no esta vacio y pero no se pudo pillar el item (inventario lleno)
+            noItemTaken:[
             "Estas mu cargao colega, no creo que soportes un objeto más",
             "Sé que dices que los límites están en la mente, pero tu inventario dice lo contrario",
             "Ojala poder dartelo, y el objeto tambien",
             "No creo que debas pillar un objeto más, no eres CJ",
             "Lo siento, no puedo dar y recibir al mismo tiempo...",
-            "A este paso te dejo lleno bro *risa perturbadora*"
-        ];
-        
-        //posibles última frase del payaso
-        this.clownLast = [
+            "A este paso te dejo lleno bro *risa perturbadora*"],
+
+            //últimas frases del payaso
+            last:[
             "chao pescao",
             "me las piro vampiro",
-            "hasta la vista baby"
-        ];
+            "hasta la vista baby"]
+        }
+        );
     }
 
 
