@@ -32,6 +32,9 @@ export default class BootScene extends Phaser.Scene{
         });
 
         this.load.image('GameLogo', 'assets/sprites/logos/logoJuego.png');
+        this.load.image('GameCharacters', 'assets/sprites/logos/logoPersonajes.png');
+        this.load.image('menuBackground', 'assets/sprites/logos/background.png');
+        this.load.image('levelBackground', 'assets/sprites/logos/backgroundClear.png');
 
         this.characterSprites = [];
         this.load.spritesheet('Daphne','assets/sprites/images/daphne/Daphne.png',{frameWidth:160, frameHeight:160});
@@ -91,6 +94,7 @@ export default class BootScene extends Phaser.Scene{
         this.load.image('percivalHead', 'assets/sprites/images/percival/head.png');
 
         this.load.image('textPanel','assets/sprites/images/UI/PanelNivelBloqueado.png')
+        this.load.image('lockedIcon','assets/sprites/images/UI/LockedIcon.png')
         //#endregion
 
         //#region Sonidos
@@ -114,7 +118,7 @@ export default class BootScene extends Phaser.Scene{
         //se establece que solo el primer nivel es accesible
         this.registry.set('levels', {
             level1: true,
-            level2: true,
+            level2: false,
             level3: false,
         });
         this.createAnims();

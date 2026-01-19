@@ -4,6 +4,7 @@ import Level1 from "./scenes/levels/level1.js";
 import LevelGabi from "./scenes/levels/levelGabi.js";
 import LevelJavi from "./scenes/levels/levelJavi.js";
 import LevelJavi2 from "./scenes/levels/levelJavi2.js";
+import TheEnd from "./scenes/theEnd.js";
 import Menu from "./scenes/main.js";
 import PauseMenu from "./scenes/pauseMenu.js";
 import LevelAx from "./scenes/levels/levelAx.js";
@@ -19,7 +20,7 @@ const config = {
 	scale: {
 	autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
 	},
-	scene: [BootScene, LevelSelector, Menu, LevelJavi, LevelJavi2, LevelGabi, LevelPruebas,Level1,LevelAx,InventoryDaphne,InventoryPercival, PauseMenu],
+	scene: [BootScene, LevelSelector, Menu, LevelJavi, LevelJavi2, LevelGabi, LevelPruebas,Level1,LevelAx,InventoryDaphne,InventoryPercival, PauseMenu, TheEnd],
 	physics: {
         default: "arcade",
         arcade: {

@@ -6,9 +6,9 @@ export default class Menu extends Phaser.Scene {
     }
 
     create() {
-        const LogoJuego = this.add.image(140,50,'GameLogo').setScale(0.5).setOrigin(0,0);
-        const jugarButton = this.add.text(450, 330, 'JUGAR', { fontSize: '48px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather'})
-        .setInteractive().setOrigin(0,0);
+        const background = this.add.image(0,0,'menuBackground').setOrigin(0,0);
+        const jugarButton = this.add.text(540, 330, 'PLAY DEMO', { fontSize: '48px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather'})
+        .setInteractive().setOrigin(0.5,0.5);
 
         jugarButton.on('pointerover', () => { 
             jugarButton.setStyle({ fill: 'rgb(255, 255, 143)' });

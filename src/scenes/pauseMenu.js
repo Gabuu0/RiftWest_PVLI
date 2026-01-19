@@ -26,8 +26,8 @@ export default class PauseMenu extends Phaser.Scene {
         container.setScale(0);
         container.setAlpha(0);
         // Título
-        const texto = this.add.text(0, -90, 'PAUSA', {
-            fontSize: '32px',
+        const texto = this.add.text(0, -90, 'PAUSE', {
+            fontSize: '40px',
             fill: 'rgb(255,0,0)',
             fontFamily: 'Merriweather'
         }).setOrigin(0.5);
@@ -43,28 +43,28 @@ export default class PauseMenu extends Phaser.Scene {
         };
 
         // Botón Reanudar
-        const continueButton = this.add.text(0, -20, 'Reanudar', {
+        const continueButton = this.add.text(0, -20, 'Continue', {
             fontSize: '24px',
             fill: 'rgb(255, 255, 255)',
             fontFamily: 'Merriweather'
         }).setOrigin(0.5).setInteractive();
         container.add(continueButton);
-
+        // Botoon Reiniciar
+        const restartButton = this.add.text(0, 40, 'Restart', {
+            fontSize: '24px',
+            fill: 'rgb(255, 255, 255)',
+            fontFamily: 'Merriweather'
+        }).setOrigin(0.5).setInteractive();
+        container.add(restartButton);
         // Botoon Inicio
-        const menuButton = this.add.text(0, 40, 'Inicio', {
+        const menuButton = this.add.text(0, 100, 'Menu', {
             fontSize: '24px',
             fill: 'rgb(255, 255, 255)',
             fontFamily: 'Merriweather'
         }).setOrigin(0.5).setInteractive();
         container.add(menuButton);
 
-        // Botoon Inicio
-        const restartButton = this.add.text(0, 100, 'Reiniciar', {
-            fontSize: '24px',
-            fill: 'rgb(255, 255, 255)',
-            fontFamily: 'Merriweather'
-        }).setOrigin(0.5).setInteractive();
-        container.add(restartButton);
+       
 
         // Entrar con animacion (panel y fondo)
         this.tweens.add({ targets: container, scale: 1, alpha: 1, duration: 500, ease: 'Power2' });
