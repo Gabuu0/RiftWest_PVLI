@@ -24,6 +24,8 @@ export default class LevelAx extends Phaser.Scene {
     }
 
     create(){
+        this.levels = this.registry.get('levels');
+
         this.setInputs();
         
         //random que se utiliza para elegir los textos del payaso
@@ -351,7 +353,7 @@ export default class LevelAx extends Phaser.Scene {
          * @param {TilemapLayer} Decoracion 
          */
         createCollisions(Paredes) {
-            this.physics.add.collider(this.players,Paredes);
+            // this.physics.add.collider(this.players,Paredes);
             this.physics.add.collider(this.players,this.doors,(jugador,puerta)=>{
                 //si el jugador tiene un item con el mismo identificador que la puerta esta se destruye
                 if(jugador.haveItem(puerta.identifier)){
@@ -380,13 +382,11 @@ export default class LevelAx extends Phaser.Scene {
             this.physics.add.overlap(this.players,this.endTriggers,(jugador, endT)=>{
                 endT.on();
                 if (this.endTriggers.every(t => t.getIsPressed())) {
-                    this.scene.start('levelGabi',{
-                        clownGetItemJokes: this.clownGetItemJokes,
-                        clownGiveItemJokes: this.clownGiveItemJokes,
-                        clownNoObjectGiven: this.clownNoObjectGiven,
-                        clownNoObjectTaken: this.clownNoObjectTaken,
-                        clownLast: this.clownLast,
-                    });
+
+                this.levels.level3 = true;
+                this.registry.set('levels', this.levels);
+
+                this.scene.start('levelSelector');
                 }
             });
         }

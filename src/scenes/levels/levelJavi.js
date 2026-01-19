@@ -26,6 +26,8 @@ export default class LevelJavi extends Phaser.Scene{
     }
 
     create(){
+        this.levels = this.registry.get('levels');
+
         this.setInputs();
 
         //random que se utiliza para elegir los textos del payaso
@@ -380,7 +382,7 @@ export default class LevelJavi extends Phaser.Scene{
      * @param {TilemapLayer} Decoracion 
      */
     createCollisions(Paredes, Decoracion) {
-        this.physics.add.collider(this.players, Paredes);
+        // this.physics.add.collider(this.players, Paredes);
         this.physics.add.collider(this.players, Decoracion);
 
         //Colisiones con Puertas
@@ -452,14 +454,11 @@ export default class LevelJavi extends Phaser.Scene{
             endT.on();
             if (this.endTriggers.every(t => t.getIsPressed())) {
                 this.scene.stop();
-                //se inicia el siguiente nivel, se le pasan todos los dialogos de payaso(SIEMPRE PASAR LOS DIALOGOS)
-                this.scene.start('levelAx',{
-                    clownGetItemJokes: this.clownGetItemJokes,
-                    clownGiveItemJokes: this.clownGiveItemJokes,
-                    clownNoObjectGiven: this.clownNoObjectGiven,
-                    clownNoObjectTaken: this.clownNoObjectTaken,
-                    clownLast: this.clownLast,
-                });
+
+                this.levels.level2 = true;
+                this.registry.set('levels', this.levels);
+
+                this.scene.start('levelSelector');
             }
         });
     }

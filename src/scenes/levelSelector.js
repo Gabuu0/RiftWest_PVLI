@@ -12,16 +12,30 @@ export default class LevelSelector extends Phaser.Scene {
         this.levelBlockedText = this.add.text(0,0,'BLOQUEADO',{fontSize:'20px',fill:'rgb(255, 255, 255)', fontFamily:'Merriweather'}).setVisible(false).setDepth(1);
         this.levelBlockedPanel = this.add.image(0,0,'textPanel').setVisible(false).setDisplaySize(altoPanel*3,altoPanel).setOrigin(0,0.25);
 
-        const level1Button = new Button(this,100,200,"LEVEL 1",{fontSize: '48px', fill: 'rgb(255, 0, 0)', fontFamily: 'Merriweather'},1,()=>{
+        const level1Button = new Button(this,100,200,"LEVEL 1",{fontSize: '48px', fill: 'rgb(255, 108, 243)', fontFamily: 'Merriweather'},1,()=>{
             if(levels.level1){
-                this.scene.run('levelJavi');
+                //se inicia el siguiente nivel, se le pasan todos los dialogos de payaso(SIEMPRE PASAR LOS DIALOGOS)
+                this.scene.start('levelJavi',{
+                    clownGetItemJokes: this.clownGetItemJokes,
+                    clownGiveItemJokes: this.clownGiveItemJokes,
+                    clownNoObjectGiven: this.clownNoObjectGiven,
+                    clownNoObjectTaken: this.clownNoObjectTaken,
+                    clownLast: this.clownLast,
+                });
                 this.scene.sleep('levelSelector');
             }
         },true);
         
-        const level2Button = new Button(this,400,200,"LEVEL 2",{fontSize: '48px', fill: 'rgb(255, 0, 0)', fontFamily: 'Merriweather'},1,()=>{
+        const level2Button = new Button(this,400,200,"LEVEL 2",{fontSize: '48px', fill: 'rgb(95, 156, 255)', fontFamily: 'Merriweather'},1,()=>{
             if(levels.level2){
-                this.scene.run('levelAx');
+                //se inicia el siguiente nivel, se le pasan todos los dialogos de payaso(SIEMPRE PASAR LOS DIALOGOS)
+                this.scene.start('levelAx',{
+                    clownGetItemJokes: this.clownGetItemJokes,
+                    clownGiveItemJokes: this.clownGiveItemJokes,
+                    clownNoObjectGiven: this.clownNoObjectGiven,
+                    clownNoObjectTaken: this.clownNoObjectTaken,
+                    clownLast: this.clownLast,
+                });
                 this.scene.sleep('levelSelector');
             }
             else{
@@ -29,9 +43,16 @@ export default class LevelSelector extends Phaser.Scene {
             }
         },true);
         
-        const level3Button = new Button(this,700,200,"LEVEL 3",{fontSize: '48px', fill: 'rgb(250, 0, 0)', fontFamily: 'Merriweather'},1,()=>{
+        const level3Button = new Button(this,700,200,"LEVEL 3",{fontSize: '48px', fill: 'rgb(255, 252, 79)', fontFamily: 'Merriweather'},1,()=>{
             if(levels.level3){
-                this.scene.run('levelGabi');
+                //se inicia el siguiente nivel, se le pasan todos los dialogos de payaso(SIEMPRE PASAR LOS DIALOGOS)
+                this.scene.start('levelGabi',{
+                    clownGetItemJokes: this.clownGetItemJokes,
+                    clownGiveItemJokes: this.clownGiveItemJokes,
+                    clownNoObjectGiven: this.clownNoObjectGiven,
+                    clownNoObjectTaken: this.clownNoObjectTaken,
+                    clownLast: this.clownLast,
+                });
                 this.scene.sleep('levelSelector');
             }
             else{
