@@ -75,10 +75,6 @@ export default class InventoryPercival extends Phaser.Scene{
     }
 
 
-    update(){
-
-    }
-
     setItem(item){
        let i= 0;
        let itemPicked = false;

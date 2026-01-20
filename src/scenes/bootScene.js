@@ -117,7 +117,7 @@ export default class BootScene extends Phaser.Scene{
 
         //se establece que solo el primer nivel es accesible
         this.registry.set('levels', {
-            level1: true,
+            level1: false,
             level2: false,
             level3: false,
         });
