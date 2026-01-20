@@ -35,18 +35,19 @@ export default class Menu extends Phaser.Scene {
         const menu = new Button(this, 540, 450, "MENU", { fontSize: '25px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
             this.setSecondScreenButtonsVisibility( false);
             this.jugarButton.setActive(true).setVisible(true);
-        });
+        },true,true,'rgb(255, 255, 143)');
 
         const tutorialButton = new Button(this, 540, 250, 'TUTORIAL', { fontSize: '48px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
             this.sound.play('select');
             this.scene.start('levelGabi');
             this.scene.sleep('levelSelector');
-        });
+        },true,true,'rgb(255, 255, 143)');
 
         const lvlsButton = new Button(this, 540, 340, 'LEVELS', { fontSize: '48px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
             this.setSecondScreenButtonsVisibility(false);
             this.setLevelsButtonsVisibility(true);
-        });
+        },true,true,'rgb(255, 255, 143)');
+
         this.secondScreenButtons = this.add.container(0, 0);
         this.secondScreenButtons.add([menu, tutorialButton, lvlsButton]);
         return { lvlsButton, tutorialButton, menu };
@@ -66,7 +67,7 @@ export default class Menu extends Phaser.Scene {
             else {
                 this.showLevelLocked('level1');
             }
-        });
+        },true,true,'rgb(197, 83, 188)');
 
         const level2Button = new Button(this, 540, 300, "LEVEL 2", { fontSize: '48px', fill: 'rgb(95, 156, 255)', fontFamily: 'Merriweather' }, 1, () => {
             this.sound.play('select');
@@ -78,7 +79,7 @@ export default class Menu extends Phaser.Scene {
             else {
                 this.showLevelLocked('level2');
             }
-        });
+        },true,true,'rgb(66, 108, 177)');
 
         const level3Button = new Button(this, 540, 375, "LEVEL 3", { fontSize: '48px', fill: 'rgb(255, 252, 79)', fontFamily: 'Merriweather' }, 1, () => {
             this.sound.play('select');
@@ -89,11 +90,11 @@ export default class Menu extends Phaser.Scene {
             else {
                 this.showLevelLocked();
             }
-        });
+        },true,true,'rgb(175, 173, 54)');
 
 
         //cheat para desbloquear todos los niveles
-        const unlockLevels = new Button(this, 800, 450, 'UNLOCK \n ALL', { fontSize: '24px', fill: 'rgb(255, 252, 79)', fontFamily: 'Merriweather' }, 1, () => {
+        const unlockLevels = new Button(this, 800, 450, 'UNLOCK \n ALL', { fontSize: '24px', fill: 'rgb(22, 218, 48)', fontFamily: 'Merriweather' }, 1, () => {
             this.sound.play('select');
 
             this.registry.set('levels', {
@@ -102,12 +103,12 @@ export default class Menu extends Phaser.Scene {
                 level3: true,
             });
             this.levelsUnlocked = this.registry.get('levels');
-        });
+        },true,true,'rgb(14, 124, 29)');
 
         const returnButton = new Button(this,540,450,"RETURN",{fontSize: '25px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather'},1, ()=>{
             this.setSecondScreenButtonsVisibility(true);
             this.setLevelsButtonsVisibility(false);
-        });
+        },true,true,'rgb(94, 94, 94)');
 
         this.levelsButtons = this.add.container(0, 0);
         this.levelsButtons.add([level1Button, level2Button, level3Button,unlockLevels,returnButton]);

@@ -32,12 +32,10 @@ export default class InventoryItem extends Phaser.GameObjects.Container{
     showDescription(){
         this.list[1].setVisible(true);
         this.list[2].setVisible(true);
-        console.log('mostrao');
     }
 
     hideDescription(){
         this.list[1].setVisible(false);
         this.list[2].setVisible(false);
-        console.log('ocultao');
     }
 }
