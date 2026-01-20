@@ -305,7 +305,7 @@
                         {
                          "name":"isRaised",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }],
                  "rotation":0,
                  "type":"",
@@ -351,7 +351,7 @@
                         {
                          "name":"isRaised",
                          "type":"bool",
-                         "value":true
+                         "value":false
                         }],
                  "rotation":0,
                  "type":"",
