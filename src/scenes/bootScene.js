@@ -35,6 +35,8 @@ export default class BootScene extends Phaser.Scene{
         this.load.image('GameCharacters', 'assets/sprites/logos/logoPersonajes.png');
         this.load.image('menuBackground', 'assets/sprites/logos/background.png');
         this.load.image('menuBackground2', 'assets/sprites/logos/background2.png');
+        this.load.image('iconNotFullScreen', 'assets/sprites/logos/iconNotFullScreen.png');
+        this.load.image('iconFullScreen', 'assets/sprites/logos/iconFullScreen.png');
 
         this.characterSprites = [];
         this.load.spritesheet('Daphne','assets/sprites/images/daphne/Daphne.png',{frameWidth:160, frameHeight:160});
@@ -117,7 +119,7 @@ export default class BootScene extends Phaser.Scene{
 
         //se establece que solo el primer nivel es accesible
         this.registry.set('levels', {
-            level1: false,
+            level1: true,
             level2: false,
             level3: false,
         });

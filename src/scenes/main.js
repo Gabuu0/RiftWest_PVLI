@@ -9,6 +9,19 @@ export default class Menu extends Phaser.Scene {
 
     create() {
         const background = this.add.image(0,0,'menuBackground').setOrigin(0,0);
+        this.backgroundClear = this.add.image(0,0,'menuBackground2').setOrigin(0,0).setVisible(false);
+        this.fullscreenButton = this.add.image(1050, 510, 'iconFullScreen').setScrollFactor(0).setInteractive();
+
+        this.fullscreenButton.on('pointerup', () => {
+        if (!this.scale.isFullscreen) {
+            this.scale.startFullscreen();
+            this.fullscreenButton.setTexture('iconNotFullScreen');
+        } else {
+            this.scale.stopFullscreen();
+            this.fullscreenButton.setTexture('iconFullScreen');
+        }
+        });
+
         this.levelsUnlocked  = this.registry.get('levels');
         const altoPanel = 35;
         this.levelLockedIcon = this.add.image(0,0,'lockedIcon').setVisible(false).setDisplaySize(altoPanel,altoPanel).setOrigin(0.5,0.5);
@@ -22,8 +35,10 @@ export default class Menu extends Phaser.Scene {
 
         const { lvlsButton, tutorialButton, menu } = this.createTransitionScreenButtons();
         const { level1Button, level2Button, level3Button ,returnButton, unlockLevels} = this.createLevelsButtons();
+        const { levers, preassurePlates, watchMans ,liftingPlatforms, clownInventory, knockableObjects, daphneAbility, percivalAbility, returnButtons} = this.createTutorialButtons();
         
         this.setLevelsButtonsVisibility(false);
+        this.setTutorialButtonsVisibility(false);
         this.setSecondScreenButtonsVisibility(false);
     }
 
@@ -38,9 +53,8 @@ export default class Menu extends Phaser.Scene {
         },true,true,'rgb(255, 255, 143)');
 
         const tutorialButton = new Button(this, 540, 250, 'TUTORIAL', { fontSize: '48px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
-            this.sound.play('select');
-            this.scene.start('levelGabi');
-            this.scene.sleep('levelSelector');
+            this.setSecondScreenButtonsVisibility(false);
+            this.setTutorialButtonsVisibility(true);
         },true,true,'rgb(255, 255, 143)');
 
         const lvlsButton = new Button(this, 540, 340, 'LEVELS', { fontSize: '48px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
@@ -114,7 +128,41 @@ export default class Menu extends Phaser.Scene {
         this.levelsButtons.add([level1Button, level2Button, level3Button,unlockLevels,returnButton]);
         return { level1Button, level2Button, level3Button , unlockLevels,returnButton};
     }
-    
+    createTutorialButtons(){
+        const levers = new Button(this, 135, 165, 'LEVER', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+            this.ShowTutorial(levers);
+        },true,true,'rgb(255, 255, 143)');
+        const preassurePlates = new Button(this, 135, 195, 'PREASSURE PLATE', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+            this.ShowTutorial(preassurePlates);
+        },true,true,'rgb(255, 255, 143)');
+        const watchMans = new Button(this, 135, 225, 'WATCHMAN', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+            this.ShowTutorial(watchMans);
+        },true,true,'rgb(255, 255, 143)');
+        const liftingPlatforms = new Button(this, 135, 255, 'LIFTING PLATFORM', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+            this.ShowTutorial(liftingPlatforms);
+        },true,true,'rgb(255, 255, 143)');
+        const clownInventory = new Button(this, 135, 285, 'CLOWN / INVENTORY', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+            this.ShowTutorial(clownInventory);
+        },true,true,'rgb(255, 255, 143)');
+        const knockableObjects = new Button(this, 135, 315, 'KNOCKABLE OBJECTS', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+            this.ShowTutorial(knockableObjects);
+        },true,true,'rgb(255, 255, 143)');
+        const daphneAbility = new Button(this, 135, 345, 'KNOCKABLE OBJECTS', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+            this.ShowTutorial(daphneAbility);
+        },true,true,'rgb(255, 255, 143)');
+        const percivalAbility = new Button(this, 135, 375, 'KNOCKABLE OBJECTS', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+            this.ShowTutorial(percivalAbility);
+        },true,true,'rgb(255, 255, 143)');
+        const returnButton = new Button(this, 540, 450, 'RETURN', { fontSize: '25px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+            this.jugarButton.setActive(true).setVisible(true);
+            this.setTutorialButtonsVisibility(false);
+
+        },true,true,'rgb(255, 255, 143)');
+
+        this.tutorialButtons = this.add.container(0, 0);
+        this.tutorialButtons.add([levers, preassurePlates,liftingPlatforms, watchMans, clownInventory, knockableObjects, daphneAbility, percivalAbility,returnButton]);
+        return { levers, preassurePlates, watchMans, liftingPlatforms, clownInventory, knockableObjects, daphneAbility, percivalAbility, returnButton};
+    }
     /**
      * 
      * @param {*} visible si los botones se van a mostrar u ocultar
@@ -130,7 +178,14 @@ export default class Menu extends Phaser.Scene {
     setLevelsButtonsVisibility(visible) {
         this.levelsButtons.setActive(visible).setVisible(visible);
     }
-
+    /**
+     * 
+     * @param {*} visible si los botones se van a mostrar u ocultar
+     */
+    setTutorialButtonsVisibility(visible) {
+        this.tutorialButtons.setActive(visible).setVisible(visible);
+        this.backgroundClear.setVisible(visible);
+    }
 
     /**
      * muestra el mensaje de que un nivel esta bloqueado actualmente

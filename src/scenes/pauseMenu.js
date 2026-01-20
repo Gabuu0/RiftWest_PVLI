@@ -20,7 +20,18 @@ export default class PauseMenu extends Phaser.Scene {
         const panel = this.add.graphics();
         panel.fillStyle(0xffffff, 0.2);
         panel.fillRoundedRect(-panelWidth/2,-panelHeight/2, panelWidth, panelHeight, radius);
+        
+        this.fullscreenButton = this.add.image(1050, 510, 'iconFullScreen').setScrollFactor(0).setInteractive();
 
+        this.fullscreenButton.on('pointerup', () => {
+        if (!this.scale.isFullscreen) {
+            this.scale.startFullscreen();
+            this.fullscreenButton.setTexture('iconNotFullScreen');
+        } else {
+            this.scale.stopFullscreen();
+            this.fullscreenButton.setTexture('iconFullScreen');
+        }
+        });
         // Contenedor del panel y sus hijos
         const container = this.add.container(540, 270, [panel]);
         container.setScale(0);

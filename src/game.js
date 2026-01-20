@@ -17,7 +17,8 @@ const config = {
 	width: 1080,
 	height: 540,
 	scale: {
-	autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
+		mode: Phaser.Scale.FIT,
+    	autoCenter: Phaser.Scale.CENTER_BOTH	
 	},
 	scene: [BootScene,  Menu, LevelJavi, LevelJavi2, LevelGabi, LevelPruebas,Level1,LevelAx,InventoryDaphne,InventoryPercival, PauseMenu, TheEnd],
 	physics: {
