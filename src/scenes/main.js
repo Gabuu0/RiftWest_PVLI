@@ -27,7 +27,7 @@ export default class Menu extends Phaser.Scene {
         const altoPanel = 35;
         this.levelLockedIcon = this.add.image(0,0,'lockedIcon').setVisible(false).setDisplaySize(altoPanel,altoPanel).setOrigin(0.5,0.5);
         
-        this.jugarButton = new Button(this,540,330,'PLAY DEMO',{ fontSize: '48px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather'},1,()=>{
+        this.jugarButton = new Button(this,540,330,'PLAY DEMO',{ fontSize: '48px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt'},1,()=>{
             this.sound.play('select');
             this.jugarButton.setVisible(false).setActive(false);
             this.setSecondScreenButtonsVisibility(true);
@@ -48,17 +48,17 @@ export default class Menu extends Phaser.Scene {
      * @returns 
      */
     createTransitionScreenButtons() {
-        const menu = new Button(this, 540, 450, "MENU", { fontSize: '25px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+        const menu = new Button(this, 540, 450, "MENU", { fontSize: '25px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
             this.setSecondScreenButtonsVisibility( false);
             this.jugarButton.setActive(true).setVisible(true);
         },true,true,'rgb(255, 255, 143)');
 
-        const tutorialButton = new Button(this, 540, 250, 'TUTORIAL', { fontSize: '48px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+        const tutorialButton = new Button(this, 540, 250, 'TUTORIAL', { fontSize: '48px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
             this.setSecondScreenButtonsVisibility(false);
             this.setTutorialButtonsVisibility(true);
         },true,true,'rgb(255, 255, 143)');
 
-        const lvlsButton = new Button(this, 540, 340, 'LEVELS', { fontSize: '48px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+        const lvlsButton = new Button(this, 540, 340, 'LEVELS', { fontSize: '48px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
             this.setSecondScreenButtonsVisibility(false);
             this.setLevelsButtonsVisibility(true);
         },true,true,'rgb(255, 255, 143)');
@@ -73,7 +73,7 @@ export default class Menu extends Phaser.Scene {
      * @returns 
      */
     createLevelsButtons() {
-        const level1Button = new Button(this, 540, 225, "LEVEL 1", { fontSize: '48px', fill: 'rgb(255, 108, 243)', fontFamily: 'Merriweather' }, 1, () => {
+        const level1Button = new Button(this, 540, 225, "LEVEL 1", { fontSize: '48px', fill: 'rgb(197, 83, 188)', fontFamily: 'upheavtt' }, 1, () => {
             if (this.levelsUnlocked.level1) {
                 //se inicia el siguiente nivel, se le pasan todos los dialogos de payaso(SIEMPRE PASAR LOS DIALOGOS)
                 this.scene.start('levelGabi');
@@ -82,9 +82,9 @@ export default class Menu extends Phaser.Scene {
             else {
                 this.showLevelLocked('level1');
             }
-        },true,true,'rgb(197, 83, 188)');
+        },true,true,'rgb(255, 108, 243)');
 
-        const level2Button = new Button(this, 540, 300, "LEVEL 2", { fontSize: '48px', fill: 'rgb(95, 156, 255)', fontFamily: 'Merriweather' }, 1, () => {
+        const level2Button = new Button(this, 540, 300, "LEVEL 2", { fontSize: '48px', fill: 'rgb(66, 108, 177)', fontFamily: 'upheavtt' }, 1, () => {
             this.sound.play('select');
             if (this.levelsUnlocked.level2) {
                 //se inicia el siguiente nivel, se le pasan todos los dialogos de payaso(SIEMPRE PASAR LOS DIALOGOS)
@@ -94,9 +94,9 @@ export default class Menu extends Phaser.Scene {
             else {
                 this.showLevelLocked('level2');
             }
-        },true,true,'rgb(66, 108, 177)');
+        },true,true,'rgb(95, 156, 255)');
 
-        const level3Button = new Button(this, 540, 375, "LEVEL 3", { fontSize: '48px', fill: 'rgb(255, 252, 79)', fontFamily: 'Merriweather' }, 1, () => {
+        const level3Button = new Button(this, 540, 375, "LEVEL 3", { fontSize: '48px', fill: 'rgb(175, 173, 54)', fontFamily: 'upheavtt' }, 1, () => {
             this.sound.play('select');
             if (this.levelsUnlocked.level3) {
                 this.scene.start('levelJavi');
@@ -105,11 +105,11 @@ export default class Menu extends Phaser.Scene {
             else {
                 this.showLevelLocked();
             }
-        },true,true,'rgb(175, 173, 54)');
+        },true,true,'rgb(255, 252, 79)');
 
 
         //cheat para desbloquear todos los niveles
-        const unlockLevels = new Button(this, 610, 450, 'UNLOCK ALL', { fontSize: '24px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+        const unlockLevels = new Button(this, 610, 450, 'UNLOCK ALL', { fontSize: '24px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
             this.sound.play('select');
 
             this.registry.set('levels', {
@@ -120,7 +120,7 @@ export default class Menu extends Phaser.Scene {
             this.levelsUnlocked = this.registry.get('levels');
         },true,true,'rgb(255, 255, 143)');
 
-        const returnButton = new Button(this,450,450,"RETURN",{fontSize: '25px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather'},1, ()=>{
+        const returnButton = new Button(this,450,450,"RETURN",{fontSize: '25px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt'},1, ()=>{
             this.setSecondScreenButtonsVisibility(true);
             this.setLevelsButtonsVisibility(false);
         },true,true,'rgb(255, 255, 143)');
@@ -130,31 +130,31 @@ export default class Menu extends Phaser.Scene {
         return { level1Button, level2Button, level3Button , unlockLevels,returnButton};
     }
     createTutorialButtons(){
-        const levers = new Button(this, 135, 165, 'LEVER', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+        const levers = new Button(this, 135, 165, 'LEVER', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
             this.ShowTutorial(levers);
         },true,true,'rgb(255, 255, 143)');
-        const preassurePlates = new Button(this, 135, 195, 'PREASSURE PLATE', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+        const preassurePlates = new Button(this, 135, 195, 'PREASSURE PLATE', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
             this.ShowTutorial(preassurePlates);
         },true,true,'rgb(255, 255, 143)');
-        const watchMans = new Button(this, 135, 225, 'WATCHMAN', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+        const watchMans = new Button(this, 135, 225, 'WATCHMAN', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
             this.ShowTutorial(watchMans);
         },true,true,'rgb(255, 255, 143)');
-        const liftingPlatforms = new Button(this, 135, 255, 'LIFTING PLATFORM', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+        const liftingPlatforms = new Button(this, 135, 255, 'LIFTING PLATFORM', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
             this.ShowTutorial(liftingPlatforms);
         },true,true,'rgb(255, 255, 143)');
-        const clownInventory = new Button(this, 135, 285, 'CLOWN / INVENTORY', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+        const clownInventory = new Button(this, 135, 285, 'CLOWN / INVENTORY', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
             this.ShowTutorial(clownInventory);
         },true,true,'rgb(255, 255, 143)');
-        const knockableObjects = new Button(this, 135, 315, 'KNOCKABLE OBJECTS', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+        const knockableObjects = new Button(this, 135, 315, 'KNOCKABLE OBJECTS', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
             this.ShowTutorial(knockableObjects);
         },true,true,'rgb(255, 255, 143)');
-        const daphneAbility = new Button(this, 135, 345, 'DAPHNE ABILITY', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+        const daphneAbility = new Button(this, 135, 345, 'DAPHNE ABILITY', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
             this.ShowTutorial(daphneAbility);
         },true,true,'rgb(255, 255, 143)');
-        const percivalAbility = new Button(this, 135, 375, 'PERCIVAL ABILITY', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+        const percivalAbility = new Button(this, 135, 375, 'PERCIVAL ABILITY', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
             this.ShowTutorial(percivalAbility);
         },true,true,'rgb(255, 255, 143)');
-        const returnButton = new Button(this, 540, 450, 'RETURN', { fontSize: '25px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+        const returnButton = new Button(this, 540, 450, 'RETURN', { fontSize: '25px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
             this.jugarButton.setActive(true).setVisible(true);
             this.setTutorialButtonsVisibility(false);
 
