@@ -11,7 +11,6 @@ export default class Menu extends Phaser.Scene {
         //indica si se esta en la pantalla de los tutoriales o no
         this.tutorial = false;
         this.tutorialSelected = 0;
-        this.video = this.add.video(200,200,this.tutorialsVideos[this.tutorialSelected]);
         //obtiene que niveles estan desbloqueados
         this.levelsUnlocked  = this.registry.get('levels');
         const altoPanel = 35;
@@ -262,7 +261,8 @@ export default class Menu extends Phaser.Scene {
         });
     }
 
-
+    //Carga todos los nombres de los videos de todos los tutoriales y los guarda en un array, 
+    // ademas establece el primer tutorial que se muestra
     loadTutorials(){
         this.tutorialsVideos = ['LEVER_Tutorial',
             'PREASSURE PLATE_Tutorial',
@@ -273,6 +273,7 @@ export default class Menu extends Phaser.Scene {
             'DAPHNE ABILITY_Tutorial',
             'PERCIVAL ABILITY_Tutorial'
         ];
+        this.video = this.add.video(200,200,this.tutorialsVideos[this.tutorialSelected]);
     }
 
     /**
