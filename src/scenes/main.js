@@ -8,6 +8,15 @@ export default class Menu extends Phaser.Scene {
     }
 
     create() {
+        //indica si se esta en la pantalla de los tutoriales o no
+        this.tutorial = false;
+        this.tutorialSelected = 0;
+        this.video = this.add.video(200,200,this.tutorialsVideos[this.tutorialSelected]);
+        //obtiene que niveles estan desbloqueados
+        this.levelsUnlocked  = this.registry.get('levels');
+        const altoPanel = 35;
+        
+
         const background = this.add.image(0,0,'menuBackground').setOrigin(0,0);
         this.tutorialBackground = this.add.image(0,0,'tutorialBackground').setOrigin(0,0).setVisible(false);
         this.levelsBackground = this.add.image(0,0,'levelsBackground').setOrigin(0,0).setVisible(false);
@@ -23,24 +32,56 @@ export default class Menu extends Phaser.Scene {
         }
         });
 
-        this.levelsUnlocked  = this.registry.get('levels');
-        const altoPanel = 35;
+
         this.levelLockedIcon = this.add.image(0,0,'lockedIcon').setVisible(false).setDisplaySize(altoPanel,altoPanel).setOrigin(0.5,0.5);
         
         this.jugarButton = new Button(this,540,330,'PLAY DEMO',{ fontSize: '48px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt'},1,()=>{
             this.sound.play('select');
             this.jugarButton.setVisible(false).setActive(false);
-            this.setSecondScreenButtonsVisibility(true);
-        },true,true,'rgb(255, 255, 143)')
+            this.setTransitionScreenButtonsVisibility(true);
+        },true,true,'rgb(255, 255, 143)');
+
+        this.returnButton = new Button(this,450,450,"RETURN",{fontSize: '36px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt'},1, ()=>{
+            this.setTransitionScreenButtonsVisibility(true);
+            if(this.tutorial){
+                this.setTutorialButtonsVisibility(false);
+            }
+            else{
+                this.setLevelsButtonsVisibility(false);
+            }
+            this.tutorial = false;
+            this.returnButton.setActive(false).setVisible(false);
+        },true,true,'rgb(255, 255, 143)');
 
 
         const { lvlsButton, tutorialButton, menu } = this.createTransitionScreenButtons();
-        const { level1Button, level2Button, level3Button ,returnButton, unlockLevels} = this.createLevelsButtons();
-        const { levers, preassurePlates, watchMans ,liftingPlatforms, clownInventory, knockableObjects, daphneAbility, percivalAbility, returnButtons} = this.createTutorialButtons();
+        const { level1Button, level2Button, level3Button , unlockLevels} = this.createLevelsButtons();
+        this.createTutorialButtons();
+        this.loadTutorials();
         
         this.setLevelsButtonsVisibility(false);
         this.setTutorialButtonsVisibility(false);
-        this.setSecondScreenButtonsVisibility(false);
+        this.setTransitionScreenButtonsVisibility(false);
+        this.returnButton.setActive(false).setVisible(false);
+
+        this.input.keyboard.on('keydown', (event)=>{
+            if(this.tutorial){
+                if(event.code === 'ArrowLeft'){
+                   if(this.tutorialSelected ==0){
+                        this.tutorialSelected = this.tutorialsButtons.length-1;
+                    }
+                    this.showTutorial(this.tutorialsButtons[this.tutorialSelected].text);
+                }
+                else if(event.code === 'ArrowRight'){
+                    if(this.tutorialSelected == this.tutorialsButtons.length -1){
+                        this.tutorialSelected = 0;
+                    }
+                    this.showTutorial(this.tutorialsButtons[this.tutorialSelected].text);
+                }
+            }
+            
+        })
+
     }
 
     /**
@@ -48,19 +89,22 @@ export default class Menu extends Phaser.Scene {
      * @returns 
      */
     createTransitionScreenButtons() {
-        const menu = new Button(this, 540, 450, "MENU", { fontSize: '25px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
-            this.setSecondScreenButtonsVisibility( false);
+        const menu = new Button(this, 540, 430, "MENU", { fontSize: '36px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
+            this.setTransitionScreenButtonsVisibility( false);
             this.jugarButton.setActive(true).setVisible(true);
         },true,true,'rgb(255, 255, 143)');
 
         const tutorialButton = new Button(this, 540, 250, 'TUTORIAL', { fontSize: '48px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
-            this.setSecondScreenButtonsVisibility(false);
+            this.setTransitionScreenButtonsVisibility(false);
             this.setTutorialButtonsVisibility(true);
+            this.tutorial = true;
+            this.returnButton.setActive(true).setVisible(true);
         },true,true,'rgb(255, 255, 143)');
 
         const lvlsButton = new Button(this, 540, 340, 'LEVELS', { fontSize: '48px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
-            this.setSecondScreenButtonsVisibility(false);
+            this.setTransitionScreenButtonsVisibility(false);
             this.setLevelsButtonsVisibility(true);
+            this.returnButton.setActive(true).setVisible(true);
         },true,true,'rgb(255, 255, 143)');
 
         this.secondScreenButtons = this.add.container(0, 0);
@@ -109,7 +153,7 @@ export default class Menu extends Phaser.Scene {
 
 
         //cheat para desbloquear todos los niveles
-        const unlockLevels = new Button(this, 610, 450, 'UNLOCK ALL', { fontSize: '24px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
+        const unlockLevels = new Button(this, 670, 450, 'UNLOCK ALL', { fontSize: '36px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
             this.sound.play('select');
 
             this.registry.set('levels', {
@@ -120,55 +164,63 @@ export default class Menu extends Phaser.Scene {
             this.levelsUnlocked = this.registry.get('levels');
         },true,true,'rgb(255, 255, 143)');
 
-        const returnButton = new Button(this,450,450,"RETURN",{fontSize: '25px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt'},1, ()=>{
-            this.setSecondScreenButtonsVisibility(true);
-            this.setLevelsButtonsVisibility(false);
-        },true,true,'rgb(255, 255, 143)');
+        
 
         this.levelsButtons = this.add.container(0, 0);
-        this.levelsButtons.add([level1Button, level2Button, level3Button,unlockLevels,returnButton]);
-        return { level1Button, level2Button, level3Button , unlockLevels,returnButton};
+        this.levelsButtons.add([level1Button, level2Button, level3Button,unlockLevels]);
+        return { level1Button, level2Button, level3Button , unlockLevels};
     }
     createTutorialButtons(){
-        const levers = new Button(this, 135, 165, 'LEVER', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
-            this.ShowTutorial(levers);
-        },true,true,'rgb(255, 255, 143)');
-        const preassurePlates = new Button(this, 135, 195, 'PREASSURE PLATE', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
-            this.ShowTutorial(preassurePlates);
-        },true,true,'rgb(255, 255, 143)');
-        const watchMans = new Button(this, 135, 225, 'WATCHMAN', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
-            this.ShowTutorial(watchMans);
-        },true,true,'rgb(255, 255, 143)');
-        const liftingPlatforms = new Button(this, 135, 255, 'LIFTING PLATFORM', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
-            this.ShowTutorial(liftingPlatforms);
-        },true,true,'rgb(255, 255, 143)');
-        const clownInventory = new Button(this, 135, 285, 'CLOWN / INVENTORY', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
-            this.ShowTutorial(clownInventory);
-        },true,true,'rgb(255, 255, 143)');
-        const knockableObjects = new Button(this, 135, 315, 'KNOCKABLE OBJECTS', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
-            this.ShowTutorial(knockableObjects);
-        },true,true,'rgb(255, 255, 143)');
-        const daphneAbility = new Button(this, 135, 345, 'DAPHNE ABILITY', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
-            this.ShowTutorial(daphneAbility);
-        },true,true,'rgb(255, 255, 143)');
-        const percivalAbility = new Button(this, 135, 375, 'PERCIVAL ABILITY', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
-            this.ShowTutorial(percivalAbility);
-        },true,true,'rgb(255, 255, 143)');
-        const returnButton = new Button(this, 540, 450, 'RETURN', { fontSize: '25px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, () => {
-            this.jugarButton.setActive(true).setVisible(true);
-            this.setTutorialButtonsVisibility(false);
+        this.tutorialsButtons = [];
+        this.tutorialsMap = new Map();
+        this.tutorialsButtons.push(new Button(this, 135, 165, 'LEVER', { fontSize: '18px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, (buttonText) => {
+            this.showTutorial(buttonText);
+        },true,true,'rgb(255, 255, 143)'));
+        this.tutorialsMap.set('LEVER',0);
+        
+        this.tutorialsButtons.push(new Button(this, 135, 195, 'PREASSURE PLATE', { fontSize: '18px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, (buttonText) => {
+            this.showTutorial(buttonText);
+        },true,true,'rgb(255, 255, 143)'));
+        this.tutorialsMap.set('PREASSURE PLATE',1);
+        
+        this.tutorialsButtons.push(new Button(this, 135, 225, 'WATCHMAN', { fontSize: '18px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, (buttonText) => {
+            this.showTutorial(buttonText);
+        },true,true,'rgb(255, 255, 143)'));
+        this.tutorialsMap.set('WATCHMAN',2);
+        
+        this.tutorialsButtons.push(new Button(this, 135, 255, 'LIFTING PLATFORM', { fontSize: '18px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, (buttonText) => {
+            this.showTutorial(buttonText);
+        },true,true,'rgb(255, 255, 143)'));
+        this.tutorialsMap.set('LIFTING PLATFORM',3);
+        
+        this.tutorialsButtons.push(new Button(this, 135, 285, 'CLOWN/INVENTORY', { fontSize: '18px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, (buttonText) => {
+            this.showTutorial(buttonText);
+        },true,true,'rgb(255, 255, 143)'));
+        this.tutorialsMap.set('CLOWN/INVENTORY',4);
+        
+        this.tutorialsButtons.push(new Button(this, 135, 315, 'KNOCKABLE OBJECTS', { fontSize: '18px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, (buttonText) => {
+            this.showTutorial(buttonText);
+        },true,true,'rgb(255, 255, 143)'));
+        this.tutorialsMap.set('KNOCKABLE OBJECTS',5);
+        
+        this.tutorialsButtons.push(new Button(this, 135, 345, 'DAPHNE ABILITY', { fontSize: '18px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, (buttonText) => {
+            this.showTutorial(buttonText);
+        },true,true,'rgb(255, 255, 143)'));
+        this.tutorialsMap.set('DAPHNE ABILITY',6);
+        
+        this.tutorialsButtons.push(new Button(this, 135, 375, 'PERCIVAL ABILITY', { fontSize: '18px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, (buttonText) => {
+            this.showTutorial(buttonText);
+        },true,true,'rgb(255, 255, 143)'));
+        this.tutorialsMap.set('PERCIVAL ABILITY',7);
 
-        },true,true,'rgb(255, 255, 143)');
-
-        this.tutorialButtons = this.add.container(0, 0);
-        this.tutorialButtons.add([levers, preassurePlates,liftingPlatforms, watchMans, clownInventory, knockableObjects, daphneAbility, percivalAbility,returnButton]);
-        return { levers, preassurePlates, watchMans, liftingPlatforms, clownInventory, knockableObjects, daphneAbility, percivalAbility, returnButton};
+        this.tutorials = this.add.container(0, 0);
+        this.tutorials.add(this.tutorialsButtons);
     }
     /**
      * 
      * @param {*} visible si los botones se van a mostrar u ocultar
      */
-    setSecondScreenButtonsVisibility(visible) {
+    setTransitionScreenButtonsVisibility(visible) {
         this.secondScreenButtons.setActive(visible).setVisible(visible);
     }
 
@@ -185,7 +237,7 @@ export default class Menu extends Phaser.Scene {
      * @param {*} visible si los botones se van a mostrar u ocultar
      */
     setTutorialButtonsVisibility(visible) {
-        this.tutorialButtons.setActive(visible).setVisible(visible);
+        this.tutorials.setActive(visible).setVisible(visible);
         this.tutorialBackground.setVisible(visible);
     }
 
@@ -208,5 +260,26 @@ export default class Menu extends Phaser.Scene {
         duration: 500, // Duración del desvanecimiento
         delay: 2000,   // Tiempo que se queda visible antes de empezar a desaparecer
         });
+    }
+
+
+    loadTutorials(){
+        this.tutorialsVideos = ['LEVER_Tutorial',
+            'PREASSURE PLATE_Tutorial',
+            'WATCHMAN_Tutorial',
+            'LIFTING PLATFORM_Tutorial',
+            'CLOWN/INVENTORY_Tutorial',
+            'KNOCKABLE OBJECTS_Tutorial',
+            'DAPHNE ABILITY_Tutorial',
+            'PERCIVAL ABILITY_Tutorial'
+        ];
+    }
+
+    /**
+     * 
+     * @param {string} tutorial nombre del tutorial a mostrar
+     */
+    showTutorial(tutorial){
+
     }
 }

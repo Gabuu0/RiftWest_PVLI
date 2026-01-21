@@ -25,7 +25,7 @@ export default class Button extends Phaser.GameObjects.Text{
 
         //al hacer click
         this.on('pointerdown',function(){
-            func();
+            func(this.text);
         })
         //al poner el raton encima
         this.on('pointerover',function(){
