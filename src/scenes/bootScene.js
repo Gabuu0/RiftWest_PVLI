@@ -34,7 +34,8 @@ export default class BootScene extends Phaser.Scene{
         this.load.image('GameLogo', 'assets/sprites/logos/logoJuego.png');
         this.load.image('GameCharacters', 'assets/sprites/logos/logoPersonajes.png');
         this.load.image('menuBackground', 'assets/sprites/logos/background.png');
-        this.load.image('menuBackground2', 'assets/sprites/logos/background2.png');
+        this.load.image('tutorialBackground', 'assets/sprites/logos/background2.png');
+        this.load.image('levelsBackground', 'assets/sprites/logos/background3.png');
         this.load.image('iconNotFullScreen', 'assets/sprites/logos/iconNotFullScreen.png');
         this.load.image('iconFullScreen', 'assets/sprites/logos/iconFullScreen.png');
 

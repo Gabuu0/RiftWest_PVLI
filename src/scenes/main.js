@@ -9,7 +9,8 @@ export default class Menu extends Phaser.Scene {
 
     create() {
         const background = this.add.image(0,0,'menuBackground').setOrigin(0,0);
-        this.backgroundClear = this.add.image(0,0,'menuBackground2').setOrigin(0,0).setVisible(false);
+        this.tutorialBackground = this.add.image(0,0,'tutorialBackground').setOrigin(0,0).setVisible(false);
+        this.levelsBackground = this.add.image(0,0,'levelsBackground').setOrigin(0,0).setVisible(false);
         this.fullscreenButton = this.add.image(1050, 510, 'iconFullScreen').setScrollFactor(0).setInteractive();
 
         this.fullscreenButton.on('pointerup', () => {
@@ -75,7 +76,7 @@ export default class Menu extends Phaser.Scene {
         const level1Button = new Button(this, 540, 225, "LEVEL 1", { fontSize: '48px', fill: 'rgb(255, 108, 243)', fontFamily: 'Merriweather' }, 1, () => {
             if (this.levelsUnlocked.level1) {
                 //se inicia el siguiente nivel, se le pasan todos los dialogos de payaso(SIEMPRE PASAR LOS DIALOGOS)
-                this.scene.start('levelJavi');
+                this.scene.start('levelGabi');
                 this.scene.sleep('levelSelector');
             }
             else {
@@ -98,7 +99,7 @@ export default class Menu extends Phaser.Scene {
         const level3Button = new Button(this, 540, 375, "LEVEL 3", { fontSize: '48px', fill: 'rgb(255, 252, 79)', fontFamily: 'Merriweather' }, 1, () => {
             this.sound.play('select');
             if (this.levelsUnlocked.level3) {
-                this.scene.start('levelGabi');
+                this.scene.start('levelJavi');
                 this.scene.sleep('levelSelector');
             }
             else {
@@ -108,7 +109,7 @@ export default class Menu extends Phaser.Scene {
 
 
         //cheat para desbloquear todos los niveles
-        const unlockLevels = new Button(this, 800, 450, 'UNLOCK \n ALL', { fontSize: '24px', fill: 'rgb(22, 218, 48)', fontFamily: 'Merriweather' }, 1, () => {
+        const unlockLevels = new Button(this, 610, 450, 'UNLOCK ALL', { fontSize: '24px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
             this.sound.play('select');
 
             this.registry.set('levels', {
@@ -117,12 +118,12 @@ export default class Menu extends Phaser.Scene {
                 level3: true,
             });
             this.levelsUnlocked = this.registry.get('levels');
-        },true,true,'rgb(14, 124, 29)');
+        },true,true,'rgb(255, 255, 143)');
 
-        const returnButton = new Button(this,540,450,"RETURN",{fontSize: '25px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather'},1, ()=>{
+        const returnButton = new Button(this,450,450,"RETURN",{fontSize: '25px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather'},1, ()=>{
             this.setSecondScreenButtonsVisibility(true);
             this.setLevelsButtonsVisibility(false);
-        },true,true,'rgb(94, 94, 94)');
+        },true,true,'rgb(255, 255, 143)');
 
         this.levelsButtons = this.add.container(0, 0);
         this.levelsButtons.add([level1Button, level2Button, level3Button,unlockLevels,returnButton]);
@@ -147,10 +148,10 @@ export default class Menu extends Phaser.Scene {
         const knockableObjects = new Button(this, 135, 315, 'KNOCKABLE OBJECTS', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
             this.ShowTutorial(knockableObjects);
         },true,true,'rgb(255, 255, 143)');
-        const daphneAbility = new Button(this, 135, 345, 'KNOCKABLE OBJECTS', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+        const daphneAbility = new Button(this, 135, 345, 'DAPHNE ABILITY', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
             this.ShowTutorial(daphneAbility);
         },true,true,'rgb(255, 255, 143)');
-        const percivalAbility = new Button(this, 135, 375, 'KNOCKABLE OBJECTS', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
+        const percivalAbility = new Button(this, 135, 375, 'PERCIVAL ABILITY', { fontSize: '15px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
             this.ShowTutorial(percivalAbility);
         },true,true,'rgb(255, 255, 143)');
         const returnButton = new Button(this, 540, 450, 'RETURN', { fontSize: '25px', fill: 'rgb(255, 255, 255)', fontFamily: 'Merriweather' }, 1, () => {
@@ -177,6 +178,7 @@ export default class Menu extends Phaser.Scene {
      */
     setLevelsButtonsVisibility(visible) {
         this.levelsButtons.setActive(visible).setVisible(visible);
+        this.levelsBackground.setVisible(visible);
     }
     /**
      * 
@@ -184,7 +186,7 @@ export default class Menu extends Phaser.Scene {
      */
     setTutorialButtonsVisibility(visible) {
         this.tutorialButtons.setActive(visible).setVisible(visible);
-        this.backgroundClear.setVisible(visible);
+        this.tutorialBackground.setVisible(visible);
     }
 
     /**
