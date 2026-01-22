@@ -98,6 +98,7 @@ export default class BootScene extends Phaser.Scene{
         this.load.image('daphneHead', 'assets/sprites/images/daphne/head.png');
         this.load.image('percivalHead', 'assets/sprites/images/percival/head.png');
         this.load.image('lockedIcon','assets/sprites/images/UI/LockedIcon.png')
+        this.load.image('pausePanel','assets/sprites/images/UI/PausePanel.png')
         //#endregion
 
         //#region Sonidos

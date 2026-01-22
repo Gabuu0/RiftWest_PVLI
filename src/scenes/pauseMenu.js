@@ -17,9 +17,7 @@ export default class PauseMenu extends Phaser.Scene {
         background.alpha = 0; // inicial transparente
 
         // Panel con esquinas redondeadas
-        const panel = this.add.graphics();
-        panel.fillStyle(0xffffff, 0.2);
-        panel.fillRoundedRect(-panelWidth/2,-panelHeight/2, panelWidth, panelHeight, radius);
+        const panel = this.add.image(this.scene.width, this.scene.height, "pausePanel").setScale(0.6,0.6)
         
         this.fullscreenButton = this.add.image(1050, 510, 'iconFullScreen').setScrollFactor(0).setInteractive();
 
@@ -40,7 +38,7 @@ export default class PauseMenu extends Phaser.Scene {
         const texto = this.add.text(0, -90, 'PAUSE', {
             fontSize: '40px',
             fill: 'rgb(255,0,0)',
-            fontFamily: 'Merriweather'
+            fontFamily: 'Upheavtt'
         }).setOrigin(0.5);
         container.add(texto);
 
@@ -57,21 +55,21 @@ export default class PauseMenu extends Phaser.Scene {
         const continueButton = this.add.text(0, -20, 'Continue', {
             fontSize: '24px',
             fill: 'rgb(255, 255, 255)',
-            fontFamily: 'Merriweather'
+            fontFamily: 'upheavtt'
         }).setOrigin(0.5).setInteractive();
         container.add(continueButton);
         // Botoon Reiniciar
         const restartButton = this.add.text(0, 40, 'Restart', {
             fontSize: '24px',
             fill: 'rgb(255, 255, 255)',
-            fontFamily: 'Merriweather'
+            fontFamily: 'upheavtt'
         }).setOrigin(0.5).setInteractive();
         container.add(restartButton);
         // Botoon Inicio
         const menuButton = this.add.text(0, 100, 'Menu', {
             fontSize: '24px',
             fill: 'rgb(255, 255, 255)',
-            fontFamily: 'Merriweather'
+            fontFamily: 'upheavtt'
         }).setOrigin(0.5).setInteractive();
         container.add(menuButton);
 
