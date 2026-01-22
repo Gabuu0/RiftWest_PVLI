@@ -1,6 +1,7 @@
 import Players from '../../players/players.js'
 import Movement from '../../players/movement.js'
 import Key from "../../objects/mapObjects/key.js";
+import KnockableObject from '../../objects/mapObjects/knockableObject.js';
 import movableObject from '../../objects/mapObjects/movableObject.js';
 import breakableObjects from '../../objects/mapObjects/breakableObjects.js'
 import DialogText from "../../objects/playerObjects/dialogText.js";
@@ -10,9 +11,9 @@ import Lever from '../../objects/mapObjects/lever.js';
 import PreassurePlate from '../../objects/mapObjects/preassurePlate.js';
 import EndTrigger from '../../objects/mapObjects/endTrigger.js';
 
-export default class LevelGabi extends Phaser.Scene{
+export default class LevelTutoriales extends Phaser.Scene{
     constructor(){
-        super({key: "levelGabi"});
+        super({key: "tutoriales"});
     }
 
     create(){
@@ -52,7 +53,7 @@ export default class LevelGabi extends Phaser.Scene{
         //#region Creacion Mapa
         
         
-        this.map = this.make.tilemap({ key: 'mapLevelGabi' });
+        this.map = this.make.tilemap({ key: 'mapa' });
         const tileset1 = this.map.addTilesetImage('TileSetPJ', 'tilesPJ');
         const tilesetD = this.map.addTilesetImage('DustwartsTileset', 'tilesD');
         const tilesetD2 = this.map.addTilesetImage('Dustwarts', 'tilesD2');
@@ -63,9 +64,9 @@ export default class LevelGabi extends Phaser.Scene{
 
         const Suelo = this.addMapLayer('suelo',false);
         const Paredes = this.addMapLayer('paredes',true);
-        const Paredes2 = this.addMapLayer('paredes(sin_colision)',false);
+        // const Paredes2 = this.addMapLayer('paredes(sin_colision)',false);
         const Decoracion = this.addMapLayer('decoracion',true);
-        Paredes2.setDepth(3);   
+        //Paredes2.setDepth(3);   
         //#endregion
 
         this.createTileMapObjects();
@@ -104,8 +105,8 @@ export default class LevelGabi extends Phaser.Scene{
          * Crea los jugadores, los añade a un grupo y crea el movimiento de ambos
          */
     createPlayers() {
-            this.percival = new Players(this, 200, 1000, "P", 0, "percival");
-            this.daphne = new Players(this, 3250, 1000, "D", 0, "daphne");
+            this.percival = new Players(this, 2000, 1000, "P", 0, "percival");
+            this.daphne = new Players(this, 1400, 4400, "D", 0, "daphne");
             this.players = this.add.group();
             this.players.add(this.percival);
             this.players.add(this.daphne);
@@ -122,11 +123,9 @@ export default class LevelGabi extends Phaser.Scene{
         this.percivalCam = this.cameras.main;
         this.percivalCam.setViewport(0, 0, 540, 540);
         this.percivalCam.startFollow(this.percival);
-        this.percivalCam.setBounds(130,50,2610,1950);
         this.daphneCam = this.cameras.add(540, 0, 540, 540, 'DaphneCam');
         this.daphneCam.setViewport(540, 0, 540, 540);
         this.daphneCam.startFollow(this.daphne);
-        this.daphneCam.setBounds(3160,50,3300,1950);
     }
 
     //Se crean todos los elementos de la UI de los jugadores (imagenes de las habilidades, mensajes, ect)
@@ -273,15 +272,25 @@ export default class LevelGabi extends Phaser.Scene{
             this.liftingPlatforms.add(liftingPlatform);
         });
 
-        this.endTriggers = [];
-        const endTLayer = this.map.getObjectLayer('endTrigger');
-        endTLayer.objects.forEach(obj => {
-            let endT = new EndTrigger(this, obj.x, obj.y, 'preassurePlate');
-            endT.setScale(scaling);
-            endT.setOrigin(0, 1);
-            this.scaleObject(endT, scaling);
-            this.endTriggers.push(endT);
+
+        this.knockObjects = this.add.group();
+        const knockObject = this.map.getObjectLayer('tirables');
+        knockObject.objects.forEach(obj => {
+            let kObject = new KnockableObject(this, obj.x + 10, obj.y, 'knockableObject');
+            kObject.setScale(scaling);
+            this.scaleObject(kObject, scaling);
+            this.knockObjects.add(kObject);
         });
+
+        // this.endTriggers = [];
+        // const endTLayer = this.map.getObjectLayer('endTrigger');
+        // endTLayer.objects.forEach(obj => {
+        //     let endT = new EndTrigger(this, obj.x, obj.y, 'preassurePlate');
+        //     endT.setScale(scaling);
+        //     endT.setOrigin(0, 1);
+        //     this.scaleObject(endT, scaling);
+        //     this.endTriggers.push(endT);
+        // });
     }
 
     /**
@@ -290,19 +299,14 @@ export default class LevelGabi extends Phaser.Scene{
      */
     createItems(Paredes){
         this.keys = this.add.group();
-        this.llaveHabitacion = this.keys.add(new Key(this, 5250,700,'llaveMapa','llaveInventario','keyIdle','LLave de la habitacion',12).setDepth(5));
-        this.llaveHabitacion = this.keys.add(new Key(this, 2640,1500,'llaveMapa','llaveInventario','keyIdle','LLave sala de emergencia',14).setDepth(5));
+        this.llaveHabitacion = this.keys.add(new Key(this, 5250,700,'llaveMapa','llaveInventario','keyIdle','LLave secreta',12).setDepth(5));
+        this.llaveHabitacion = this.keys.add(new Key(this, 2640,1500,'llaveMapa','llaveInventario','keyIdle','LLave Asilo',14).setDepth(5));
 
         this.movableBoxes = this.add.group();
         this.cajaMovible1 = new movableObject(this, 6030, 1200, 2500, 960, "cajaMovible", this.percival, this.daphne, Paredes)
         this.movableBoxes.add(this.cajaMovible1);
-        this.cajaMovible2 = new movableObject(this, 5500, 1840, 10000, 10000, "cajaMovible", this.percival, this.daphne, Paredes)
-        this.movableBoxes.add(this.cajaMovible2);
-        this.cajaRompible1 = new breakableObjects(this,2400, 920, 5940, 1160,'cajaRompible',this.percival,this.daphne);
-        this.cajaRompible2 = new breakableObjects(this,2400, 1000, 5940, 1240,'cajaRompible',this.percival,this.daphne);
-        this.cajaRompible3 = new breakableObjects(this,1200, 1080, 4280, 1000,'cajaRompible',this.percival,this.daphne);
-        this.cajaRompible4 = new breakableObjects(this,1800, 600, 5400, 680,'cajaRompible',this.percival,this.daphne);
-        this.cajaRompible5 = new breakableObjects(this,1800, 520, 5400, 760,'cajaRompible',this.percival,this.daphne);
+        this.cajaRompible3 = new breakableObjects(this,1200, 1000, 1200, 3600,'cajaRompible',this.percival,this.daphne);
+        
     }
 
     /**
@@ -343,13 +347,12 @@ export default class LevelGabi extends Phaser.Scene{
         });
 
         this.physics.add.overlap(this.movableBoxes,this.preassurePlates,(box,placa)=>{
-            //se miran las puertas y si alguna tiene el mismo identificador que la placa se abre
+            //se miran las puertas y plataformas, si alguna tiene el mismo identificador que la placa se abre/activa
             this.doors.getChildren().forEach(door => {
                 if (door.identifier === placa.identifier) {
                     door.openDoor();
                 }
             });
-
             this.liftingPlatforms.getChildren().forEach(platform => {
                 if (platform.identifier === placa.identifier) {
                     platform.activatePlatform();
@@ -394,26 +397,26 @@ export default class LevelGabi extends Phaser.Scene{
             }
         });
 
-        //Colisiones con los triggers de Final de Nivel
-        this.physics.add.overlap(this.players, this.endTriggers, (jugador, endT) => {
-            endT.on();
-            if (this.endTriggers.every(t => t.getIsPressed())) {
-                this.levels = this.registry.get('levels');
-                this.levels.level2 = true;
-                this.scene.launch('menu');
-                this.scene.stop();
-            }
-        });
+        // //Colisiones con los triggers de Final de Nivel
+        // this.physics.add.overlap(this.players, this.endTriggers, (jugador, endT) => {
+        //     endT.on();
+        //     if (this.endTriggers.every(t => t.getIsPressed())) {
+        //         this.levels = this.registry.get('levels');
+        //         this.levels.level2 = true;
+        //         this.scene.launch('menu');
+        //         this.scene.stop();
+        //     }
+        // });
     }
 
     /**
      * Crea todos los sonidos que se van a usar 
      */
     createSounds() {
-        this.walkSound = this.sound.add('pasos', { loop: false });
+        //this.walkSound = this.sound.add('pasos', { loop: false });
         this.breakSound = this.sound.add('romper');
-        this.resetSound = this.sound.add('reset', { loop: false, volume: 0.3 });
-        this.music = this.sound.add('musicaLevelGabi', { loop: true, volume: 0.2 });
+        //this.resetSound = this.sound.add('reset', { loop: false, volume: 0.3 });
+        //this.music = this.sound.add('musicaLevelGabi', { loop: true, volume: 0.2 });
     }
 
     /**
@@ -439,7 +442,7 @@ export default class LevelGabi extends Phaser.Scene{
         if (this.movementController) {
             this.movementController.update();
         }
-        this.updateSounds();
+        //this.updateSounds();
     }
 
     /**

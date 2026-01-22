@@ -60,7 +60,7 @@ export default class BootScene extends Phaser.Scene{
         this.load.tilemapTiledJSON('mapLevelJavi', 'assets/sprites/tileSet/LevelJavi.json');
         this.load.tilemapTiledJSON('mapLevelJavi2', 'assets/sprites/tileSet/LevelJavi2.json');
         this.load.tilemapTiledJSON('mapLevelGabi', 'assets/sprites/tileSet/LevelGabi.json');
-        this.load.tilemapTiledJSON('mapa', 'assets/sprites/tileSet/PruebaPuertas.json');
+        this.load.tilemapTiledJSON('mapa', 'assets/sprites/tileSet/levelTutoriales.json');
         this.load.spritesheet('doors','assets/sprites/tileSet/Doors.png',{frameWidth:32, frameHeight:16});
         this.load.spritesheet('levers','assets/sprites/tileSet/Levers.png',{frameWidth:16, frameHeight:16});
         this.load.spritesheet('knockableObject','assets/sprites/tileSet/KnockableObject.png',{frameWidth:13, frameHeight:19});

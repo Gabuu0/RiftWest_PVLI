@@ -122,8 +122,8 @@ export default class Menu extends Phaser.Scene {
         const level1Button = new Button(this, 540, 225, "LEVEL 1", { fontSize: '48px', fill: 'rgb(197, 83, 188)', fontFamily: 'upheavtt' }, 1, () => {
             if (this.levelsUnlocked.level1) {
                 //se inicia el siguiente nivel, se le pasan todos los dialogos de payaso(SIEMPRE PASAR LOS DIALOGOS)
-                this.scene.start('levelGabi');
-                this.scene.sleep('levelSelector');
+                this.scene.sleep();
+                this.scene.start('tutoriales');
             }
             else {
                 this.showLevelLocked('level1');
@@ -134,8 +134,8 @@ export default class Menu extends Phaser.Scene {
             this.sound.play('select');
             if (this.levelsUnlocked.level2) {
                 //se inicia el siguiente nivel, se le pasan todos los dialogos de payaso(SIEMPRE PASAR LOS DIALOGOS)
+                this.scene.sleep();
                 this.scene.start('levelAx');
-                this.scene.sleep('levelSelector');
             }
             else {
                 this.showLevelLocked('level2');
@@ -145,8 +145,8 @@ export default class Menu extends Phaser.Scene {
         const level3Button = new Button(this, 540, 375, "LEVEL 3", { fontSize: '48px', fill: 'rgb(175, 173, 54)', fontFamily: 'upheavtt' }, 1, () => {
             this.sound.play('select');
             if (this.levelsUnlocked.level3) {
+                this.scene.sleep();
                 this.scene.start('levelJavi');
-                this.scene.sleep('levelSelector');
             }
             else {
                 this.showLevelLocked();
