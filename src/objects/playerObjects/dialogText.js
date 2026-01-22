@@ -7,16 +7,19 @@
  * Esta clase está pensada para crear cuadros de diálogo
  * Las funciones que empiezan por "_" no deberían llamarse nunca desde otras escenas. Pueden romer cosas.
  */
+import Button from "../UI/button.js";
 export default class DialogText{
 
 	constructor(scene, opts){
 		this.scene = scene;
-		this.textCamera = opts.camera
+		this.camera = opts.camera
+		this.otherCamera = opts.otherCamera
 		this.init(opts);
 	}
 
 	setDepth(value) {
-		if (this.graphics) this.graphics.setDepth(value);
+		if (this.daphnePanel) this.daphnePanel.setDepth(value);
+		if (this.percivalPanel) this.percivalPanel.setDepth(value);
 		if (this.text) this.text.setDepth(value);
 		if (this.closeBtn) this.closeBtn.setDepth(value);
 	}
@@ -35,9 +38,9 @@ export default class DialogText{
 		this.padding = opts.padding || 12;
 		this.closeBtnColor = opts.closeBtnColor || 'darkgoldenrod';
 		this.dialogSpeed = opts.dialogSpeed || 3;
-		this.fontSize = opts.fontSize || 24
-		this.fontFamily = opts.fontFamily || "pixel"
-		this.offsetY = opts.offsetY || 270;
+		this.fontSize = opts.fontSize || 15
+		this.fontFamily = opts.fontFamily || "upheavtt"
+		this.offsetY = opts.offsetY || 280;
 		
 		//Para cuando usemos el setTextArray
 		this.array = [];
@@ -67,12 +70,10 @@ export default class DialogText{
 	// Método que cierra y abre la ventana de diálogo
 	toggleWindow() {
 		this.visible = !this.visible;
-		if (this.text) 
-			this.text.visible = this.visible;
-		if (this.graphics) 
-			this.graphics.visible = this.visible;
-		if (this.closeBtn) 
-			this.closeBtn.visible = this.visible;
+		this.text.setVisible(this.visible)
+		this.closeBtn.setVisible(this.visible)
+		this.daphnePanel.setVisible(this.visible)
+		this.percivalPanel.setVisible(this.visible)
 	}
 
 	// con esta función se nos permite añadir texto a la ventana
@@ -172,14 +173,6 @@ export default class DialogText{
 		this.graphics.fillRect(x + 1, y + 1, rectWidth - 1, rectHeight - 1);
 	}
 
-	// Creates the border rectangle of the dialog window
-	_createOuterWindow(x, y, rectWidth, rectHeight) {
-		//Se usa para especificar el estilo de la linea exterior: grosor, color...
-		this.graphics.lineStyle(this.borderThickness, this.borderColor, this.borderAlpha);
-		
-		//permite dibujar un rectangulo sin darle relleno
-		this.graphics.strokeRect(x, y, rectWidth, rectHeight);
-	}
 
 	// Método que crea la ventana de diálogo
 	_createWindow() {
@@ -189,43 +182,25 @@ export default class DialogText{
 
 		//Se calcula la dimension de la ventana de diálogo
 		var dimensions = this._calculateWindowDimensions(gameWidth, gameHeight);
-		this.graphics = this.scene.add.graphics();
-		
-		//Se crean las ventanas interior y exterior
-		this._createOuterWindow(dimensions.x, dimensions.y + this.offsetY, dimensions.rectWidth, dimensions.rectHeight);
-		this._createInnerWindow(dimensions.x, dimensions.y + this.offsetY, dimensions.rectWidth, dimensions.rectHeight);
+		this.daphnePanel = this.scene.add.image(gameWidth/2,gameHeight*2 - gameHeight/3, "daphneDialoguePanel").setOrigin(0.5,0.5);
+		this.percivalPanel = this.scene.add.image(gameWidth/2,gameHeight*2 -gameHeight/3, "percivalDialoguePanel").setOrigin(0.5,0.5);
+		this.camera.ignore(this.daphnePanel);
+		this.scene.cameras.main.ignore(this.percivalPanel);
+
 		
 		this._createCloseModalButton(); //se muestra el boton de cerrar en la ventana
 		this._createCloseModalButtonBorder(); // se muestra el borde del boton de cerrar
-
-		this.graphics.setScrollFactor(0);
+		
+		this.daphnePanel.setScale(0.5).setScrollFactor(0);
+		this.percivalPanel.setScale(0.5).setScrollFactor(0);
 	}
 
 	// Con el siguiente código se crea el boton de cerrar la ventana de diálogo
 	_createCloseModalButton() {
 		var self = this;
-		this.closeBtn = this.scene.make.text({
-			//se crea el boton con las posiciones x e y siguientes
-			// se calculan de forma dinámica para que funcione para diferentes tamaños de pantalla
-			x: this._getGameWidth() - this.padding - 14,
-			y: this._getGameHeight() - this.windowHeight - this.padding + 3 + this.offsetY,
-			
-			//el boton queda representado como una X con su estilo debajo
-			text: '->',
-			style: {
-				font: 'bold 12px TimesNewRoman',
-				fill: this.closeBtnColor
-			}			
-		});
-		
-		this.closeBtn.setInteractive(); //hace interactuable el boton de cierre
-		this.closeBtn.on('pointerover', function () {
-			this.setTint(0xff0000); //cuando el cursor se encuentra encima se cambia de color
-		});
-		this.closeBtn.on('pointerout', function () {
-			this.clearTint(); //vuelve al color original al quitar el cursor
-		});
-		this.closeBtn.on('pointerdown', function () {
+		const gameHeight = this._getGameHeight();
+		const gameWidth = this._getGameWidth();
+		this.closeBtn = new Button(this.scene,gameWidth - 150, gameHeight*2 -gameHeight/4,'Continue',{ fontSize: '18px', fill: this.closeBtnColor, fontFamily: 'upheavtt'},1,()=>{
 			// elimina el game object con el texto y borra el evento
 			if (self.timedEvent) 
 				self.timedEvent.remove();
@@ -233,7 +208,25 @@ export default class DialogText{
 				self.text.destroy();
 			
 			self.showNext();
-		});
+		},true,true,'rgb(255, 255, 143)');
+		this.closeBtn.setScrollFactor(0);
+		
+		// this.closeBtn.setInteractive(); //hace interactuable el boton de cierre
+		// this.closeBtn.on('pointerover', function () {
+		// 	this.setTint(0xff0000); //cuando el cursor se encuentra encima se cambia de color
+		// });
+		// this.closeBtn.on('pointerout', function () {
+		// 	this.clearTint(); //vuelve al color original al quitar el cursor
+		// });
+		// this.closeBtn.on('pointerdown', function () {
+		// 	// elimina el game object con el texto y borra el evento
+		// 	if (self.timedEvent) 
+		// 		self.timedEvent.remove();
+		// 	if (self.text) 
+		// 		self.text.destroy();
+			
+		// 	self.showNext();
+		// });
 
 		this.closeBtn.setScrollFactor(0);
 	}
@@ -243,8 +236,6 @@ export default class DialogText{
 		var x = this._getGameWidth() - this.padding - 20;
 		var y = this._getGameHeight() - this.windowHeight - this.padding + this.offsetY;
 		
-		//Se crea el borde del botón sin relleno
-		this.graphics.strokeRect(x, y, 20, 20);
 	}
 
 	// Hace aparecer al texto lentamente en pantalla
@@ -257,18 +248,34 @@ export default class DialogText{
 		//Cuando eventCounter sea igual a la longitud del texto, se detiene el evento
 		if (this.eventCounter === this.dialog.length) {
 			this.timedEvent.remove();
+			if(this.closeBtn) this.closeBtn.setVisible(true);
 		}
 	}
 
 	// Calcula la pos del texto en la ventana
 	_setText(text) {
+		var self = this;
+		const gameHeight = this._getGameHeight();
+		const gameWidth = this._getGameWidth();
+		var x = this.padding + 150;
+		var y = this._getGameHeight() - this.windowHeight  + this.offsetY;
 		// Resetea el game object del texto si ya estaba seteada la propiedad del texto del plugin
 		if (this.text) 
 			this.text.destroy();
-
-		var x = this.padding + 10;
-		var y = this._getGameHeight() - this.windowHeight - this.padding + 10 + this.offsetY;
-
+		if(this.closeBtn)this.closeBtn.destroy();
+			
+		this.closeBtn = new Button(this.scene,gameWidth - 100, gameHeight*2 -gameHeight/6,'Continue',{ fontSize: '18px', fill: this.closeBtnColor, fontFamily: 'upheavtt'},1,()=>{
+			// elimina el game object con el texto y borra el evento
+			if (self.timedEvent) 
+				self.timedEvent.remove();
+			if (self.text) 
+				self.text.destroy();
+			
+			self.showNext();
+		},true,true,'rgb(255, 255, 143)');
+		this.closeBtn.setScrollFactor(0);
+		this.closeBtn.setDepth(10);
+		this.closeBtn.setVisible(false);
 		//Crea un game object que sea texto
 		this.text = this.scene.make.text({
 			x,
@@ -276,19 +283,22 @@ export default class DialogText{
 			text,
 			style: {
 				//se obliga al texto a permanecer dentro de unos limites determinados
-				wordWrap: { width: this._getGameWidth() - (this.padding * 2) - 25 },
+				wordWrap: { width: this._getGameWidth() - (this.padding * 2) - 220 },
 				fontSize: this.fontSize,
-				fontFamily: this.fontFamily
+				fontFamily: this.fontFamily,
+				letterSpacing: 1
 			}
 		});
 
 		this.text.setScrollFactor(0);
 		this.text.setDepth(10);
-		if (this.ignoreDaphne){
-			this.scene.cameras.main.ignore(this.text);
+		if (this.ignorePercival){
+			this.camera.ignore(this.text);
+			this.camera.ignore(this.closeBtn);
 		}
-		else if (this.ignorePercival){
-			this.textCamera.ignore(this.text);
+		else if (this.ignoreDaphne){
+			this.otherCamera.ignore(this.text);
+			this.otherCamera.ignore(this.closeBtn);
 		}
 	}
 };

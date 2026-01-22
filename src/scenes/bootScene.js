@@ -90,8 +90,10 @@ export default class BootScene extends Phaser.Scene{
 
         this.load.image('daphneAbilityReady', 'assets/sprites/images/daphne/AbilityEnabled.png');
         this.load.image('daphneAbilityUsed', 'assets/sprites/images/daphne/AbilityDisabled.png');
+        this.load.image('daphneDialoguePanel', 'assets/sprites/images/daphne/DaphnePanel.png');
         this.load.image('percivalAbilityReady', 'assets/sprites/images/percival/AbilityEnabled.png');
         this.load.image('percivalAbilityUsed', 'assets/sprites/images/percival/AbilityDisabled.png');
+        this.load.image('percivalDialoguePanel', 'assets/sprites/images/percival/PercivalPanel.png');
 
         this.load.image('daphneHead', 'assets/sprites/images/daphne/head.png');
         this.load.image('percivalHead', 'assets/sprites/images/percival/head.png');

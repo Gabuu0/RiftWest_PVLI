@@ -123,7 +123,7 @@ export default class Menu extends Phaser.Scene {
             if (this.levelsUnlocked.level1) {
                 //se inicia el siguiente nivel, se le pasan todos los dialogos de payaso(SIEMPRE PASAR LOS DIALOGOS)
                 this.scene.sleep();
-                this.scene.start('tutoriales');
+                this.scene.start('levelGabi');
             }
             else {
                 this.showLevelLocked('level1');
@@ -225,7 +225,7 @@ export default class Menu extends Phaser.Scene {
         this.tutorialsMap.set('CLOWN/INVENTORY',
             {
                 index:4,
-                description:''
+                description:'Cada jugador cuenta con un inventario. Mediante el uso del Payaso puedes intercambiar un objeto entre los dos personajes.'
             });
         
         this.tutorialsButtons.push(new Button(this, 135, 295, 'KNOCKABLE OBJECTS', { fontSize: '18px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, (buttonText) => {
@@ -236,7 +236,7 @@ export default class Menu extends Phaser.Scene {
         this.tutorialsMap.set('KNOCKABLE OBJECTS',
             {
                 index:5,
-                description:''
+                description:'Al colisionar con estos objetos el jugador hace ruido. El radio de detección de los vigilantes aumenta.'
             });
         
         this.tutorialsButtons.push(new Button(this, 135, 325, 'DAPHNE ABILITY', { fontSize: '18px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, (buttonText) => {
@@ -246,7 +246,7 @@ export default class Menu extends Phaser.Scene {
         this.tutorialsMap.set('DAPHNE ABILITY',
             {
                 index:6,
-                description:''
+                description:'La magia de Daphne le permite mover objetos. Acercate a cajas de madera y pulsa SHIFT.'
             });
         
         this.tutorialsButtons.push(new Button(this, 135, 355, 'PERCIVAL ABILITY', { fontSize: '18px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, (buttonText) => {
@@ -256,7 +256,7 @@ export default class Menu extends Phaser.Scene {
         this.tutorialsMap.set('PERCIVAL ABILITY',
             {
                 index:7,
-                description:''
+                description:'La ira de Percival es descomunal. Esto le permite romper cajas de madera con el SHIFT.'
             });
 
         this.tutorials = this.add.container(0, 0);
@@ -316,7 +316,7 @@ export default class Menu extends Phaser.Scene {
 
         this.tutorialText = this.add.text(935,145,
             this.tutorialsButtons[this.tutorialSelected].text +'\n \n'+ this.tutorialsMap.get(this.tutorialsButtons[this.tutorialSelected].text).description,
-            { fontSize: '18px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' ,align:'justify', wordWrap:{width:200, useAdvancedWrap:true}}).setOrigin(0.5,0).setVisible(false);
+            { fontSize: '18px', fill: 'rgb(255, 255, 255)',    letterSpacing: 2, fontFamily: 'upheavtt' ,align:'justify', wordWrap:{width:200, useAdvancedWrap:true}}).setOrigin(0.5,0).setVisible(false);
     }
 
     /**
