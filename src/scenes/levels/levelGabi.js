@@ -406,8 +406,10 @@ export default class LevelGabi extends Phaser.Scene{
         this.physics.add.overlap(this.players, this.endTriggers, (jugador, endT) => {
             endT.on();
             if (this.endTriggers.every(t => t.getIsPressed())) {
-                this.scene.launch('theEnd');
-                this.scene.pause();
+                this.levels = this.registry.get('levels');
+                this.levels.level2 = true;
+                this.scene.launch('menu');
+                this.scene.stop();
             }
         });
     }

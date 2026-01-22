@@ -449,11 +449,7 @@ export default class LevelJavi extends Phaser.Scene{
             endT.on();
             if (this.endTriggers.every(t => t.getIsPressed())) {
                 this.scene.stop();
-
-                this.levels.level2 = true;
-                this.registry.set('levels', this.levels);
-
-                this.scene.start('levelSelector');
+                this.scene.launch('theEnd');
             }
         });
     }

@@ -385,11 +385,10 @@ export default class LevelAx extends Phaser.Scene {
             this.physics.add.overlap(this.players,this.endTriggers,(jugador, endT)=>{
                 endT.on();
                 if (this.endTriggers.every(t => t.getIsPressed())) {
-
-                this.levels.level3 = true;
-                this.registry.set('levels', this.levels);
-
-                this.scene.start('levelSelector');
+                    this.scene.stop();
+                    this.levels.level3 = true;
+                    this.registry.set('levels', this.levels);
+                    this.scene.launch('menu');
                 }
             });
         }
