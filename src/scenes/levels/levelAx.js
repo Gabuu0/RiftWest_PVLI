@@ -397,7 +397,7 @@ export default class LevelAx extends Phaser.Scene {
          * Este metodo crea el texto de dialogo el cual se usara posteriormente para mostrar los mensajes del payaso
          */
         createDialog() {
-            this.dialog = new DialogText(this, { camera: this.percivalCam });
+        this.dialog = new DialogText(this, { camera: this.percivalCam, otherCamera: this.daphneCam });
             this.dialog.setDepth(10);
     
             this.dialog.setTextArray([
