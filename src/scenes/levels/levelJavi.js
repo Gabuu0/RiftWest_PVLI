@@ -377,7 +377,7 @@ export default class LevelJavi extends Phaser.Scene{
      * @param {TilemapLayer} Decoracion 
      */
     createCollisions(Paredes, Decoracion) {
-        // this.physics.add.collider(this.players, Paredes);
+        this.physics.add.collider(this.players, Paredes);
         this.physics.add.collider(this.players, Decoracion);
 
         //Colisiones con Puertas

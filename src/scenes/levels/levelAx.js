@@ -356,7 +356,7 @@ export default class LevelAx extends Phaser.Scene {
          * @param {TilemapLayer} Decoracion 
          */
         createCollisions(Paredes) {
-            // this.physics.add.collider(this.players,Paredes);
+            this.physics.add.collider(this.players,Paredes);
             this.physics.add.collider(this.players,this.doors,(jugador,puerta)=>{
                 //si el jugador tiene un item con el mismo identificador que la puerta esta se destruye
                 if(jugador.haveItem(puerta.identifier)){

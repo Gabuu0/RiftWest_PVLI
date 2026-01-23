@@ -124,7 +124,7 @@ export default class Menu extends Phaser.Scene {
             if (this.levelsUnlocked.level1) {
                 //se inicia el siguiente nivel, se le pasan todos los dialogos de payaso(SIEMPRE PASAR LOS DIALOGOS)
                 this.scene.sleep();
-                this.scene.start('tutoriales');
+                this.scene.start('levelGabi');
             }
             else {
                 this.showLevelLocked('level1');
