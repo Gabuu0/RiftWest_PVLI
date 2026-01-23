@@ -112,6 +112,17 @@ export default class BootScene extends Phaser.Scene{
         this.load.audio('select', 'assets/sounds/select.mp3');
         //#endregion
 
+        //#region Tutoriales
+        this.load.video('LEVER_Tutorial','assets/videos/leverTutorial.mp4','loadeddata',false,true);
+        this.load.video('PREASSURE PLATE_Tutorial','assets/videos/preassurePlateTutorial.mp4','loadeddata',false,true);
+        this.load.video('WATCHMAN_Tutorial','assets/videos/watchmanTutorial.mp4','loadeddata',false,true);
+        this.load.video('LIFTING PLATFORM_Tutorial','assets/videos/liftingPlatformTutorial.mp4','loadeddata',false,true);
+        this.load.video('CLOWN/INVENTORY_Tutorial','assets/videos/clownTutorial.mp4','loadeddata',false,true);
+        this.load.video('KNOCKABLE OBJECTS_Tutorial','assets/videos/knockbleObjectsTutorial.mp4','loadeddata',false,true);
+        this.load.video('DAPHNE ABILITY_Tutorial','assets/videos/daphneAbilityTutorial.mp4','loadeddata',false,true);
+        this.load.video('PERCIVAL ABILITY_Tutorial','assets/videos/percivalAbilityTutorial.mp4','loadeddata',false,true);
+        //#endregion
+
     }
     create(){
         this.registry.set('clownObj', {

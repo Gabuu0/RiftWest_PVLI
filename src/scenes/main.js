@@ -87,6 +87,7 @@ export default class Menu extends Phaser.Scene {
         this.changeActiveButtons(this.tutorials,false,false,this.tutorialBackground);
         this.changeActiveButtons(this.secondScreenButtons,false);
         this.changeActiveButtons(this.returnButton,false);
+        this.showTutorial(this.tutorialsButtons[this.tutorialSelected].text);
     }
 
     /**
@@ -123,7 +124,7 @@ export default class Menu extends Phaser.Scene {
             if (this.levelsUnlocked.level1) {
                 //se inicia el siguiente nivel, se le pasan todos los dialogos de payaso(SIEMPRE PASAR LOS DIALOGOS)
                 this.scene.sleep();
-                this.scene.start('levelGabi');
+                this.scene.start('tutoriales');
             }
             else {
                 this.showLevelLocked('level1');
@@ -179,8 +180,8 @@ export default class Menu extends Phaser.Scene {
         this.tutorialsButtons = [];
         this.tutorialsMap = new Map();
         this.tutorialsButtons.push(new Button(this, 135, 145, 'LEVER', { fontSize: '18px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, (buttonText) => {
-            this.showTutorial(buttonText);
             this.tutorialSelected = this.tutorialsMap.get(buttonText).index;
+            this.showTutorial(buttonText);
         },true,true,'rgb(255, 255, 143)'));
         this.tutorialsMap.set('LEVER',
             {
@@ -189,8 +190,8 @@ export default class Menu extends Phaser.Scene {
             });
         
         this.tutorialsButtons.push(new Button(this, 135, 175, 'PREASSURE PLATE', { fontSize: '18px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, (buttonText) => {
-            this.showTutorial(buttonText);
             this.tutorialSelected = this.tutorialsMap.get(buttonText).index;
+            this.showTutorial(buttonText);
         },true,true,'rgb(255, 255, 143)'));
         this.tutorialsMap.set('PREASSURE PLATE',
             {
@@ -199,8 +200,8 @@ export default class Menu extends Phaser.Scene {
             });
         
         this.tutorialsButtons.push(new Button(this, 135, 205, 'WATCHMAN', { fontSize: '18px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, (buttonText) => {
-            this.showTutorial(buttonText);
             this.tutorialSelected = this.tutorialsMap.get(buttonText).index;
+            this.showTutorial(buttonText);
         },true,true,'rgb(255, 255, 143)'));
         this.tutorialsMap.set('WATCHMAN',
             {
@@ -209,18 +210,18 @@ export default class Menu extends Phaser.Scene {
             });
         
         this.tutorialsButtons.push(new Button(this, 135, 235, 'LIFTING PLATFORM', { fontSize: '18px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, (buttonText) => {
-            this.showTutorial(buttonText);
             this.tutorialSelected = this.tutorialsMap.get(buttonText).index;
+            this.showTutorial(buttonText);
         },true,true,'rgb(255, 255, 143)'));
         this.tutorialsMap.set('LIFTING PLATFORM',
             {
                 index:3,
-                description:'Plataformas levadizas que son accionadas por placas de presion, pueden iniciar estando subidas o bajas. Su estado cambia al estar pulsando la placa correspondiente.Si la pisas estando bajada pierdes el nivel'
+                description:'Plataformas levadizas cuyo estado cambia al ser accionadas por placas de presion, pueden iniciar estando subidas o bajadas.Si la pisas estando bajada pierdes el nivel'
             });
         
         this.tutorialsButtons.push(new Button(this, 135, 265, 'CLOWN/INVENTORY', { fontSize: '18px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, (buttonText) => {
-            this.showTutorial(buttonText);
             this.tutorialSelected = this.tutorialsMap.get(buttonText).index;
+            this.showTutorial(buttonText);
         },true,true,'rgb(255, 255, 143)'));
         this.tutorialsMap.set('CLOWN/INVENTORY',
             {
@@ -229,8 +230,8 @@ export default class Menu extends Phaser.Scene {
             });
         
         this.tutorialsButtons.push(new Button(this, 135, 295, 'KNOCKABLE OBJECTS', { fontSize: '18px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, (buttonText) => {
-            this.showTutorial(buttonText);
             this.tutorialSelected = this.tutorialsMap.get(buttonText).index;
+            this.showTutorial(buttonText);
 
         },true,true,'rgb(255, 255, 143)'));
         this.tutorialsMap.set('KNOCKABLE OBJECTS',
@@ -240,23 +241,23 @@ export default class Menu extends Phaser.Scene {
             });
         
         this.tutorialsButtons.push(new Button(this, 135, 325, 'DAPHNE ABILITY', { fontSize: '18px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, (buttonText) => {
-            this.showTutorial(buttonText);
             this.tutorialSelected = this.tutorialsMap.get(buttonText).index;
+            this.showTutorial(buttonText);
         },true,true,'rgb(255, 255, 143)'));
         this.tutorialsMap.set('DAPHNE ABILITY',
             {
                 index:6,
-                description:'La magia de Daphne le permite mover objetos. Acercate a cajas de madera y pulsa SHIFT.'
+                description:'La magia de Daphne le permite mover objetos. Acercate a cajas de madera y pulsa SHIFT derecho.'
             });
         
         this.tutorialsButtons.push(new Button(this, 135, 355, 'PERCIVAL ABILITY', { fontSize: '18px', fill: 'rgb(255, 255, 255)', fontFamily: 'upheavtt' }, 1, (buttonText) => {
-            this.showTutorial(buttonText);
             this.tutorialSelected = this.tutorialsMap.get(buttonText).index;
+            this.showTutorial(buttonText);
         },true,true,'rgb(255, 255, 143)'));
         this.tutorialsMap.set('PERCIVAL ABILITY',
             {
                 index:7,
-                description:'La ira de Percival es descomunal. Esto le permite romper cajas de madera con el SHIFT.'
+                description:'La ira de Percival es descomunal. Esto le permite romper cajas de madera con el SHIFT izquierdo.'
             });
 
         this.tutorials = this.add.container(0, 0);
@@ -311,8 +312,8 @@ export default class Menu extends Phaser.Scene {
             'DAPHNE ABILITY_Tutorial',
             'PERCIVAL ABILITY_Tutorial'
         ];
-        this.video = this.add.video(200,200,this.tutorialsVideos[this.tutorialSelected]);
-        this.video.setLoop(true).setMute(true).setVisible(false);
+        this.video = this.add.video(260,130,this.tutorialsVideos[this.tutorialSelected]).setOrigin(0,0);
+        this.video.setLoop(true).setMute(true).setVisible(false).setScale(0.29,0.26);
 
         this.tutorialText = this.add.text(935,145,
             this.tutorialsButtons[this.tutorialSelected].text +'\n \n'+ this.tutorialsMap.get(this.tutorialsButtons[this.tutorialSelected].text).description,

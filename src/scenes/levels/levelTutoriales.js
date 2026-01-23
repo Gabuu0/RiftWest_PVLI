@@ -9,6 +9,7 @@ import LiftingPlatform from '../../objects/mapObjects/liftingPlatform.js';
 import Door from '../../objects/mapObjects/door.js';
 import Lever from '../../objects/mapObjects/lever.js';
 import PreassurePlate from '../../objects/mapObjects/preassurePlate.js';
+import Watchman from '../../objects/mapObjects/watchman.js';
 import EndTrigger from '../../objects/mapObjects/endTrigger.js';
 
 export default class LevelTutoriales extends Phaser.Scene{
@@ -77,6 +78,8 @@ export default class LevelTutoriales extends Phaser.Scene{
 
         this.createDialog();
 
+        this.createWatchmans();
+        
         this.createSounds();
     }
     
@@ -303,10 +306,8 @@ export default class LevelTutoriales extends Phaser.Scene{
         this.llaveHabitacion = this.keys.add(new Key(this, 2640,1500,'llaveMapa','llaveInventario','keyIdle','LLave Asilo',14).setDepth(5));
 
         this.movableBoxes = this.add.group();
-        this.cajaMovible1 = new movableObject(this, 6030, 1200, 2500, 960, "cajaMovible", this.percival, this.daphne, Paredes)
+        this.cajaMovible1 = new movableObject(this, 1600, 3800, 2000, 1200, "cajaMovible", this.percival, this.daphne, Paredes)
         this.movableBoxes.add(this.cajaMovible1);
-        this.cajaRompible3 = new breakableObjects(this,1200, 1000, 1200, 3600,'cajaRompible',this.percival,this.daphne);
-        
     }
 
     /**
@@ -396,6 +397,13 @@ export default class LevelTutoriales extends Phaser.Scene{
                 });
             }
         });
+        this.physics.add.collider(this.players, this.knockObjects, (jugador, kObject) => {
+            kObject.knock();
+            //se recorren todos los vigilantes y se les aumenta su collider
+            this.watchmans.getChildren().forEach(watchman => {
+            watchman.triggerSize(160);
+            });
+        });
 
         // //Colisiones con los triggers de Final de Nivel
         // this.physics.add.overlap(this.players, this.endTriggers, (jugador, endT) => {
@@ -413,17 +421,80 @@ export default class LevelTutoriales extends Phaser.Scene{
      * Crea todos los sonidos que se van a usar 
      */
     createSounds() {
-        //this.walkSound = this.sound.add('pasos', { loop: false });
+        this.walkSound = this.sound.add('pasos', { loop: false });
         this.breakSound = this.sound.add('romper');
-        //this.resetSound = this.sound.add('reset', { loop: false, volume: 0.3 });
-        //this.music = this.sound.add('musicaLevelGabi', { loop: true, volume: 0.2 });
+        this.resetSound = this.sound.add('reset', { loop: false, volume: 0.3 });
+        this.music = this.sound.add('musicaLevelGabi', { loop: true, volume: 0.2 });
     }
 
+    createWatchmans() {
+        const { sheriff1PathPoints, sheriff2PathPoints, teacher1PathPoints } = createWatchmansPaths();
+        this.watchmans = this.add.group();
+        // Crea el vigilante y lo sigue
+        this.Sheriff1 = new Watchman(
+            this,
+            sheriff1PathPoints[0].x,
+            sheriff1PathPoints[0].y,
+            'sheriffSprite',
+            0,
+            this.percival,
+            sheriff1PathPoints,
+            "sheriff"
+        );
+
+        // this.Sheriff2 = new Watchman(
+        //     this,
+        //     sheriff2PathPoints[0].x,
+        //     sheriff2PathPoints[0].y,
+        //     'sheriffSprite',
+        //     0,
+        //     this.percival,
+        //     sheriff2PathPoints,
+        //     "sheriff"
+        // );
+        // this.Teacher1 = new Watchman(
+        //     this,
+        //     teacher1PathPoints[0].x,
+        //     teacher1PathPoints[0].y,
+        //     'profesorSprite',
+        //     0,
+        //     this.daphne,
+        //     teacher1PathPoints,
+        //     "profesor"
+        // );
+
+        this.watchmans.add(this.Sheriff1);
+        // this.watchmans.add(this.Sheriff2);
+        // this.watchmans.add(this.Teacher1);
+        
+        function createWatchmansPaths() {
+            const sheriff1PathPoints = [
+                { x: 4920, y: 1000 },
+                { x: 4920, y: 1500 },
+            ];
+
+            const sheriff2PathPoints = [
+                { x: 1800, y: 3000 },
+                { x: 1800, y: 2360 },
+                { x: 1800, y: 2120 }
+            ];
+
+            const teacher1PathPoints = [
+                { x: 3960, y: 3000 },
+                { x: 3960, y: 2560 },
+                { x: 3960, y: 2360 },
+                { x: 3960, y: 2120 },
+                { x: 3960, y: 2360 },
+                { x: 3960, y: 2560 },
+            ];
+            return { sheriff1PathPoints, sheriff2PathPoints, teacher1PathPoints };
+        }
+    }
     /**
      * Este metodo crea el texto de dialogo el cual se usara posteriormente para mostrar los mensajes del payaso
     */
     createDialog() {
-        this.dialog = new DialogText(this, { camera: this.percivalCam });
+        this.dialog = new DialogText(this, { camera: this.percivalCam, otherCamera: this.daphneCam });
         this.dialog.setDepth(10);
 
         this.dialog.setTextArray([
@@ -442,7 +513,7 @@ export default class LevelTutoriales extends Phaser.Scene{
         if (this.movementController) {
             this.movementController.update();
         }
-        //this.updateSounds();
+        this.updateSounds();
     }
 
     /**
