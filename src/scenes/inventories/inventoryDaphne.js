@@ -71,7 +71,15 @@ export default class InventoryDaphne extends Phaser.Scene{
             }
         })
 
-      
+        this.events.on('sleep', () => {
+            console.log('sleep' + this.key)
+            this.input.enabled = false;
+        });
+        
+        this.events.on('wake', () => {
+            console.log('wake' + this.key)
+            this.input.enabled = true;
+        });
     }
 
 

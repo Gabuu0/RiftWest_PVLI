@@ -130,7 +130,21 @@ class objetoContenido extends Phaser.GameObjects.Sprite{
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
+        this.scene.physics.add.overlap(this,this.scene.preassurePlates,(box,placa)=>{
+            //se miran las puertas y si alguna tiene el mismo identificador que la placa se abre
+            this.scene.doors.getChildren().forEach(door => {
+                if (door.identifier === placa.identifier) {
+                    door.openDoor();
+                }
+            });
 
+            this.scene.liftingPlatforms.getChildren().forEach(platform => {
+                if (platform.identifier === placa.identifier) {
+                    platform.activatePlatform();
+                }
+            });
+
+        });
         this.body.immovable = true;
     }
 }
