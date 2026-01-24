@@ -8,6 +8,7 @@ export default class LiftingPlatform extends Phaser.Physics.Arcade.Sprite {
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
         this.body.setImmovable(true);
+        this.body.setSize(this.displayWidth * 0.7, this.displayHeight);
         this.isRaised = isRaised;
         this.originalState = isRaised;
         this.identifier = identifier;

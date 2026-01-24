@@ -388,6 +388,8 @@ export default class LevelAx extends Phaser.Scene {
                     this.scene.stop();
                     this.levels.level3 = true;
                     this.registry.set('levels', this.levels);
+                    this.scene.sleep('InventarioPercival');
+                    this.scene.sleep('InventarioDaphne');
                     this.scene.launch('menu');
                 }
             });

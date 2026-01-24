@@ -449,6 +449,8 @@ export default class LevelJavi extends Phaser.Scene{
             endT.on();
             if (this.endTriggers.every(t => t.getIsPressed())) {
                 this.scene.stop();
+                this.scene.sleep('InventarioPercival');
+                this.scene.sleep('InventarioDaphne');
                 this.scene.launch('theEnd');
             }
         });

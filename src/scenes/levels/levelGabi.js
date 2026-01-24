@@ -296,7 +296,7 @@ export default class LevelGabi extends Phaser.Scene{
         this.movableBoxes = this.add.group();
         this.cajaMovible1 = new movableObject(this, 6030, 1200, 2500, 960, "cajaMovible", this.percival, this.daphne, Paredes)
         this.movableBoxes.add(this.cajaMovible1);
-        this.cajaMovible2 = new movableObject(this, 5500, 1840, 10000, 10000, "cajaMovible", this.percival, this.daphne, Paredes)
+        this.cajaMovible2 = new movableObject(this, 5500, 1840, 10000, 10000, "cajaMovible", this.percival, this.daphne, Paredes).setScale(5.5);
         this.movableBoxes.add(this.cajaMovible2);
         this.cajaRompible1 = new breakableObjects(this,2400, 920, 5940, 1160,'cajaRompible',this.percival,this.daphne);
         this.cajaRompible2 = new breakableObjects(this,2400, 1000, 5940, 1240,'cajaRompible',this.percival,this.daphne);
@@ -400,6 +400,8 @@ export default class LevelGabi extends Phaser.Scene{
             if (this.endTriggers.every(t => t.getIsPressed())) {
                 this.levels = this.registry.get('levels');
                 this.levels.level2 = true;
+                this.scene.sleep('InventarioPercival');
+                this.scene.sleep('InventarioDaphne');
                 this.scene.launch('menu');
                 this.scene.stop();
             }
