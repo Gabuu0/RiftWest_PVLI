@@ -17,10 +17,18 @@ export default class TheEnd extends Phaser.Scene {
         background.alpha = 0; // inicial transparente
 
         // Panel con esquinas redondeadas
-        const panel = this.add.graphics();
-        panel.fillStyle(0xffffff, 0.2);
-        panel.fillRoundedRect(-panelWidth/2,-panelHeight/2, panelWidth, panelHeight, radius);
+        const panel = this.add.image(this.scene.width, this.scene.height, "endPanel").setScale(0.6,0.6)
+        this.fullscreenButton = this.add.image(1050, 510, 'iconFullScreen').setScrollFactor(0).setInteractive();
 
+        this.fullscreenButton.on('pointerup', () => {
+        if (!this.scale.isFullscreen) {
+            this.scale.startFullscreen();
+            this.fullscreenButton.setTexture('iconNotFullScreen');
+        } else {
+            this.scale.stopFullscreen();
+            this.fullscreenButton.setTexture('iconFullScreen');
+        }
+        });
         // Contenedor del panel y sus hijos
         const container = this.add.container(540, 270, [panel]);
         container.setScale(0);
