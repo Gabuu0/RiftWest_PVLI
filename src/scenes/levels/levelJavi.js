@@ -362,7 +362,7 @@ export default class LevelJavi extends Phaser.Scene{
     createItems(Paredes){
         this.keys = this.add.group();
         this.movableBoxes = this.add.group();
-        this.llavePasillo = this.keys.add(new Key(this, 1800,3000,'llaveMapa','llaveInventario','keyIdle','LLave del pasillo',2).setDepth(5));
+        this.llavePasillo = this.keys.add(new Key(this, 2900,2700,'llaveMapa','llaveInventario','keyIdle','LLave del pasillo',2).setDepth(5));
         this.llaveComedor = this.keys.add(new Key(this, 3960,1600,'llaveMapa','llaveInventario','keyIdle','LLave del comedor',7).setDepth(5));
         this.cajaM1 = new movableObject(this, 3800, 2120, 1640, 2120, "cajaMovible", this.percival, this.daphne, Paredes)
         this.movableBoxes.add(this.cajaM1);
