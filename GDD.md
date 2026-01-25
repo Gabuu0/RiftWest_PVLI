@@ -177,7 +177,7 @@ Este mecanismo facilitará la resolución de los *puzzles*.
 Existen puertas bloqueadas que requieren **llaves ocultas**,
 muchas veces escondidas en la dimensión opuesta.\
 Esto obliga a los jugadores a comunicarse para compartir información
-clave.
+clave.\
 ![BocetoLlaves](imagesGDD/bocetos/bocetoLlaves.png)
 #### Plataformas Levadizas
 
@@ -188,13 +188,13 @@ sobre una plataforma que está bajada el nivel se reiniciará.\
 #### Placas de presión
 
 Tiles que se activan al pasar por encima o al colocar una caja.\
-Pueden abrir puertas o plataformas.
+Pueden abrir puertas o plataformas.\
 ![BocetoPlacas](imagesGDD/bocetos/bocetoPlacas.png)
 
 #### Palanca
 
 Se activa al pasar por encima de ella, abriendo mecanismos como
-puertas o suelos.
+puertas o suelos.\
 ![BocetoLPalancas](imagesGDD/bocetos/bocetoPalanca.png)
 
 #### Objetos recogibles
@@ -202,7 +202,7 @@ A este conjunto de “Objetos Recogibles” pertenecen los siguientes objetos:
     - LLaves
 Se recogen colisionando con ellos, estos se almacenarán en el inventario
 del personaje correspondiente.\
-Si el inventario está lleno, el objeto permanece en el suelo.
+Si el inventario está lleno, el objeto permanece en el suelo.\
 
 ![BocetoLlaves](imagesGDD/bocetos/bocetoLlaves.png)
 
@@ -210,7 +210,7 @@ Si el inventario está lleno, el objeto permanece en el suelo.
 #### Objetos Movibles
 
 Se mueven con **Shift Derecho (Daphne)**.\
-Parpadean al acercarse a ellos con Daphne y están relacionados entre dimensiones.
+Parpadean al acercarse a ellos con Daphne y están relacionados entre dimensiones.\
 
 ![BocetoMovibles](imagesGDD/bocetos/bocetoMovibles.png)
 
@@ -218,7 +218,7 @@ Parpadean al acercarse a ellos con Daphne y están relacionados entre dimensione
 #### Objetos Rompibles
 
 Se rompen con **Shift Izquierdo (Percival)**.\
-Parpadean al acercarse a ellos con Daphne y están relacionados entre dimensiones.
+Parpadean al acercarse a ellos con Daphne y están relacionados entre dimensiones.\
 
 ![BocetoRompibles](imagesGDD/bocetos/bocetoRompible.png)
 
@@ -235,7 +235,7 @@ Si el jugador entra en su radio de visión, se reinicia el nivel.\
 
 #### Objetos Tirables
 Caen al colisionar y aumentan el area de vision de los vigilantes.\
-Este aumento de vision de los vigilantes es temporal.
+Este aumento de vision de los vigilantes es temporal.\
 
 ![BocetoTirables](imagesGDD/bocetos/bocetoTirable.png)
 
