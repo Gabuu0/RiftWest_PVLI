@@ -121,33 +121,27 @@ afectan al entorno de ambas dimensiones.
 #### Percival
 
 -   **Ira Concentrada**:\
-    Puede romper ciertos objetos (como cajas de metal) al acercarse e
+    Puede romper ciertos barriles al acercarse e
     interactuar con ellos.\
     Estos objetos se encuentran en ambas dimensiones en la misma
     posición relativa, por tanto, al romperlos en una se romperán
     también en la otra.\
-    Los objetos rompibles tendrán un **aura roja**.
+    Al acercarte a estos con Percival se pondrán a parpadear.
 
--   **Personalidad valiente**:\
-    Puede adentrarse en habitaciones oscuras.
 
 #### Daphne
 
 -   **Movilidad Inalámbrica**:\
-    Puede mover ciertos objetos (como cajas de madera).\
+    Puede mover ciertas cajas de madera.\
     Al moverlos en una dimensión, también se moverán en la otra (si
     existen en ambas).\
-    Los objetos movibles tendrán un **aura blanca**.
-
--   **Personalidad miedosa**:\
-    No puede adentrarse en habitaciones oscuras o donde se encuentre un
-    profesor.
+    Al acercarte a estos con Daphne se pondrán a parpadear.
 
 ------------------------------------------------------------------------
 
 ### 3.2 Inventario
 
-Los jugadores podrán recoger objetos como llaves o cajas (solo Daphne).\
+Los jugadores podrán recoger objetos como llaves .\
 Estos se guardarán en su inventario personal, con un límite de
 capacidad.\
 Podrán usarlos para interactuar con el entorno o transferirlos entre
@@ -157,12 +151,12 @@ dimensiones a través del payaso **Xaverius Foramen**.
 
 ### 3.3 Personaje de Payaso (Xaverius)
 
-Desde el nivel 2 se desbloqueará la habilidad de **transferir objetos
+Desde el inicio se podra usar la habilidad de **transferir objetos
 entre Percival y Daphne**.\
-Podrás invocar al payaso con la tecla **P**, hablar con él y elegir qué
-objeto transferir.\
-El payaso desaparecerá de tu inventario y se moverá al otro mundo, donde
-tu compañero podrá recogerlo.\
+Podrás invocar al payaso con la tecla **Q** y **Alt Gr**,entonces se mostrará el inventario y 
+podrás elegir que objeto transferir.\
+El payaso entonces obtendrá el objeto que le des
+y podrás obtenerlo desde la otra dimensión interactuando de nuevo con él\
 Además, contará chistes, reflejando su graciosa personalidad.
 
 ------------------------------------------------------------------------
@@ -178,38 +172,36 @@ Este mecanismo facilitará la resolución de los *puzzles*.
 
 ### 3.5 Puzzles
 
-#### Puertas con contraseña o llaves
+#### Puertas con llaves
 
-Existen puertas bloqueadas que requieren códigos o llaves ocultas,
+Existen puertas bloqueadas que requieren **llaves ocultas**,
 muchas veces escondidas en la dimensión opuesta.\
 Esto obliga a los jugadores a comunicarse para compartir información
 clave.
 ![BocetoLlaves](imagesGDD/bocetos/bocetoLlaves.png)
+#### Plataformas Levadizas
+
+Plataformas que pueden iniciar estando levantadas o bajadas.\
+Su estado cambia al interactuar con placas de presión. Si el jugador pasa 
+sobre una plataforma que está bajada el nivel se reiniciará.\
 
 #### Placas de presión
 
 Tiles que se activan al pasar por encima o al colocar una caja.\
-Pueden abrir puertas o plataformas, y a veces se requerirá pulsar varias
-a la vez.
+Pueden abrir puertas o plataformas.
 ![BocetoPlacas](imagesGDD/bocetos/bocetoPlacas.png)
 
 #### Palanca
 
-Se activa al acercarse y presionar **E**, abriendo mecanismos como
+Se activa al pasar por encima de ella, abriendo mecanismos como
 puertas o suelos.
 ![BocetoLPalancas](imagesGDD/bocetos/bocetoPalanca.png)
 
-#### Objetos Recogibles
-
-Incluyen: - Llaves\
-- Escaleras\
-- Códigos\
-- Palo\
-- Guantes (final del nivel 2)\
-- Varita mágica (final del nivel 3)\
-- Libro de hechizos (final del nivel 4)
-
-Cada uno se recoge con **E (Percival)** o **Enter (Daphne)**.\
+#### Objetos recogibles
+A este conjunto de “Objetos Recogibles” pertenecen los siguientes objetos:
+    - LLaves
+Se recogen colisionando con ellos, estos se almacenarán en el inventario
+del personaje correspondiente.\
 Si el inventario está lleno, el objeto permanece en el suelo.
 
 ![BocetoLlaves](imagesGDD/bocetos/bocetoLlaves.png)
@@ -217,36 +209,19 @@ Si el inventario está lleno, el objeto permanece en el suelo.
 
 #### Objetos Movibles
 
-Incluyen: - Estanterías\
-- Cajas\
-- Suelos
-
-Se mueven con **Enter (Daphne)**.\
-Tienen aura blanca y se sincronizan entre dimensiones.
+Se mueven con **Shift Derecho (Daphne)**.\
+Parpadean al acercarse a ellos con Daphne y están relacionados entre dimensiones.
 
 ![BocetoMovibles](imagesGDD/bocetos/bocetoMovibles.png)
 
 
 #### Objetos Rompibles
 
-Incluyen: - Cajas de madera\
-- Puertas de madera
-
-Se rompen con **E (Percival)**.\
-Tienen aura roja y se sincronizan entre dimensiones.
+Se rompen con **Shift Izquierdo (Percival)**.\
+Parpadean al acercarse a ellos con Daphne y están relacionados entre dimensiones.
 
 ![BocetoRompibles](imagesGDD/bocetos/bocetoRompible.png)
 
-
-#### Objetos Tirables
-
-Incluyen: - Estatuas\
-- Macetas
-
-Caen al colisionar y suman **+1 de ruido**.\
-Con 4 puntos de ruido, el jugador pierde y el nivel se reinicia.
-
-![BocetoTirables](imagesGDD/bocetos/bocetoTirable.png)
 
 #### Vigilantes
 
@@ -254,11 +229,15 @@ Nivel 3 introduce a los **vigilantes**: - Profesor (Magwarts)\
 - Sheriff (Dustwarts)
 
 Tienen rutas asignadas.\
-Si el jugador entra en su radio de visión, se invierten los controles;
-si colisiona, se reinicia el nivel.\
-Pueden ser noqueados con un palo recogido.
+Si el jugador entra en su radio de visión, se reinicia el nivel.\
 
 ![BocetoVigilantes](imagesGDD/bocetos/bocetoVigilantes.png)
+
+#### Objetos Tirables
+Caen al colisionar y aumentan el area de vision de los vigilantes.\
+Este aumento de vision de los vigilantes es temporal.
+
+![BocetoTirables](imagesGDD/bocetos/bocetoTirable.png)
 
 
 ------------------------------------------------------------------------
@@ -266,51 +245,21 @@ Pueden ser noqueados con un palo recogido.
 ## 4. Niveles y Lore
 
 ### 4.1 Nivel 1
-
-Sirve como tutorial para aprender las mecánicas.\
-**Magwarts (Daphne):** Códigos y palancas.\
-**Dustwarts (Percival):** Placas de presión y llaves.
-
-### 4.2 Lore 1-2
-
-Percival se hiere las manos y no puede usar **Ira Concentrada** hasta
-encontrar guantes en el siguiente nivel.\
-Aparece por primera vez **Xaverius (Payaso)**.
+Muestra varias de las mecánicas base del juego como: el traspaso de objetos entre 
+inventarios, las habilidades de los personajes, las plataformas levadizas y 
+las placas de presión.
 
 ### 4.3 Nivel 2
 
-Se introducen mecánicas más complejas.\
-Objetivo: **encontrar los guantes de Percival**.\
-Daphne usa objetos movibles, Percival intercambia objetos mediante
-Xaverius.
+Se introducen los vigilantes y siguen apareciendo el resto 
+de mecánicas, excepto las plataformas levadizas.\
+Objetivo: **escapar del sheriff y el profesor**.\
 
-### 4.4 Lore 2-3
-
-Percival encuentra los guantes.\
-Daphne pierde su varita tras ser sorprendida por un profesor, por lo que
-no puede usar **Movilidad Inalámbrica**.\
-Se presentan los vigilantes.
 
 ### 4.5 Nivel 3
 
-Objetivo: **recuperar la varita confiscada**.\
+Objetivo: **encontrar la salida de la clase y la comisaría**.\
 Ambos deben conseguir las llaves del despacho del profesor.\
 - **Daphne:** evita al profesor.\
-- **Percival:** enfrenta al sheriff y lo noquea.
-
-### 4.6 Lore 3-4
-
-Cae la noche en ambas dimensiones.\
-Los jugadores deben evitar hacer ruido o despertarán a los vigilantes,
-reiniciando el nivel.
-
-### 4.7 Nivel 4
-
-Objetivo: **buscar el libro del hechizo final** para traer de vuelta a
-Percival.\
-Se introducen los **Objetos Tirables**.
-
-**Magwarts (Daphne):** debe esquivar objetos para no hacer ruido.\
-**Dustwarts (Percival):** mismas mecánicas, sin posibilidad de correr.
-
+- **Percival:** evita al sheriff.\
 ------------------------------------------------------------------------
